@@ -21,6 +21,7 @@ import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import com.github.robocup_atan.atan.model.enums.Warning;
 
 import goap.GoapAction;
+import goap.GoapAgent;
 import goap.IGoap;
 import team.formation.DefaultFormation;
 import team.formation.Formation;
@@ -37,13 +38,20 @@ public class Player implements ControllerPlayer, IGoap {
 	private Ball ball;
 	private SenseBody senseBody;
 	private double GoalDirection;
+	
+	private GoapAgent agent;
 	private List<GoapAction> actions; // Caricare le varie azioni che un giocatore può eseguire
 	
 	public Player() {
 		this.ball = null;
 		teamFormation = new DefaultFormation();
 		knowledgeBase = new KnowledgeBase();
+		
+		// Init all actions (Actions Factory)
 		actions = new LinkedList<>();
+		
+		agent = new GoapAgent(this);
+		
 	}
 
 	@Override

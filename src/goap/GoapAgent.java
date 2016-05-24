@@ -21,7 +21,7 @@ public class GoapAgent {
 	
 	private Player player;
 
-	public GoapAgent(){
+	public GoapAgent(Player player){
 		stateMachine = new FSM();
 		availableActions = new HashSet<GoapAction>();
 		currentActions = new LinkedList<>(); // ArrayList
@@ -31,6 +31,9 @@ public class GoapAgent {
 		//createMoveToState();
 		createPerformActionState();
 		stateMachine.pushState(idleState);
+		
+		this.player = player;
+		
 		loadActions();
 	}
 
