@@ -3,6 +3,9 @@ package team;
 import team.playerSeenData.Ball;
 import team.playerSeenData.SeenFlag;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 import com.github.robocup_atan.atan.model.ActionsPlayer;
 import com.github.robocup_atan.atan.model.ControllerPlayer;
@@ -16,12 +19,15 @@ import com.github.robocup_atan.atan.model.enums.ServerParams;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import com.github.robocup_atan.atan.model.enums.Warning;
+
+import goap.GoapAction;
+import goap.IGoap;
 import team.formation.DefaultFormation;
 import team.formation.Formation;
 import team.playerSeenData.SeenLine;
 import team.playerSeenData.SeenPlayer;
 
-public class Player implements ControllerPlayer {
+public class Player implements ControllerPlayer, IGoap {
 
 	private HashMap<ServerParams, Object> serverInfo;
 	private PlayMode playMode;
@@ -31,11 +37,13 @@ public class Player implements ControllerPlayer {
 	private Ball ball;
 	private SenseBody senseBody;
 	private double GoalDirection;
-
+	private List<GoapAction> actions; // Caricare le varie azioni che un giocatore può eseguire
+	
 	public Player() {
 		this.ball = null;
 		teamFormation = new DefaultFormation();
 		knowledgeBase = new KnowledgeBase();
+		actions = new LinkedList<>();
 	}
 
 	@Override
@@ -282,6 +290,48 @@ public class Player implements ControllerPlayer {
 		knowledgeBase.clean();
 	}
 
+	/********************************************/
+	/*		IGoap implementations				*/
+	/********************************************/	
 	
+	@Override
+	public HashMap<String, Object> getWorldState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HashMap<String, Object> createGoalState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void planFailed(HashMap<String, Object> failedGoal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionsFinished() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void planAborted(GoapAction aborter) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<GoapAction> getActions() {
+		return actions;
+	}
 
 }
