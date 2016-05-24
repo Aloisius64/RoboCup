@@ -5,8 +5,9 @@
  */
 package robocup.formation;
 
-import com.github.robocup_atan.atan.model.ActionsPlayer;
 import java.util.HashMap;
+
+import com.github.robocup_atan.atan.model.ActionsPlayer;
 
 import robocup.geometry.Vector;
 import robocup.player.AbstractPlayer;
@@ -32,6 +33,7 @@ public abstract class AbstractFormation {
     }
         
     public AbstractPlayer getPlayer(Integer playerNum){
+    	assert(playerNum>=0 && playerNum<11);
     	return playersMap.get(playerNum);
     }
 }

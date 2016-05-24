@@ -26,17 +26,17 @@ public class FormationDefault extends AbstractFormation {
 	@Override
 	protected void initMaps() {
 		playersMap = new HashMap<>();
-		playersMap.put(1, new GoalierPlayer());
+		playersMap.put(0, new GoalierPlayer());
+		playersMap.put(1, new DefensorPlayer());
 		playersMap.put(2, new DefensorPlayer());
 		playersMap.put(3, new DefensorPlayer());
 		playersMap.put(4, new DefensorPlayer());
 		playersMap.put(5, new DefensorPlayer());
 		playersMap.put(6, new DefensorPlayer());
-		playersMap.put(7, new DefensorPlayer());
+		playersMap.put(7, new AttackerPlayer());
 		playersMap.put(8, new AttackerPlayer());
 		playersMap.put(9, new AttackerPlayer());
 		playersMap.put(10, new AttackerPlayer());
-		playersMap.put(11, new AttackerPlayer());
 		
 		playersPosition = new HashMap<>();
 		playersPosition.put(1, new Vector(-50, 0));

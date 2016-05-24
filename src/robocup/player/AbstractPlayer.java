@@ -82,10 +82,7 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	public void infoHearPlayMode(PlayMode playMode) {
 		this.knowledgeBase.setPlayMode(playMode);
 		if (playMode == PlayMode.BEFORE_KICK_OFF || playMode == PlayMode.GOAL_L || playMode == PlayMode.GOAL_R) {
-                    if(player==null){
-                        System.err.println("NULLo");                        
-                    }
-                    FormationManager.getFormation().movePlayerToItsPosition(player);
+			FormationManager.getFormation().movePlayerToItsPosition(player);
 		}
 	}
 
