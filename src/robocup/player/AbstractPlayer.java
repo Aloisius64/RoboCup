@@ -1,6 +1,7 @@
 package robocup.player;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -21,7 +22,7 @@ import robocup.ai.GoapAction;
 import robocup.ai.GoapAgent;
 import robocup.ai.IGoap;
 import robocup.ai.KnowledgeBase;
-import robocup.formation.AbstarctFormation;
+import robocup.formation.FormationManager;
 import robocup.sensors.Ball;
 import robocup.sensors.SenseBody;
 
@@ -30,11 +31,9 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	protected HashMap<ServerParams, Object> serverInfo;
 	protected ActionsPlayer player;
 	protected KnowledgeBase knowledgeBase;
-	protected AbstarctFormation formation;
 	protected GoapAgent agent;
 
-	public AbstractPlayer(AbstarctFormation formation) {
-		this.formation = formation;
+	public AbstractPlayer() {
 		knowledgeBase = new KnowledgeBase();
 		agent = new GoapAgent(this);
 	}
@@ -83,7 +82,7 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	public void infoHearPlayMode(PlayMode playMode) {
 		this.knowledgeBase.setPlayMode(playMode);
 		if (playMode == PlayMode.BEFORE_KICK_OFF || playMode == PlayMode.GOAL_L || playMode == PlayMode.GOAL_R) {
-			formation.movePlayerToItsPosition(player.getNumber());
+			FormationManager.getFormation().movePlayerToItsPosition(player.getNumber());
 		}
 	}
 
@@ -266,8 +265,7 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 
 	@Override
 	public List<GoapAction> getActions() {
-		// TODO Auto-generated method stub
-		return null;
+		return new LinkedList<>();
 	}
 
 }

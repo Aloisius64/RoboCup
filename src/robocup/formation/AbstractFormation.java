@@ -14,12 +14,12 @@ import robocup.player.AbstractPlayer;
  *
  * @author aloisius
  */
-public abstract class AbstarctFormation {
+public abstract class AbstractFormation {
 
 	protected HashMap<Integer, AbstractPlayer> playersMap = null;
 	protected HashMap<Integer, Vector> playersPosition = null;
 
-    public AbstarctFormation() {
+    public AbstractFormation() {
     	initMaps();
     }
 

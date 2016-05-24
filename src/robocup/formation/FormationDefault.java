@@ -16,7 +16,7 @@ import robocup.player.GoalierPlayer;
  *
  * @author aloisius
  */
-public class FormationDefault extends AbstarctFormation {
+public class FormationDefault extends AbstractFormation {
 
 	public FormationDefault() {
 		super();
@@ -25,18 +25,17 @@ public class FormationDefault extends AbstarctFormation {
 	@Override
 	protected void initMaps() {
 		playersMap = new HashMap<>();
-		playersMap = new HashMap<>();
-		playersMap.put(1, new GoalierPlayer(this));
-		playersMap.put(2, new DefensorPlayer(this));
-		playersMap.put(3, new DefensorPlayer(this));
-		playersMap.put(4, new DefensorPlayer(this));
-		playersMap.put(5, new DefensorPlayer(this));
-		playersMap.put(6, new DefensorPlayer(this));
-		playersMap.put(7, new DefensorPlayer(this));
-		playersMap.put(8, new AttackerPlayer(this));
-		playersMap.put(9, new AttackerPlayer(this));
-		playersMap.put(10, new AttackerPlayer(this));
-		playersMap.put(11, new AttackerPlayer(this));
+		playersMap.put(1, new GoalierPlayer());
+		playersMap.put(2, new DefensorPlayer());
+		playersMap.put(3, new DefensorPlayer());
+		playersMap.put(4, new DefensorPlayer());
+		playersMap.put(5, new DefensorPlayer());
+		playersMap.put(6, new DefensorPlayer());
+		playersMap.put(7, new DefensorPlayer());
+		playersMap.put(8, new AttackerPlayer());
+		playersMap.put(9, new AttackerPlayer());
+		playersMap.put(10, new AttackerPlayer());
+		playersMap.put(11, new AttackerPlayer());
 		
 		playersPosition = new HashMap<>();
 		playersPosition.put(1, new Vector(-50, 0));
