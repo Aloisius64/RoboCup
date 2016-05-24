@@ -20,9 +20,9 @@ import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import com.github.robocup_atan.atan.model.enums.Warning;
 
-import goap.GoapAction;
-import goap.GoapAgent;
-import goap.IGoap;
+import ai.GoapAction;
+import ai.GoapAgent;
+import ai.IGoap;
 import team.formation.DefaultFormation;
 import team.formation.Formation;
 import team.playerSeenData.SeenLine;

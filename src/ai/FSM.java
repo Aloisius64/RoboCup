@@ -1,4 +1,4 @@
-package goap;
+package ai;
 
 import java.util.Stack;
 
@@ -14,7 +14,7 @@ public class FSM {
 
 	public FSMState FSMState;
 
-	public void Update(Object object) {
+	public void update(Object object) {
 		if (stateStack.peek() != null)
 			stateStack.peek().update(this, object);
 	}

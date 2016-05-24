@@ -1,4 +1,4 @@
-package goap;
+package ai;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +38,7 @@ public class GoapAgent {
 	}
 
 	void update() {
-		stateMachine.Update(this.player);
+		stateMachine.update(this.player);
 	}
 
 	public void addAction(GoapAction goapAction) {

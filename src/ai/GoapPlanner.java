@@ -1,4 +1,4 @@
-package goap;
+package ai;
 
 import java.util.HashMap;
 import java.util.HashSet;
