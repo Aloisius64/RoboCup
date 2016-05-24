@@ -11,7 +11,7 @@ package team.playerSeenData;
  */
 public class SeenPlayer {
 
-    private final int number;
+    private final int lastUpdate;
     private final boolean goalie;
     private final double distance;
     private final double direction;
@@ -20,8 +20,8 @@ public class SeenPlayer {
     private final double bodyFacingDirection;
     private final double headFacingDirection;
 
-    public SeenPlayer(int number, boolean goalie, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
-        this.number = number;
+    public SeenPlayer(boolean goalie, double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
+        this.lastUpdate=0;
         this.goalie = goalie;
         this.distance = distance;
         this.direction = direction;
@@ -29,10 +29,6 @@ public class SeenPlayer {
         this.dirChange = dirChange;
         this.bodyFacingDirection = bodyFacingDirection;
         this.headFacingDirection = headFacingDirection;
-    }
-
-    public int getNumber() {
-        return number;
     }
 
     public boolean isGoalie() {
@@ -62,5 +58,9 @@ public class SeenPlayer {
     public double getHeadFacingDirection() {
         return headFacingDirection;
     }
+
+	public int getLastUpdate() {
+		return lastUpdate;
+	}
 
 }

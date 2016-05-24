@@ -21,19 +21,15 @@ import team.formation.Formation;
 import team.playerSeenData.SeenLine;
 import team.playerSeenData.SeenPlayer;
 
-public class Player implements ControllerPlayer {
+public abstract class AbstractPlayer implements ControllerPlayer {
 
-	private HashMap<ServerParams, Object> serverInfo;
-	private PlayMode playMode;
-	private ActionsPlayer player;
-	private final Formation teamFormation;
-	private final KnowledgeBase knowledgeBase;
-	private Ball ball;
-	private SenseBody senseBody;
-	private double GoalDirection;
+	protected HashMap<ServerParams, Object> serverInfo;
 
-	public Player() {
-		this.ball = null;
+	protected ActionsPlayer player;
+	protected Formation teamFormation;
+	protected KnowledgeBase knowledgeBase;
+
+	public AbstractPlayer() {
 		teamFormation = new DefaultFormation();
 		knowledgeBase = new KnowledgeBase();
 	}
@@ -80,15 +76,15 @@ public class Player implements ControllerPlayer {
 
 	@Override
 	public void infoHearPlayMode(PlayMode playMode) {
-		this.playMode = playMode;
-		if (playMode == PlayMode.BEFORE_KICK_OFF || playMode == PlayMode.GOAL_L) {
+		this.knowledgeBase.setPlayMode(playMode);
+		if (playMode == PlayMode.BEFORE_KICK_OFF || playMode == PlayMode.GOAL_L || playMode == PlayMode.GOAL_R) {
 			teamFormation.movePlayerToPosition(player);
 		}
 	}
 
 	@Override
 	public void infoHearPlayer(int step, double direction, String message) {
-		System.out.println(player.getNumber() + " sente " + message);
+		// System.out.println(player.getNumber() + " sente " + message);
 	}
 
 	@Override
@@ -122,131 +118,94 @@ public class Player implements ControllerPlayer {
 	@Override
 	public void infoSeeBall(double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		this.ball = new Ball(distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection);
+		this.knowledgeBase.setBall(
+				new Ball(distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection));
 	}
 
 	@Override
 	public void infoSeeFlagCenter(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
+	
 	}
 
 	@Override
 	public void infoSeeFlagCornerOther(Flag flag, double distance, double direction, double distChange,
 			double dirChange, double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
+	
 	}
 
 	@Override
 	public void infoSeeFlagCornerOwn(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
+		
 	}
 
 	@Override
 	public void infoSeeFlagGoalOther(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		if (flag == Flag.CENTER) {
-			this.GoalDirection = direction;
-		}
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
+		
 	}
 
 	@Override
 	public void infoSeeFlagGoalOwn(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
+		
 	}
 
 	@Override
 	public void infoSeeFlagLeft(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
+	
 	}
 
 	@Override
 	public void infoSeeFlagOther(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
+		
 	}
 
 	@Override
 	public void infoSeeFlagOwn(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
 	}
 
 	@Override
 	public void infoSeeFlagPenaltyOther(Flag flag, double distance, double direction, double distChange,
 			double dirChange, double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
 	}
 
 	@Override
 	public void infoSeeFlagPenaltyOwn(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
 	}
 
 	@Override
 	public void infoSeeFlagRight(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addFlag(seenFlag);
 	}
 
 	@Override
 	public void infoSeeLine(Line line, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		SeenLine seenLine = new SeenLine(line, distance, direction, distChange, dirChange, bodyFacingDirection,
-				headFacingDirection);
-		knowledgeBase.addLine(seenLine);
-	}
+		}
 
 	@Override
 	public void infoSeePlayerOther(int number, boolean goalie, double distance, double direction, double distChange,
 			double dirChange, double bodyFacingDirection, double headFacingDirection) {
-		SeenPlayer seenPlayer = new SeenPlayer(number, goalie, distance, direction, distChange, dirChange,
-				bodyFacingDirection, headFacingDirection);
-		knowledgeBase.addOtherPlayer(seenPlayer);
 	}
 
 	@Override
 	public void infoSeePlayerOwn(int number, boolean goalie, double distance, double direction, double distChange,
 			double dirChange, double bodyFacingDirection, double headFacingDirection) {
-		SeenPlayer seenPlayer = new SeenPlayer(number, goalie, distance, direction, distChange, dirChange,
-				bodyFacingDirection, headFacingDirection);
-		knowledgeBase.addOwnPlayer(seenPlayer);
 	}
 
 	@Override
 	public void infoSenseBody(int step, ViewQuality viewQuality, ViewAngle viewAngle, double stamina, double unknown,
 			double effort, double speedAmount, double speedDirection, double headAngle, int kickCount, int dashCount,
 			int turnCount, int sayCount, int turnNeckCount, int catchCount, int moveCount, int changeViewCount) {
-		this.senseBody = new SenseBody(viewQuality, viewAngle, stamina, unknown, effort, speedAmount, speedDirection,
-				headAngle, kickCount, dashCount, turnCount, sayCount, turnNeckCount, catchCount, moveCount,
-				changeViewCount);
+		this.knowledgeBase.setSenseBody(new SenseBody(viewQuality, viewAngle, stamina, unknown, effort, speedAmount,
+				speedDirection, headAngle, kickCount, dashCount, turnCount, sayCount, turnNeckCount, catchCount,
+				moveCount, changeViewCount));
 	}
 
 	@Override
@@ -255,33 +214,8 @@ public class Player implements ControllerPlayer {
 	}
 
 	@Override
-	public void postInfo() {
-		if (player.getNumber() == 1) {
-			player.say("qwertyuiop");
-		}
-
-		// if (this.playMode == PlayMode.PLAY_ON) {
-		// if (player.getNumber() == 1 && ball != null) {
-		//
-		// if (ball.getDistance() > (Double)
-		// serverInfo.get(ServerParams.KICKABLE_MARGIN)) {
-		// player.turn(ball.getDirection());
-		// player.dash(50);
-		// } else {
-		//
-		// player.kick(5, GoalDirection);
-		// }
-		// }
-		// }
-	}
-
-	@Override
 	public void preInfo() {
-		this.ball = null;
-
 		knowledgeBase.clean();
 	}
-
-	
 
 }

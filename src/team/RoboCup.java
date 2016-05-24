@@ -15,6 +15,8 @@ public class RoboCup {
         BasicConfigurator.configure();
         AbstractTeam team = new Team("Team");
         team.connectAll();
+        AbstractTeam opponentTeam = new OpponentTeam("Opponent");
+        opponentTeam.connectAll();
     }
 
 }
