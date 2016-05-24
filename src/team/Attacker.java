@@ -29,6 +29,7 @@ public class Attacker extends AbstractPlayer {
 	@Override
 	public void postInfo() {
 		if (PlayMode.PLAY_ON == this.knowledgeBase.getPlayMode()) {
+			//player.say("giovanniDice");
 			if (knowledgeBase.getBall().isSeenInLastStep()) {
 				if (knowledgeBase.getBall().getDistance() > (double) serverInfo.get(ServerParams.KICKABLE_MARGIN)) {
 					player.turn(knowledgeBase.getBall().getDirection());

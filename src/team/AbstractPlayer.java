@@ -1,8 +1,7 @@
 package team;
 
-import team.playerSeenData.Ball;
-import team.playerSeenData.SeenFlag;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.github.robocup_atan.atan.model.ActionsPlayer;
 import com.github.robocup_atan.atan.model.ControllerPlayer;
@@ -16,10 +15,11 @@ import com.github.robocup_atan.atan.model.enums.ServerParams;
 import com.github.robocup_atan.atan.model.enums.ViewAngle;
 import com.github.robocup_atan.atan.model.enums.ViewQuality;
 import com.github.robocup_atan.atan.model.enums.Warning;
+
+import ai.GoapAgent;
 import team.formation.DefaultFormation;
 import team.formation.Formation;
-import team.playerSeenData.SeenLine;
-import team.playerSeenData.SeenPlayer;
+import team.playerSeenData.Ball;
 
 public abstract class AbstractPlayer implements ControllerPlayer {
 
@@ -33,7 +33,6 @@ public abstract class AbstractPlayer implements ControllerPlayer {
 		teamFormation = new DefaultFormation();
 		knowledgeBase = new KnowledgeBase();
 	}
-
 	@Override
 	public ActionsPlayer getPlayer() {
 		return player;
@@ -84,7 +83,7 @@ public abstract class AbstractPlayer implements ControllerPlayer {
 
 	@Override
 	public void infoHearPlayer(int step, double direction, String message) {
-		// System.out.println(player.getNumber() + " sente " + message);
+		 System.out.println(player.getNumber() + " sente " + message);
 	}
 
 	@Override
@@ -125,43 +124,43 @@ public abstract class AbstractPlayer implements ControllerPlayer {
 	@Override
 	public void infoSeeFlagCenter(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-	
+
 	}
 
 	@Override
 	public void infoSeeFlagCornerOther(Flag flag, double distance, double direction, double distChange,
 			double dirChange, double bodyFacingDirection, double headFacingDirection) {
-	
+
 	}
 
 	@Override
 	public void infoSeeFlagCornerOwn(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		
+
 	}
 
 	@Override
 	public void infoSeeFlagGoalOther(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		
+
 	}
 
 	@Override
 	public void infoSeeFlagGoalOwn(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		
+
 	}
 
 	@Override
 	public void infoSeeFlagLeft(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-	
+
 	}
 
 	@Override
 	public void infoSeeFlagOther(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		
+
 	}
 
 	@Override
@@ -187,7 +186,7 @@ public abstract class AbstractPlayer implements ControllerPlayer {
 	@Override
 	public void infoSeeLine(Line line, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		}
+	}
 
 	@Override
 	public void infoSeePlayerOther(int number, boolean goalie, double distance, double direction, double distChange,
@@ -217,5 +216,4 @@ public abstract class AbstractPlayer implements ControllerPlayer {
 	public void preInfo() {
 		knowledgeBase.clean();
 	}
-
 }
