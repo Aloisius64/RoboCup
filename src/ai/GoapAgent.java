@@ -8,7 +8,6 @@ import java.util.Queue;
 
 import team.Player;
 
-
 public class GoapAgent {
 
 	private FSM stateMachine;
@@ -18,27 +17,24 @@ public class GoapAgent {
 	private Queue<GoapAction> currentActions;
 	private IGoap dataProvider; // this is the implementing class that provides our world data and listens to feedback on planning
 	private GoapPlanner planner;
-	
-	private Player player;
+	private Object targetObject;
 
-	public GoapAgent(Player player){
+	public GoapAgent(Object targetObject){
 		stateMachine = new FSM();
 		availableActions = new HashSet<GoapAction>();
 		currentActions = new LinkedList<>(); // ArrayList
 		planner = new GoapPlanner();
-		findDataProvider();
+		dataProvider = (IGoap) targetObject;
+		this.targetObject = targetObject;
+		loadActions();
 		createIdleState();
 		//createMoveToState();
 		createPerformActionState();
 		stateMachine.pushState(idleState);
-		
-		this.player = player;
-		
-		loadActions();
 	}
 
 	void update() {
-		stateMachine.update(this.player);
+		stateMachine.update(targetObject);
 	}
 
 	public void addAction(GoapAction goapAction) {
@@ -99,12 +95,12 @@ public class GoapAgent {
 
 	private void createPerformActionState() {
 		performActionState = new FSMState() {
-			
+
 			@Override
 			public void update(FSM fsm, Object object) {
 				// perform the action
 				System.out.println("Perform action state");
-	
+
 				if (!hasActionPlan()) {
 					// no actions to perform
 					System.out.println("Done actions");
@@ -113,46 +109,42 @@ public class GoapAgent {
 					dataProvider.actionsFinished();
 					return;
 				}
-	
+
 				GoapAction action = currentActions.peek();
 				if (action.isDone()) {
 					// the action is done. Remove it so we can perform the next one
 					currentActions.poll();
 				}
-	
+
 				if (hasActionPlan()) {
 					// perform the next action
 					action = currentActions.peek();
-	
-					boolean success = action.perform(player);
+
+					boolean success = action.perform(targetObject);
 					if (!success) {
 						// action failed, we need to plan again
 						fsm.popState();
 						fsm.pushState(idleState);
 						dataProvider.planAborted(action);
 					}
-	
+
 				} else {
 					// no actions left, move to Plan state
 					fsm.popState();
 					fsm.pushState(idleState);
 					dataProvider.actionsFinished();
 				}
-				
+
 			}
 		};
-		
-	}
 
-	private void findDataProvider() {
-		dataProvider = (IGoap) player;
 	}
 
 	private void loadActions() {		
-		for (GoapAction action : player.getActions()) {
+		for (GoapAction action : dataProvider.getActions()) {
 			availableActions.add(action);
 		}
-		System.out.println("Found actions: " + prettyPrint(player.getActions()));		
+		System.out.println("Found actions: " + prettyPrint(dataProvider.getActions()));		
 	}
 
 	public static String prettyPrint(HashMap<String, Object> state) {

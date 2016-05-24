@@ -1,6 +1,7 @@
 package ai;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -48,5 +49,10 @@ public interface IGoap {
 	 * That action is returned.
 	 */
     void planAborted(GoapAction aborter);
+    
+    /**
+	 * Return the actions that can be executed
+	 */
+    List<GoapAction> getActions();
 
 }

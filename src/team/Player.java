@@ -38,20 +38,14 @@ public class Player implements ControllerPlayer, IGoap {
 	private Ball ball;
 	private SenseBody senseBody;
 	private double GoalDirection;
-	
 	private GoapAgent agent;
-	private List<GoapAction> actions; // Caricare le varie azioni che un giocatore può eseguire
 	
 	public Player() {
 		this.ball = null;
 		teamFormation = new DefaultFormation();
 		knowledgeBase = new KnowledgeBase();
-		
-		// Init all actions (Actions Factory)
-		actions = new LinkedList<>();
-		
+				
 		agent = new GoapAgent(this);
-		
 	}
 
 	@Override
@@ -338,8 +332,10 @@ public class Player implements ControllerPlayer, IGoap {
 		
 	}
 
+	@Override
 	public List<GoapAction> getActions() {
-		return actions;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
