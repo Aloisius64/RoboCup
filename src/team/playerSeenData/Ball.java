@@ -2,12 +2,13 @@ package team.playerSeenData;
 
 public class Ball {
 
-    private final double distance;
-    private final double direction;
-    private final double distChange;
-    private final double dirChange;
-    private final double bodyFacingDirection;
-    private final double headFacingDirection;
+    private  double distance;
+    private  double direction;
+    private  double distChange;
+    private  double dirChange;
+    private  double bodyFacingDirection;
+    private  double headFacingDirection;
+    private boolean seenInLastStep;
 
     public Ball(double distance, double direction, double distChange, double dirChange, double bodyFacingDirection, double headFacingDirection) {
         this.distance = distance;
@@ -16,6 +17,7 @@ public class Ball {
         this.dirChange = dirChange;
         this.bodyFacingDirection = bodyFacingDirection;
         this.headFacingDirection = headFacingDirection;
+        this.seenInLastStep=true;
     }
 
     public double getDistance() {
@@ -41,4 +43,12 @@ public class Ball {
     public double getHeadFacingDirection() {
         return headFacingDirection;
     }
+
+	public boolean isSeenInLastStep() {
+		return seenInLastStep;
+	}
+
+	public void setSeenInLastStep(boolean seenInLastStep) {
+		this.seenInLastStep = seenInLastStep;
+	}
 }

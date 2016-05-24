@@ -4,21 +4,14 @@ import com.github.robocup_atan.atan.model.AbstractTeam;
 import com.github.robocup_atan.atan.model.ControllerCoach;
 import com.github.robocup_atan.atan.model.ControllerPlayer;
 
-public class Team extends AbstractTeam {
+public class OpponentTeam extends AbstractTeam {
 
-	public Team(String teamName) {
+	public  OpponentTeam(String teamName) {
 		super(teamName, 6000, "localhost", false);
 	}
 
 	@Override
 	public ControllerPlayer getNewControllerPlayer(int i) {
-		i++;
-		if (i == 11) {
-			return new Attacker();
-		}
-		// Defense
-		// Attack
-		// Other roles
 		return new Player();
 	}
 
@@ -29,7 +22,6 @@ public class Team extends AbstractTeam {
 
 	@Override
 	public int size() {
-		return 11;
+		return 1;
 	}
-
 }
