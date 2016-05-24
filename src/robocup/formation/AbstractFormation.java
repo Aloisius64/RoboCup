@@ -5,6 +5,7 @@
  */
 package robocup.formation;
 
+import com.github.robocup_atan.atan.model.ActionsPlayer;
 import java.util.HashMap;
 
 import robocup.geometry.Vector;
@@ -20,15 +21,14 @@ public abstract class AbstractFormation {
 	protected HashMap<Integer, Vector> playersPosition = null;
 
     public AbstractFormation() {
-    	initMaps();
+        
     }
 
     protected abstract void initMaps();
     
-    public void movePlayerToItsPosition(Integer playerNum){
-    	AbstractPlayer player = playersMap.get(playerNum);
-    	Vector position = playersPosition.get(playerNum);
-    	player.getPlayer().move((int) position.X(), (int) position.Y());    	
+    public void movePlayerToItsPosition(ActionsPlayer player){
+    	Vector position = playersPosition.get(player.getNumber());
+    	player.move((int) position.X(), (int) position.Y());    	
     }
         
     public AbstractPlayer getPlayer(Integer playerNum){

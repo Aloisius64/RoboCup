@@ -20,6 +20,7 @@ public class FormationDefault extends AbstractFormation {
 
 	public FormationDefault() {
 		super();
+    	initMaps();
 	}
 
 	@Override

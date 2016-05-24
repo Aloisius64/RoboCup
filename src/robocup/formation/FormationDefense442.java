@@ -11,6 +11,7 @@ public class FormationDefense442 extends AbstractFormation {
 
 	public FormationDefense442() {
 		super();
+    	initMaps();
 	}
 
 	@Override
