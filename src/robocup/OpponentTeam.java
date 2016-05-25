@@ -11,7 +11,7 @@ import robocup.player.GoalierPlayer;
 import robocup.utility.Settings;
 
 public class OpponentTeam extends AbstractTeam {
-
+	
 	public OpponentTeam(String teamName) {
 		super(teamName, Settings.PORT_NUMBER, Settings.IP_SERVER, false);
 	}

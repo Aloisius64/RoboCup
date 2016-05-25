@@ -5,6 +5,7 @@ import com.github.robocup_atan.atan.model.ControllerCoach;
 import com.github.robocup_atan.atan.model.ControllerPlayer;
 
 import robocup.formation.FormationManager;
+import robocup.player.AbstractPlayer;
 import robocup.player.AttackerPlayer;
 import robocup.utility.Settings;
 
@@ -24,7 +25,9 @@ public class Team extends AbstractTeam {
 	@Override
 	public ControllerPlayer getNewControllerPlayer(int i) {
 		if(formation!=null){
-			return FormationManager.getFormation(formation).getPlayer(i);
+			AbstractPlayer player = FormationManager.getFormation(formation).getPlayer(i);
+			player.setFormationName(formation);
+			return player;
 		}
 		return new AttackerPlayer();
 	}

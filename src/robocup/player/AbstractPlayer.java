@@ -33,12 +33,14 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	protected ActionsPlayer player;
 	protected KnowledgeBase knowledgeBase;
 	protected GoapAgent agent;
+	private String formationName = null;	// Team formation name
 
 	public AbstractPlayer() {
 		knowledgeBase = new KnowledgeBase();
 		agent = new GoapAgent(this);
+		formationName = "";
 	}
-
+	
 	@Override
 	public ActionsPlayer getPlayer() {
 		return player;
@@ -82,8 +84,41 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	@Override
 	public void infoHearPlayMode(PlayMode playMode) {
 		this.knowledgeBase.setPlayMode(playMode);
-		if (playMode == PlayMode.BEFORE_KICK_OFF || playMode == PlayMode.GOAL_L || playMode == PlayMode.GOAL_R) {
-			// FormationManager.getFormation().movePlayerToItsPosition(player);
+		
+		switch (playMode) {
+		case BEFORE_KICK_OFF:
+		case GOAL_L:
+		case GOAL_R:
+			FormationManager.getFormation(formationName).movePlayerToItsPosition(player);
+		case CORNER_KICK_OTHER:
+		case CORNER_KICK_OWN:
+		case CORNER_KICK_L:
+		case CORNER_KICK_R:
+		case FREE_KICK_FAULT_OTHER:
+		case FREE_KICK_FAULT_OWN:
+		case FREE_KICK_FAULT_L:
+		case FREE_KICK_FAULT_R:
+		case FREE_KICK_OTHER:
+		case FREE_KICK_OWN:
+		case FREE_KICK_L:
+		case FREE_KICK_R:
+		case GOAL_KICK_OTHER:
+		case GOAL_KICK_OWN:
+		case GOAL_KICK_L:
+		case GOAL_KICK_R:
+		case GOAL_OTHER:
+		case GOAL_OWN:
+		case KICK_IN_OTHER:
+		case KICK_IN_OWN:
+		case KICK_IN_L:
+		case KICK_IN_R:
+		case KICK_OFF_OTHER:
+		case KICK_OFF_OWN:
+		case KICK_OFF_L:
+		case KICK_OFF_R:
+		case TIME_OVER:
+		default:
+			break;
 		}
 	}
 
@@ -271,5 +306,13 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	public List<GoapAction> getActions() {
 		return new LinkedList<>();
 	}
+	
+	public String getFormationName() {
+		return formationName;
+	}
 
+	public void setFormationName(String formation) {
+		this.formationName = formation;
+	}
+	
 }
