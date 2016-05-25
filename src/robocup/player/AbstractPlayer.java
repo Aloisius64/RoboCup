@@ -24,6 +24,7 @@ import robocup.ai.IGoap;
 import robocup.ai.KnowledgeBase;
 import robocup.formation.FormationManager;
 import robocup.sensors.Ball;
+import robocup.sensors.SeenPlayer;
 import robocup.sensors.SenseBody;
 
 public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
@@ -82,7 +83,7 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	public void infoHearPlayMode(PlayMode playMode) {
 		this.knowledgeBase.setPlayMode(playMode);
 		if (playMode == PlayMode.BEFORE_KICK_OFF || playMode == PlayMode.GOAL_L || playMode == PlayMode.GOAL_R) {
-			FormationManager.getFormation().movePlayerToItsPosition(player);
+			// FormationManager.getFormation().movePlayerToItsPosition(player);
 		}
 	}
 
@@ -129,8 +130,9 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	@Override
 	public void infoSeeFlagCenter(Flag flag, double distance, double direction, double distChange, double dirChange,
 			double bodyFacingDirection, double headFacingDirection) {
-		//SeenFlag seenFlag = new SeenFlag(flag, distance, direction, distChange, dirChange, bodyFacingDirection, headFacingDirection);
-		//knowledgeBase.addFlag(seenFlag);
+		// SeenFlag seenFlag = new SeenFlag(flag, distance, direction,
+		// distChange, dirChange, bodyFacingDirection, headFacingDirection);
+		// knowledgeBase.addFlag(seenFlag);
 	}
 
 	@Override
@@ -197,6 +199,8 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	@Override
 	public void infoSeePlayerOther(int number, boolean goalie, double distance, double direction, double distChange,
 			double dirChange, double bodyFacingDirection, double headFacingDirection) {
+		knowledgeBase.addOtherPlayer(new SeenPlayer(goalie, distance, direction, distChange, dirChange,
+				bodyFacingDirection, headFacingDirection));
 	}
 
 	@Override
@@ -224,7 +228,7 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 	}
 
 	/********************************************/
-	/*			IGoap implementations			*/
+	/* IGoap implementations */
 	/********************************************/
 
 	@Override

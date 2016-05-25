@@ -12,8 +12,8 @@ public class RoboCup {
         AbstractTeam team = new Team("DropTableUsers");
         team.connectAll();
         
-//        AbstractTeam opponentTeam = new OpponentTeam("Calimeri");
-//        opponentTeam.connectAll();
+        AbstractTeam opponentTeam = new OpponentTeam("Opponent");
+        opponentTeam.connectAll();
     }
 
 }

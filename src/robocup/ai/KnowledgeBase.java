@@ -109,8 +109,19 @@ public class KnowledgeBase {
 		return flags;
 	}
 
+	public SeenFlag getFlag(FlagCategory flagCategory, Flag flag) {
+		return flags.get(flagCategory).get(flag);
+	}
+
+	public boolean hasFlag(FlagCategory flagCategory, Flag flag) {
+		if (flags.containsKey(flagCategory) && flags.get(flagCategory).containsKey(flag)) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	public void setFlags(Map<FlagCategory, Map<Flag, SeenFlag>> flags) {
 		this.flags = flags;
 	}
-
 }
