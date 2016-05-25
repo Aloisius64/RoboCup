@@ -90,6 +90,7 @@ public abstract class AbstractPlayer implements ControllerPlayer, IGoap {
 		case GOAL_L:
 		case GOAL_R:
 			FormationManager.getFormation(formationName).movePlayerToItsPosition(player);
+			break;
 		case CORNER_KICK_OTHER:
 		case CORNER_KICK_OWN:
 		case CORNER_KICK_L:
