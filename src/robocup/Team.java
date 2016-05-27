@@ -23,7 +23,7 @@ public class Team {
 	}
 
 	public void initTeam() throws SocketException, UnknownHostException, InterruptedException, InstantiationException, IllegalAccessException{
-		for (int i = 0; i < Settings.TEAM_SIZE; i++) {
+		for (int i = 1; i <= Settings.TEAM_SIZE; i++) {
 			AbstractPlayer player = teamFormation.getPlayer(i);
 			player.getRoboClient().setTeam(teamName); 
 			player.setStringPosition(teamFormation.getPlayerStringPosition(i));
@@ -32,11 +32,11 @@ public class Team {
 
 		for (int i = 0; i < Settings.TEAM_SIZE; i++) {
 			AbstractPlayer player = players.get(i);
-			Vector position = teamFormation.getPlayerPosition(i);
+			Vector position = teamFormation.getPlayerPosition(i+1);
 			player.initPlayer(position.X(), position.Y());
 			Thread.sleep(100);	
 		}
-		
+
 		for (AbstractPlayer player : players) {
 			player.start();
 		}
@@ -53,5 +53,5 @@ public class Team {
 	public AbstractFormation getTeamFormation() {
 		return teamFormation;
 	}
-	
+
 }

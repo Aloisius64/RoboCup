@@ -19,7 +19,7 @@ public class RoboClient {
 	private String hostname = new String(Settings.IP_SERVER);
 	private int port = Settings.PORT_SERVER;
 	private static final int SIZE = 1024;
-	private String team = "Team_Skynet";
+	private String team = "TeamName";
 	private static final String VERSION = "15";
 
 	public RoboClient() {
@@ -75,9 +75,7 @@ public class RoboClient {
 			getDsock().receive(rpack);
 			message = new String(rpack.getData());
 			port = rpack.getPort();
-		}
-
-		catch(Exception ex) {
+		} catch(Exception ex) {
 			System.out.println(ex);
 		}
 
