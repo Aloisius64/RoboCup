@@ -1,6 +1,5 @@
 package robocup.ai;
 
-import robocup.memory.Mode;
 import robocup.player.OffensivePlayer;
 
 /**@class Brain
@@ -12,11 +11,6 @@ public class OffensiveAI extends AbstractAI {
 	public OffensiveAI(OffensivePlayer offensivePlayer) {
 		super(offensivePlayer);
 		start();
-	}
-
-	public OffensiveAI(Mode currentMode) {
-		super();
-		this.setCurrentMode(currentMode);
 	}
 
 }

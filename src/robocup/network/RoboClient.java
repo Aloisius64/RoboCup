@@ -51,7 +51,7 @@ public class RoboClient {
 
 		try {
 			getDsock().send(spack);
-			System.out.println("Sent: " + message);
+			//System.out.println("Sent: " + message);
 		} catch(IOException ioex) {
 			System.out.println(ioex);
 			System.exit(-1);
@@ -93,7 +93,6 @@ public class RoboClient {
 
 		try {
 			p.initParse(receive(), m);
-
 		} catch(Exception ex) {
 			System.out.println(ex);
 		}

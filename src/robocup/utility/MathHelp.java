@@ -54,11 +54,9 @@ public class MathHelp {
 	 * @param y the y coordinate of the Cartesian vector
 	 * @return A new Polar vector converted from the Cartesian vector
 	 */
-	public Polar getPolar(double x, double y) {
-		
+	public Polar getPolar(double x, double y) {		
 		double r = Math.sqrt(x*x + y*y);
-		double t = Math.toDegrees(Math.atan(y/x));
-		
+		double t = Math.toDegrees(Math.atan(y/x));		
 		return(new Polar(r, t));
 	}
 	
@@ -227,8 +225,7 @@ public class MathHelp {
 	 */
 	public Polar getNextPlayerPoint(ObjPlayer player) {
 		Pos po = getPos(new Polar(player.getDistance(), player.getDirection()));
-		Pos po2 = getPos(new Polar(player.getDistChng(), player.getDirChng()));
-		
+		Pos po2 = getPos(new Polar(player.getDistChng(), player.getDirChng()));		
 		return (getPolar(vAdd(po,po2)));
 	}
 	

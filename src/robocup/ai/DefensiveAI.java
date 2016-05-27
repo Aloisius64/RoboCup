@@ -1,8 +1,5 @@
 package robocup.ai;
 
-import java.net.UnknownHostException;
-
-import robocup.memory.Mode;
 import robocup.player.DefensivePlayer;
 
 /**@class Brain
@@ -16,11 +13,6 @@ public class DefensiveAI extends AbstractAI {
 		start();
 	}
 
-	public DefensiveAI(Mode currentMode) {
-		super();
-		this.setCurrentMode(currentMode);
-	}
-
 	/**
 	 * The FullBackBrain thread run method. It instructs the FullBack in soccer behaviors
 	 * 
@@ -28,9 +20,7 @@ public class DefensiveAI extends AbstractAI {
 	 */
 	@Override
 	public void run() {
-
-		while (true) {
-						
+		while (true) {						
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e1) {
@@ -41,7 +31,7 @@ public class DefensiveAI extends AbstractAI {
 				getPlayer().setTime(getPlayer().getMemTime());
 				try {
 					getPlayer().runDefense();
-				} catch (UnknownHostException | InterruptedException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}			
 			}		

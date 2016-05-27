@@ -1,7 +1,5 @@
 package robocup.ai;
 
-import java.net.UnknownHostException;
-
 import robocup.Action;
 import robocup.memory.Memory;
 import robocup.memory.Mode;
@@ -63,8 +61,6 @@ public abstract class AbstractAI extends Thread {
 				e1.printStackTrace();
 			}
 			
-			//System.out.println("Brain for player "+player.getMemory().getuNum());
-
 			if(player.getMemory().timeCheck(player.getTime())) {
 				player.setTime(player.getMemory().getObjMemory().getTime());
 
@@ -170,10 +166,7 @@ public abstract class AbstractAI extends Thread {
 						}
 					} //end if
 
-				} catch (InterruptedException e) {
-					System.out.println("Interrupt Error in Brain.run");
-					e.printStackTrace();
-				} catch (UnknownHostException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

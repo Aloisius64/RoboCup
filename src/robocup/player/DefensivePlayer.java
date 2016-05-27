@@ -1,9 +1,13 @@
 package robocup.player;
 
-import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Queue;
 
 import robocup.ai.DefensiveAI;
-import robocup.objInfo.ObjPlayer;
+import robocup.goap.GoapAction;
+import robocup.goap.GoapAgent;
 
 /** @file FullBack.java
  * Class file for FullBack class
@@ -28,54 +32,49 @@ public class DefensivePlayer extends AbstractPlayer{
 		this.setAi(new DefensiveAI(this));
 	}
 
-	/**
-	 * Returns the closest player to the FullBack on the same team.
-	 * @post The closest player to the FullBack has been determined.
-	 * @return ObjPlayer
-	 * @throws InterruptedException 
-	 * @throws UnknownHostException 
-	 */
-	public ObjPlayer closestPlayer() throws UnknownHostException, InterruptedException {
-		ObjPlayer closestPlayer = new ObjPlayer();
-		double distance = 0;
-
-		//Loop through arraylist of ObjPlayers
-		for (int i = 0; i < getMemory().getPlayers().size(); ++i) {
-			if(getMemory().getPlayers().isEmpty()){
-				turn(30);
-			}
-
-			if(!getMemory().getPlayers().isEmpty()){
-				if (distance == 0 && getMemory().getPlayers().get(i).getTeam() == roboClient.getTeam()) {
-					distance = getMemory().getPlayers().get(i).getDistance();
-				}
-				else {
-					//Test if this player is closer than the previous one
-					if (distance > getMemory().getPlayers().get(i).getDistance() && getMemory().getPlayers().get(i).getTeam() == roboClient.getTeam()) {
-						distance = getMemory().getPlayers().get(i).getDistance();
-						closestPlayer = getMemory().getPlayers().get(i);
-					}
-				}
-			}
-		}
-
-		return closestPlayer;
+	/********************************************/
+	/* 			IGoap implementations 			*/
+	/********************************************/
+	
+	@Override
+	public HashMap<String, Object> getWorldState() {
+		HashMap<String, Object> worldState = new HashMap<>();
+		
+		return worldState;
 	}
 
-	public boolean inFullBackZone(){
-		if (getMemory().getPosition().x < -10) {
-			return true;
-		} else {
-			return false;
-		}
+	@Override
+	public HashMap<String, Object> createGoalState() {
+		HashMap<String, Object> goal = new HashMap<>();
+		
+		return goal;
 	}
 
-	public void runDefense() throws UnknownHostException, InterruptedException {
-		if (!inFullBackZone()) {
-			getAction().goHome();
-		}
+	@Override
+	public void planFailed(HashMap<String, Object> failedGoal) {
+		System.out.println("Player "+getMemory().getuNum()+" - Plan failed");
+	}
 
-		getAction().FullBack_findBall();
+	@Override
+	public void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions) {
+		System.out.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
+	}
+
+	@Override
+	public void actionsFinished() {
+		System.out.println("Player "+getMemory().getuNum()+" - Actions finished");
+	}
+
+	@Override
+	public void planAborted(GoapAction aborter) {
+		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
+	}
+
+	@Override
+	public List<GoapAction> getActions() {
+		List<GoapAction> actions = new ArrayList<>();
+		
+		return actions;
 	}
 
 }
