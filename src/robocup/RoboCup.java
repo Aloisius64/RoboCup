@@ -1,19 +1,23 @@
 package robocup;
 
-import org.apache.log4j.BasicConfigurator;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
-import com.github.robocup_atan.atan.model.AbstractTeam;
+import robocup.formation.AbstractFormation;
+import robocup.formation.FormationDefault;
+import robocup.formation.FormationManager;
 
 public class RoboCup {
 
-    public static void main(String[] args) {
-        BasicConfigurator.configure();
-                
-        AbstractTeam team = new Team("DropTableUsers");
-        team.connectAll();
-        
-        AbstractTeam opponentTeam = new OpponentTeam("Opponent");
-        opponentTeam.connectAll();
+    public static void main(String[] args) throws SocketException, UnknownHostException, InterruptedException, InstantiationException, IllegalAccessException {
+
+    	AbstractFormation formation = FormationManager.getFormation(FormationDefault.class.getName()); 
+    	Team dropTableUsers = new Team("DropTableUsers", formation);
+    	dropTableUsers.initTeam();
+    	
+//    	Team fox = new Team("Fox", formation);
+//    	fox.initTeam();
+    	
     }
 
 }
