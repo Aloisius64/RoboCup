@@ -1,4 +1,4 @@
-package robocup.ai;
+package robocup.goap;
 
 public interface FSMState {
 	

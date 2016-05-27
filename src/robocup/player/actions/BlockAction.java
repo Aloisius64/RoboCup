@@ -1,6 +1,6 @@
 package robocup.player.actions;
 
-import robocup.ai.GoapAction;
+import robocup.goap.GoapAction;
 
 public class BlockAction extends GoapAction {
 

@@ -1,4 +1,4 @@
-package robocup.ai;
+package robocup.goap;
 
 import java.util.HashMap;
 
@@ -11,7 +11,7 @@ public abstract class GoapAction {
 	 * Figure out a weight that suits the action. 
 	 * Changing it will affect what actions are chosen during planning.
      */
-    public float cost = 1f;
+    private float cost;
 
     /**
 	 * An action often has to perform on an object. This is that object. Can be null. 
@@ -21,6 +21,13 @@ public abstract class GoapAction {
     public GoapAction() {
         preconditions = new HashMap<>();
         effects = new HashMap<>();
+        cost = 1.0f;
+    }
+    
+    public GoapAction(float cost) {
+		preconditions = new HashMap<>();
+        effects = new HashMap<>();
+        this.cost = cost;
     }
 
     public void doReset() {
@@ -74,6 +81,10 @@ public abstract class GoapAction {
 
 	public HashMap<String, Object> getEffects() {
 		return effects;
+	}
+
+	public float getCost() {
+		return cost;
 	}
     
 }

@@ -1,4 +1,4 @@
-package robocup.ai;
+package robocup.goap;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,12 +26,11 @@ public class GoapAgent {
 		this.targetObject = targetObject;
 		loadActions();
 		createIdleState();
-		//createMoveToState();
 		createPerformActionState();
 		stateMachine.pushState(idleState);
 	}
 
-	void update() {
+	public void update() {
 		stateMachine.update(targetObject);
 	}
 
@@ -60,9 +59,6 @@ public class GoapAgent {
 		idleState = new FSMState() {			
 			@Override
 			public void update(FSM fsm, Object object) {
-
-				// GOAP planning
-				System.out.println("Idle State");
 
 				// get the world state and the goal we want to plan for
 				HashMap<String, Object> worldState = dataProvider.getWorldState();
@@ -96,8 +92,6 @@ public class GoapAgent {
 
 			@Override
 			public void update(FSM fsm, Object object) {
-				// perform the action
-				System.out.println("Perform action state");
 
 				if (!hasActionPlan()) {
 					// no actions to perform
@@ -142,11 +136,12 @@ public class GoapAgent {
 		for (GoapAction action : dataProvider.getActions()) {
 			availableActions.add(action);
 		}
-                if(dataProvider.getActions().size()>0)
-                    System.out.println("Found actions: " + prettyPrint(dataProvider.getActions()));		
+		
+		if(dataProvider.getActions().size()>0)
+			System.out.println("Found actions: " + prettyPrint(dataProvider.getActions()));		
 	}
 
-	public static String prettyPrint(HashMap<String, Object> state) {
+	public static String prettyPrint(HashMap<String, ? extends Object> state) {
 		String s = "";
 
 		for (String key : state.keySet()) {

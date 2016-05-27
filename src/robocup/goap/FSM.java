@@ -1,4 +1,4 @@
-package robocup.ai;
+package robocup.goap;
 
 import java.util.Stack;
 
