@@ -3,11 +3,8 @@ package robocup.player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Queue;
 
-import robocup.ai.DefensiveAI;
 import robocup.goap.GoapAction;
-import robocup.goap.GoapAgent;
 
 /** @file FullBack.java
  * Class file for FullBack class
@@ -24,12 +21,12 @@ public class DefensivePlayer extends AbstractPlayer{
 
 	public DefensivePlayer() {
 		super();
-		this.setAi(new DefensiveAI(this));
+		//this.setAi(new DefensiveAI(this));
 	}
 
 	public DefensivePlayer(String team) {
 		super(team);
-		this.setAi(new DefensiveAI(this));
+		//this.setAi(new DefensiveAI(this));
 	}
 
 	/********************************************/
@@ -49,27 +46,7 @@ public class DefensivePlayer extends AbstractPlayer{
 		
 		return goal;
 	}
-
-	@Override
-	public void planFailed(HashMap<String, Object> failedGoal) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan failed");
-	}
-
-	@Override
-	public void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
-	}
-
-	@Override
-	public void actionsFinished() {
-		System.out.println("Player "+getMemory().getuNum()+" - Actions finished");
-	}
-
-	@Override
-	public void planAborted(GoapAction aborter) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
-	}
-
+	
 	@Override
 	public List<GoapAction> getActions() {
 		List<GoapAction> actions = new ArrayList<>();

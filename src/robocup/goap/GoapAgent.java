@@ -76,7 +76,7 @@ public class GoapAgent {
 
 				} else {
 					// ugh, we couldn't get a plan
-					System.out.println("Failed Plan: "+prettyPrint(goal));
+					//System.out.println("Failed Plan: "+prettyPrint(goal));
 					dataProvider.planFailed(goal);
 					fsm.popState(); // move back to IdleAction state
 					fsm.pushState(idleState);
@@ -95,7 +95,7 @@ public class GoapAgent {
 
 				if (!hasActionPlan()) {
 					// no actions to perform
-					System.out.println("Done actions");
+					//System.out.println("Done actions");
 					fsm.popState();
 					fsm.pushState(idleState);
 					dataProvider.actionsFinished();

@@ -3,11 +3,8 @@ package robocup.player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Queue;
 
-import robocup.ai.GoalieAI;
 import robocup.goap.GoapAction;
-import robocup.goap.GoapAgent;
 
 /** @class Goalie
  * The Goalie class inherits from the Player class.  The Goalie is a specialized
@@ -18,12 +15,12 @@ public class GoalierPlayer extends AbstractPlayer {
 
 	public GoalierPlayer() {
 		super();
-		this.setAi(new GoalieAI(this));
+		//this.setAi(new GoalieAI(this));
 	}
 
 	public GoalierPlayer(String team){
 		super(team);
-		this.setAi(new GoalieAI(this));
+		//this.setAi(new GoalieAI(this));
 	}
 	
 	/********************************************/
@@ -42,26 +39,6 @@ public class GoalierPlayer extends AbstractPlayer {
 		HashMap<String, Object> goal = new HashMap<>();
 		
 		return goal;
-	}
-
-	@Override
-	public void planFailed(HashMap<String, Object> failedGoal) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan failed");
-	}
-
-	@Override
-	public void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
-	}
-
-	@Override
-	public void actionsFinished() {
-		System.out.println("Player "+getMemory().getuNum()+" - Actions finished");
-	}
-
-	@Override
-	public void planAborted(GoapAction aborter) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
 	}
 
 	@Override

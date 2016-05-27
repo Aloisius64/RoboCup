@@ -41,7 +41,7 @@ public class GoapPlanner {
 
 		if (!success) {
 			// oh no, we didn't get a plan
-			System.out.println("NO PLAN");
+			//System.out.println("NO PLAN");
 			return null;
 		}
 

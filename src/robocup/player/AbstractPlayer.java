@@ -3,9 +3,12 @@ package robocup.player;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Queue;
 
 import robocup.Action;
 import robocup.ai.AbstractAI;
+import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.IGoap;
 import robocup.memory.Memory;
@@ -215,22 +218,22 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	 * (Currently unused)
 	 * @throws Exception 
 	 */
-//	public void runDefense() throws UnknownHostException, InterruptedException {
-//		ai.setDefensive();
-//
-//		while (closestOpponent() == null){
-//			turn(15);
-//			Thread.sleep(100);
-//		}
-//
-//		//System.out.println("Closest Opponent: " + closestOpponent().getTeam() + " " + closestOpponent().getuNum());
-//		action.gotoPoint(getMemory().getMathHelp().getNextPlayerPoint(closestOpponent()));
-//
-//		if (getMemory().isObjVisible("player")) {
-//			markOpponent(getMemory().getPlayer().getTeam(), Integer.toString(getMemory().getPlayer().getuNum()));
-//			//System.out.println("Marked Player " + ai.getMarked_team() + " " + ai.getMarked_unum());
-//		}
-//	}
+	//	public void runDefense() throws UnknownHostException, InterruptedException {
+	//		ai.setDefensive();
+	//
+	//		while (closestOpponent() == null){
+	//			turn(15);
+	//			Thread.sleep(100);
+	//		}
+	//
+	//		//System.out.println("Closest Opponent: " + closestOpponent().getTeam() + " " + closestOpponent().getuNum());
+	//		action.gotoPoint(getMemory().getMathHelp().getNextPlayerPoint(closestOpponent()));
+	//
+	//		if (getMemory().isObjVisible("player")) {
+	//			markOpponent(getMemory().getPlayer().getTeam(), Integer.toString(getMemory().getPlayer().getuNum()));
+	//			//System.out.println("Marked Player " + ai.getMarked_team() + " " + ai.getMarked_unum());
+	//		}
+	//	}
 	public void runDefense() throws Exception {
 		if (!inFullBackZone()) {
 			getAction().goHome();
@@ -238,7 +241,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 
 		getAction().FullBack_findBall();
 	}
-	
+
 	public boolean inFullBackZone(){
 		if (getMemory().getPosition().x < -10) {
 			return true;
@@ -246,7 +249,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			return false;
 		}
 	}	
-	
+
 	/**
 	 * Returns the closest opponent to the player
 	 * @pre Players are in sight of the goalie.
@@ -317,7 +320,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 
 		return closestPlayer;
 	}
-	
+
 	/**
 	 * Causes the Goalie to catch the ball.
 	 * @pre Playmode is play-on, ball is within goalkeeper zone and in the catchable area.
@@ -327,7 +330,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		roboClient.catchball(d);
 		ballCaught = true;
 	}
-	
+
 	/**
 	 * Turns goalie toward the ball
 	 * @throws Exception 
@@ -355,7 +358,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Returns true or false depending on whether the ball is within the catchable range
 	 * of the goalie.
@@ -378,7 +381,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		}		
 		return catchable;
 	}
-	
+
 	/**
 	 * A method to determine whether the ball is in the penalty box
 	 * 
@@ -399,7 +402,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		else
 			return false;			
 	}
-	
+
 	/**
 	 * Causes the goalie to act to intercept the ball as it approaches the goal.
 	 * @param ObjBall representing the ball in play.
@@ -457,7 +460,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		Pos upper = new Pos(-49, -6);
 		Pos middle = new Pos(-49, 0);
 		Pos lower = new Pos (-49, 6);		
-		
+
 		if (!ballInGoalzone(ball)) {
 			if (ballPos.y < -18) {  //If ball is in upper portion of field
 				//System.out.println("flag1");
@@ -503,7 +506,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			between = true;
 		}		
 	}
-	
+
 	/**
 	 * Causes goalie to kick the ball to a specific player.  (Currently unused.)
 	 * @pre A player is in sight of the goalie.
@@ -557,7 +560,28 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void smartKick() {
+		//		double leftFlagDirection = knowledgeBase.getFlags().get(FlagCategory.GOAL_OTHER).get(Flag.LEFT).getDirection();
+		//		double rightFlagDirection = knowledgeBase.getFlags().get(FlagCategory.GOAL_OTHER).get(Flag.RIGHT)
+		//				.getDirection();
+		//
+		//		List<SeenPlayer> otherPlayers = knowledgeBase.getOtherPlayers();
+		//		double playerSize = (double) this.serverInfo.get(ServerParams.PLAYER_SIZE);
+		//
+		//		GoalView goalView = KickMathUtility.getGoalView(leftFlagDirection, rightFlagDirection, otherPlayers,
+		//				playerSize);
+		//
+		//		ViewInterval largerInterval = goalView.getLargerInterval();
+		//		if (largerInterval.getStart().getBoundType() == BoundType.POST) {
+		//			player.kick(9001, largerInterval.getStart().getAngle() + 5);
+		//		} else if (largerInterval.getEnd().getBoundType() == BoundType.POST) {
+		//			player.kick(9001, largerInterval.getEnd().getAngle() - 5);
+		//		} else {
+		//			player.kick(9001, largerInterval.getMidAngle());
+		//		}
+	}
+
 	@Override
 	public void run() {
 		while(true) {
@@ -567,17 +591,39 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 				e.printStackTrace();
 			}
 
-			if(getMemory().getCurrent() != null) {
-				Pos pt = mathHelp.vSub(getMemory().getCurrent(), getMemory().getHome());
-				getMemory().setHome(!(mathHelp.mag(pt) > 0.5));
-			}
+			// GOAP update
+			agent.update();
 		}
+	}
+
+	/********************************************/
+	/* 			IGoap implementations 			*/
+	/********************************************/
+
+	@Override
+	public void planFailed(HashMap<String, Object> failedGoal) {
+		System.out.println("Player "+getMemory().getuNum()+" - Plan failed");
+	}
+
+	@Override
+	public void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions) {
+		System.out.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
+	}
+
+	@Override
+	public void actionsFinished() {
+		System.out.println("Player "+getMemory().getuNum()+" - Actions finished");
+	}
+
+	@Override
+	public void planAborted(GoapAction aborter) {
+		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
 	}
 
 	/********************************************/
 	/* 				Get And Set 				*/
 	/********************************************/
-	
+
 	public double getDirection() {
 		return (getMemory().getDirection());
 	}
