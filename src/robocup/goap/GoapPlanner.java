@@ -94,7 +94,7 @@ public class GoapPlanner {
 				// apply the action's effects to the parent state
 				HashMap<String, Object> currentState = populateState(parent.state, action.getEffects());
 
-				System.out.println(GoapAgent.prettyPrint(currentState));
+				//System.out.println(GoapAgent.prettyPrint(currentState));
 
 				Node node = new Node(parent, parent.runningCost + action.getCost(), currentState, action);
 

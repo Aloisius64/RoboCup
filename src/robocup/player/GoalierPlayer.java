@@ -2,7 +2,7 @@ package robocup.player;
 
 import java.net.UnknownHostException;
 
-import robocup.brain.GoalieBrain;
+import robocup.ai.GoalieAI;
 import robocup.objInfo.ObjBall;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjPlayer;
@@ -15,16 +15,20 @@ import robocup.utility.Pos;
  * type of Player that may catch the ball under certain conditions and defends the goal
  * from the opposing team. 
  */
-public class GoalierPlayer extends Player {
+public class GoalierPlayer extends AbstractPlayer {
+
+	public boolean ballTurn = false;
+	public MathHelp mh = new MathHelp();
+	boolean ballCaught = false;
 
 	public GoalierPlayer() {
 		super();
-		this.setBrain(new GoalieBrain(this));
+		this.setAi(new GoalieAI(this));
 	}
 
 	public GoalierPlayer(String team){
 		super.getRoboClient().setTeam(team);
-		this.setBrain(new GoalieBrain(this));
+		this.setAi(new GoalieAI(this));
 	}
 
 	/**
@@ -42,7 +46,6 @@ public class GoalierPlayer extends Player {
 	 * @post The goalie will turn in the direction of the ball
 	 */
 	public void followBall() {
-
 		try {
 			if(!getMemory().isObjVisible("ball")) {
 				turn(45);
@@ -55,18 +58,12 @@ public class GoalierPlayer extends Player {
 					turn(ball.getDirection() * (1 + (5 * getMemory().getAmountOfSpeed())));
 				}
 				if(ballInGoalzone(ball)){
-					//System.out.println("flag in defendGoal");
 					defendGoal(ball);
 				} else {
-					//System.out.println("flag in positionGoalie");
 					positionGoalie(ball);
 				}
 			}
-
-		} catch (UnknownHostException e) {
-			System.out.println("Error in Goalie.followBall()");
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (UnknownHostException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -80,10 +77,8 @@ public class GoalierPlayer extends Player {
 	 * @return boolean
 	 */
 	public boolean ballInGoalzone(ObjBall ball) {
-
 		if(ball == null)
 			return false;
-
 
 		Pos ballPos = mh.getPos(ball.getDistance(), getDirection() + ball.getDirection());
 		ballPos = mh.vAdd(getPosition(), ballPos);
@@ -94,7 +89,6 @@ public class GoalierPlayer extends Player {
 			return false;			
 	}
 
-
 	/**
 	 * Returns true or false depending on whether the ball is within the catchable range
 	 * of the goalie.
@@ -103,15 +97,12 @@ public class GoalierPlayer extends Player {
 	 * @return boolean True if catchable, false if not.
 	 */
 	public boolean catchable() {
-
 		boolean catchable = false;
 
 		//Test for visibility
 		if (getMemory().isObjVisible("ball") && ballInGoalzone(getMemory().getBall())) {
-
 			//Test for moment range
 			if (getMemory().getBall().getDirection()> -180 && getMemory().getBall().getDirection() < 180) {
-
 				//Test for catchable distance
 				if (getMemory().getBall().getDistance() < 2.0) {
 					catchable = true;
@@ -120,9 +111,7 @@ public class GoalierPlayer extends Player {
 		}		
 		return catchable;
 	}
-
-
-
+	
 	/**
 	 * Causes the goalie to act to intercept the ball as it approaches the goal.
 	 * @param ObjBall representing the ball in play.
@@ -132,48 +121,38 @@ public class GoalierPlayer extends Player {
 	 * @post The ball has been caught by the goalie, or the goalie has missed the ball.
 	 */
 	public void defendGoal(ObjBall ball) throws UnknownHostException, InterruptedException {
-		//Pos ridBallPoint = new Pos(0,0);
+		Pos ridBallPoint = new Pos(0,0);
 
 		//Move to catchable range of ball
 		if (ball.getDistance() > 1.0) {
 			getAction().gotoPoint(mh.getNextBallPoint(ball));
-			//Thread.sleep(100);
-		}
-		else {
+		} else {
 			if((getMemory().getSide().compareTo("l") == 0) && ((getMemory().getPlayMode().compareTo("goalie catch ball_l") == 0) || (getMemory().getPlayMode().compareTo("free_kick_l") == 0))) {
 				Thread.sleep(500);
 				turn(-getMemory().getDirection());
 				Thread.sleep(200);
 				kick(100, 0);
 				Thread.sleep(100);	
-			}
-			else if((getMemory().getSide().compareTo("r") == 0) && ((getMemory().getPlayMode().compareTo("goalie catch ball_r") == 0) || (getMemory().getPlayMode().compareTo("free_kick_r") == 0))) {
+			} else if((getMemory().getSide().compareTo("r") == 0) && ((getMemory().getPlayMode().compareTo("goalie catch ball_r") == 0) || (getMemory().getPlayMode().compareTo("free_kick_r") == 0))) {
 				Thread.sleep(500);
 				turn(-getMemory().getDirection());
 				Thread.sleep(200);
 				kick(100, 0);
 				Thread.sleep(100);
-			}
-			else {
+			} else {
 				catchball(getMemory().getBall().getDirection());
-
-
 			}
 
-
-			/*
 			//If ball is in catchable area, catch it
 			System.out.println("catchable");
 			if (!ballCaught) {
-				catchball(getMem().getBall().getDirection());
+				catchball(getMemory().getBall().getDirection());
 				Thread.sleep(100);
 				ballCaught = true;	
 			}
-
 			//kickToPlayer(closestPlayer());
 			getAction().kickToPoint(ball, ridBallPoint);
 			Thread.sleep(100);	
-			 */
 		}
 	} //end method
 
@@ -186,14 +165,12 @@ public class GoalierPlayer extends Player {
 	 * @post The goalie has moved to a strategic position to get between the ball and the goal.
 	 */
 	public void positionGoalie(ObjBall ball) throws InterruptedException {
-
 		Pos ballPos = mh.getPos(ball.getDistance(), getDirection() + ball.getDirection());
 		ballPos = mh.vAdd(getPosition(), ballPos);
 		Pos upper = new Pos(-49, -6);
 		Pos middle = new Pos(-49, 0);
 		Pos lower = new Pos (-49, 6);		
-		//ballPos.print("ballPos: ");
-
+		
 		if (!ballInGoalzone(ball)) {
 			if (ballPos.y < -18) {  //If ball is in upper portion of field
 				//System.out.println("flag1");
@@ -220,7 +197,6 @@ public class GoalierPlayer extends Player {
 	 * @post The goalie has moved to a point on the line between the ball and the goal.
 	 */
 	public void getBtwBallAndGoal(ObjBall ball) {
-
 		Pos ballPos = mh.getPos(ball.getDistance(), getDirection() + ball.getDirection());
 		ballPos = mh.vAdd(getPosition(), ballPos);
 		Pos goalPos = getMemory().getOwnGoalPos();
@@ -253,8 +229,10 @@ public class GoalierPlayer extends Player {
 
 		//Loop through arraylist of ObjPlayers
 		for (int i = 0; i < getMemory().getPlayers().size(); ++i) {
-
-			if (!getMemory().getPlayers().isEmpty()) {  
+			if (getMemory().getPlayers().isEmpty()) {
+				turn(30);
+			}
+			if (!getMemory().getPlayers().isEmpty()) {
 				if (distance == 0 && getMemory().getPlayers().get(i).getTeam() == roboClient.getTeam()) {
 					distance = getMemory().getPlayers().get(i).getDistance();
 				}
@@ -267,24 +245,8 @@ public class GoalierPlayer extends Player {
 					}
 				}
 			}
-			else {  //No players in goalie's sight, so turn to another point to check again
-				turn(30);
-
-				if (!getMemory().getPlayers().isEmpty()) {  
-					if (distance == 0 && getMemory().getPlayers().get(i).getTeam() == roboClient.getTeam()) {
-						distance = getMemory().getPlayers().get(i).getDistance();
-					}
-					else {
-						//Test if this player is closer than the previous one
-						if (distance > getMemory().getPlayers().get(i).getDistance() && getMemory().getPlayers().get(i).getTeam() == roboClient.getTeam()) {
-							distance = getMemory().getPlayers().get(i).getDistance();
-							closestPlayer = getMemory().getPlayers().get(i);
-						}
-					}
-				}
-
-			}
-		}		
+		}	
+		
 		return closestPlayer;
 	}
 
@@ -295,11 +257,10 @@ public class GoalierPlayer extends Player {
 	 * @param player An ObjPlayer representing the player to receive the ball.
 	 */
 	public void kickToPlayer(ObjPlayer player) {
-
 		if(getMemory().isObjVisible("ball")) {
 			ObjBall ball = getMemory().getBall();
 			getAction().kickToPoint(ball, mh.getPos(new Polar(player.getDistance(), player.getDirection())));
-			//ballCaught = false;
+			ballCaught = false;
 		}
 	}
 
@@ -338,52 +299,9 @@ public class GoalierPlayer extends Player {
 					Thread.sleep(100);
 				}	
 			}
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (UnknownHostException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	/*
-	 * Causes Goalie to receive constant server input during gameplay.
-	 * @pre RoboCup server is active
-	 * @post Goalie will receive server input messages.
-	 */
-	public void run() {
-		while(true) {
-			try {
-				receiveInput();
-			} catch (InterruptedException e) {
-				System.out.println("Interrupt error at Player.run");
-				e.printStackTrace();
-			}
-			/*
-			if(getMem().current != null) {
-				Pos pt = mh.vSub(getMem().current, getMem().home);
-
-				if(mh.mag(pt) > 0.5) {
-					getMem().isHome = false;
-				}
-				else
-					getMem().isHome = true;
-			}
-			else 
-				System.out.println("Current is null");
-			 */
-		}
-
-	}		
-
-	public boolean ballTurn = false;
-	public MathHelp mh = new MathHelp();
-	boolean ballCaught = false;
-
-
-} //end class
-
+}

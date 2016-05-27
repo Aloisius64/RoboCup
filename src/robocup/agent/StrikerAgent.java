@@ -2,21 +2,14 @@ package robocup.agent;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import robocup.player.Player;
-import robocup.utility.Pos;
+import robocup.player.OffensivePlayer;
+import robocup.player.AbstractPlayer;
 
 
 public class StrikerAgent {
 
-	/**
-	 * @param args
-	 * @throws InterruptedException 
-	 * @throws UnknownHostException 
-	 * @throws SocketException 
-	 */
 	public static void main(String[] args) throws UnknownHostException, InterruptedException, SocketException {
-		Player p = new Player();
-		Pos origin = new Pos(0,0);
+		AbstractPlayer p = new OffensivePlayer();
 		
 		p.initPlayer(-5, -10);
 		

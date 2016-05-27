@@ -5,7 +5,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import robocup.Action;
-import robocup.brain.Brain;
+import robocup.ai.AbstractAI;
 import robocup.memory.Memory;
 import robocup.network.RoboClient;
 import robocup.objInfo.ObjBall;
@@ -24,7 +24,7 @@ import robocup.utility.Pos;
  * The Player class has a Memory for storing the current RoboCup worldstate.
  * It reacts to stimuli based on strategies provided by the Brain (TBD). 
  */
-public class Player extends Thread {
+public abstract class AbstractPlayer extends Thread {
 
 	protected RoboClient roboClient;
 	protected Memory memory;
@@ -35,27 +35,17 @@ public class Player extends Thread {
 	protected MathHelp mathHelp;
 	protected boolean wait;
 	protected String position;
-	protected Brain brain;
+	protected AbstractAI ai;
 
-	public Player() {
+	public AbstractPlayer() {
 		super();
 		init();
 	}
 
-	public Player(String team){
+	public AbstractPlayer(String team){
 		super();
 		init();
 		this.roboClient.setTeam(team);
-	}
-
-	public Player(RoboClient rc, Memory m, ObjInfo i, Parser p, int time) {
-		super();
-		init();
-		this.roboClient = rc;
-		this.memory = m;
-		this.objInfo = i;
-		this.parser = p;
-		this.time = time;
 	}
 
 	private void init(){
@@ -68,14 +58,8 @@ public class Player extends Thread {
 		this.mathHelp = new MathHelp();
 		this.wait = true;
 		this.position = "left";
-		this.brain = new Brain(this);
 	}
 
-	/**
-	 * Initializes the Player with the RoboCup server.
-	 * @pre A RoboCup server is available.
-	 * @post The Player has been initialized to the correct team.
-	 */
 	public void initPlayer(double x, double y, String pos) throws SocketException, UnknownHostException {
 		position = pos;
 		roboClient.setDsock(new DatagramSocket());
@@ -93,12 +77,6 @@ public class Player extends Thread {
 		}
 	}
 
-
-	/**
-	 * Initializes the Player with the RoboCup server.
-	 * @pre A RoboCup server is available.
-	 * @post The Player has been initialized to the correct team.
-	 */
 	public void initPlayer(double x, double y) throws SocketException, UnknownHostException {
 		roboClient.setDsock(new DatagramSocket());
 		roboClient.init(getParser(), getMemory());
@@ -113,11 +91,7 @@ public class Player extends Thread {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		@SuppressWarnings("unused")
-		Brain b = new Brain(this);
 	}
-
 
 	/**
 	 * Receives worldstate data from the RoboCup server.
@@ -191,15 +165,14 @@ public class Player extends Thread {
 		roboClient.turn_neck(moment);
 	}
 
-	/*
+	/**
 	 * Instructs the player to prepare to receive a pass from another teammate.
 	 * @param ball The ball in play.
 	 * @param p The player to receive the ball from.
 	 * @pre Playmode is play_on, ball is being passed to player.
 	 * @post The player has possession of the ball.
 	 */
-	public void recievePass(ObjBall ball, ObjPlayer p) throws UnknownHostException, InterruptedException {
-
+	public void receivePass(ObjBall ball, ObjPlayer p) throws UnknownHostException, InterruptedException {
 		//Turn toward direction ball is coming from
 		turn(p.getDirection());
 		Thread.sleep(100);
@@ -221,7 +194,7 @@ public class Player extends Thread {
 		roboClient.say(message);
 	}
 
-	/*
+	/**
 	 * Marks opposing players for defense
 	 */
 	public void markOpponent(String team, String number) {
@@ -229,24 +202,25 @@ public class Player extends Thread {
 		//b.setMarked_unum(number);
 	}
 
-	/*
+	/**
 	 * Follows opposing players on defense
 	 * (Currently unused)
 	 */
 	public void runDefense() throws UnknownHostException, InterruptedException {
-		//b.setDefensive();
+		ai.setDefensive();
 
-		/*while (closestOpponent() == null){
+		while (closestOpponent() == null){
 			turn(15);
 			Thread.sleep(100);
-		}*/
+		}
+
 		//System.out.println("Closest Opponent: " + closestOpponent().getTeam() + " " + closestOpponent().getuNum());
 		action.gotoPoint(getMemory().getMathHelp().getNextPlayerPoint(closestOpponent()));
 
-		/*if (m.isObjVisible("player")) {
-			markOpponent(m.getPlayer().getTeam(), Integer.toString(m.getPlayer().getuNum()));
-			System.out.println("Marked Player " + b.getMarked_team() + " " + b.getMarked_unum());
-		}		*/
+		if (getMemory().isObjVisible("player")) {
+			markOpponent(getMemory().getPlayer().getTeam(), Integer.toString(getMemory().getPlayer().getuNum()));
+			//System.out.println("Marked Player " + ai.getMarked_team() + " " + ai.getMarked_unum());
+		}
 	}
 
 	/**
@@ -264,6 +238,10 @@ public class Player extends Thread {
 		//Loop through arraylist of ObjPlayers
 		for (int i = 0; i < getMemory().getPlayers().size(); ++i) {
 
+			if (getMemory().getPlayers().isEmpty()) {	//No other players in player's sight, so turn to another point to check again  
+				turn(15);
+			}
+
 			if (!getMemory().getPlayers().isEmpty()) {  
 				if (distance == 0 && getMemory().getPlayers().get(i).getTeam() != roboClient.getTeam()) {
 					distance = getMemory().getPlayers().get(i).getDistance();
@@ -277,68 +255,38 @@ public class Player extends Thread {
 					}
 				}
 			}
-			else {  //No other players in player's sight, so turn to another point to check again
-				turn(15);
+		}	
 
-				if (!getMemory().getPlayers().isEmpty()) {  
-					if (distance == 0 && getMemory().getPlayers().get(i).getTeam() != roboClient.getTeam()) {
-						distance = getMemory().getPlayers().get(i).getDistance();
-						closestOpponent = getMemory().getPlayers().get(i);
-					}
-					else {
-						//Test if this player is closer than the previous one
-						if (distance > getMemory().getPlayers().get(i).getDistance() && getMemory().getPlayers().get(i).getTeam() != roboClient.getTeam()) {
-							distance = getMemory().getPlayers().get(i).getDistance();
-							closestOpponent = getMemory().getPlayers().get(i);
-						}
-					}
-				}				
-			}
-		}		
 		return closestOpponent;
 	}
 
+	@Override
 	public void run() {
-
-		// TODO Start brain
-
-		while (true) {
-
+		while(true) {
 			try {
-				//this.say("ciao");
 				receiveInput();
 			} catch (InterruptedException e) {
-				System.out.println("Interrupt error at Player.run");
 				e.printStackTrace();
 			}
 
 			if(getMemory().getCurrent() != null) {
 				Pos pt = mathHelp.vSub(getMemory().getCurrent(), getMemory().getHome());
-
-				if((Math.abs(pt.x) > 0.5) ||(Math.abs(pt.y) > 0.5)) {
-					getMemory().setHome(false);
-				}
-				else
-					getMemory().setHome(true);
+				getMemory().setHome(!(mathHelp.mag(pt) > 0.5));
 			}
-			else 
-				System.out.println("Current is null");
-
 		}
-
 	}
 
 	public double getDirection() {
 		return (getMemory().getDirection());
 	}
-	
-    public Pos getHome() {
-        return getMemory().getHome();
-    }
-    
-    public int getMemTime() {
-        return getMemory().getObjMemory().getTime();
-    }
+
+	public Pos getHome() {
+		return getMemory().getHome();
+	}
+
+	public int getMemTime() {
+		return getMemory().getObjMemory().getTime();
+	}
 
 	public RoboClient getRoboClient() {
 		return roboClient;
@@ -411,17 +359,17 @@ public class Player extends Thread {
 	public String getStringPosition() {
 		return position;
 	}
-	
-	public void setPosition(String position) {
+
+	public void setStringPosition(String position) {
 		this.position = position;
 	}
 
-	public Brain getBrain() {
-		return brain;
+	public AbstractAI getAi() {
+		return ai;
 	}
 
-	public void setBrain(Brain brain) {
-		this.brain = brain;
+	public void setAi(AbstractAI brain) {
+		this.ai = brain;
 	}
 
 }

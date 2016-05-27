@@ -1,37 +1,39 @@
-package robocup.brain;
+package robocup.ai;
 
 import java.net.UnknownHostException;
 
 import robocup.Action;
 import robocup.memory.Memory;
 import robocup.memory.Mode;
-import robocup.player.Player;
+import robocup.objInfo.ObjBall;
+import robocup.player.AbstractPlayer;
 import robocup.utility.MathHelp;
+import robocup.utility.Polar;
+import robocup.utility.Pos;
 
 /**@class Brain
  * The brain serves as a place to store the Player modes, marked players for
  * various functions, and a set of strategies for player actions.
  */
-public class Brain extends Thread {
+public abstract class AbstractAI extends Thread {
 
 	private Mode currentMode;
 	private Action actions;
 	private String marked_team;
 	private String marked_unum;
-	private Player player;
+	private AbstractPlayer player;
 	private Memory memory;
 	private MathHelp mathHelp;
 
-	public Brain() {
+	public AbstractAI() {
 		this.currentMode = new Mode();
 		this.actions = new Action();
 	}
 
-	public Brain(Player p) {
+	public AbstractAI(AbstractPlayer p) {
 		this.currentMode = new Mode();
 		this.actions = new Action();
 		this.player = p;
-		//start();
 	}
 
 	/*
@@ -39,26 +41,29 @@ public class Brain extends Thread {
 	 * @pre RoboCup server is active.
 	 * @post Player will exhibit soccer behaviors.
 	 */
+	@Override
 	public void run() {
 
-//		ObjBall ball = player.getMem().getBall();
-//		Pos ballPos = new Pos();
-//		Pos uppercorner = new Pos(53, -35);
-//		Pos lowercorner = new Pos(53, 35);
-//		Pos uppercornerkickpoint = new Pos(40, -9);
-//		Pos lowercornerkickpoint = new Pos(40, 9);
-//		Pos cornerkickreceive1 = new Pos(32, -10);
-//		Pos cornerkickreceive2 = new Pos(38, -10);
-//		Pos cornerkickreceive3 = new Pos(35, -10);
-//		Pos cornerkickreceive4 = new Pos(35, -5);
+		ObjBall ball = player.getMemory().getBall();
+		Pos ballPos = new Pos();
+		Pos uppercorner = new Pos(53, -35);
+		Pos lowercorner = new Pos(53, 35);
+		Pos uppercornerkickpoint = new Pos(40, -9);
+		Pos lowercornerkickpoint = new Pos(40, 9);
+		Pos cornerkickreceive1 = new Pos(32, -10);
+		Pos cornerkickreceive2 = new Pos(38, -10);
+		Pos cornerkickreceive3 = new Pos(35, -10);
+		Pos cornerkickreceive4 = new Pos(35, -5);
 
 		while(true) {
 
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
+			
+			//System.out.println("Brain for player "+player.getMemory().getuNum());
 
 			if(player.getMemory().timeCheck(player.getTime())) {
 				player.setTime(player.getMemory().getObjMemory().getTime());
@@ -79,58 +84,55 @@ public class Brain extends Thread {
 							}
 						}
 						else if (player.getMemory().getPlayMode().compareTo("corner_kick_l") == 0){
-							/*while (!p.getMem().isObjVisible("ball")) {
-								p.turn(15);
-							}*/
+							while (!player.getMemory().isObjVisible("ball")) {
+								player.turn(15);
+							}
 
-							//ballPos = mh.getPos(ball.getDistance(), p.getDirection() + ball.getDirection());
+							ballPos = mathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
 
-							/*if (ballPos.y < 0){
-								if (p.position.compareTo("far_left_fwd") == 0){
-									p.getAction().gotoPoint(uppercorner);
-									Polar k = p.getMem().getAbsPolar(p.getMem().getFlagPos("fplb"));
-									p.getAction().getTurn(k);
+							if (ballPos.y < 0){
+								if (player.getStringPosition().compareTo("far_left_fwd") == 0){
+									player.getAction().gotoPoint(uppercorner);
+									Polar k = player.getMemory().getAbsPolar(player.getMemory().getFlagPos("fplb"));
+									player.getAction().getTurn(k);
 									Thread.sleep(500);
-									p.getAction().kickToPoint(ball, uppercornerkickpoint);
+									player.getAction().kickToPoint(ball, uppercornerkickpoint);
+								} else {
+									if (player.getStringPosition().compareTo("left_fwd") == 0) {
+										player.getAction().gotoPoint(cornerkickreceive1);
+									}
+									if (player.getStringPosition().compareTo("right_fwd") == 0){
+										player.getAction().gotoPoint(cornerkickreceive2);
+									}
+									if (player.getStringPosition().compareTo("center_fwd") == 0){
+										player.getAction().gotoPoint(cornerkickreceive3);
+									}
+									if (player.getStringPosition().compareTo("far_right_fwd") == 0){
+										player.getAction().gotoPoint(cornerkickreceive4);
+									}
 								}
-								else {
-									if (p.position.compareTo("left_fwd") == 0) {
-										p.getAction().gotoPoint(cornerkickreceive1);
+							} else {
+								if (player.getStringPosition().compareTo("far_right_fwd") == 0){
+									player.getAction().gotoPoint(lowercorner);
+									Polar k = player.getMemory().getAbsPolar(player.getMemory().getFlagPos("fplb"));
+									player.getAction().getTurn(k);
+									Thread.sleep(500);
+									player.getAction().kickToPoint(ball, lowercornerkickpoint);
+								} else {
+									if (player.getStringPosition().compareTo("left_fwd") == 0) {
+										player.getAction().gotoPoint(cornerkickreceive1);
 									}
-									if (p.position.compareTo("right_fwd") == 0){
-										p.getAction().gotoPoint(cornerkickreceive2);
+									if (player.getStringPosition().compareTo("right_fwd") == 0){
+										player.getAction().gotoPoint(cornerkickreceive2);
 									}
-									if (p.position.compareTo("center_fwd") == 0){
-										p.getAction().gotoPoint(cornerkickreceive3);
+									if (player.getStringPosition().compareTo("center_fwd") == 0){
+										player.getAction().gotoPoint(cornerkickreceive3);
 									}
-									if (p.position.compareTo("far_right_fwd") == 0){
-										p.getAction().gotoPoint(cornerkickreceive4);
+									if (player.getStringPosition().compareTo("far_left_fwd") == 0){
+										player.getAction().gotoPoint(cornerkickreceive4);
 									}
 								}
 							}
-							else {
-								if (p.position.compareTo("far_right_fwd") == 0){
-									p.getAction().gotoPoint(lowercorner);
-									Polar k = p.getMem().getAbsPolar(p.getMem().getFlagPos("fplb"));
-									p.getAction().getTurn(k);
-									Thread.sleep(500);
-									p.getAction().kickToPoint(ball, lowercornerkickpoint);
-								}
-								else {
-									if (p.position.compareTo("left_fwd") == 0) {
-										p.getAction().gotoPoint(cornerkickreceive1);
-									}
-									if (p.position.compareTo("right_fwd") == 0){
-										p.getAction().gotoPoint(cornerkickreceive2);
-									}
-									if (p.position.compareTo("center_fwd") == 0){
-										p.getAction().gotoPoint(cornerkickreceive3);
-									}
-									if (p.position.compareTo("far_left_fwd") == 0){
-										p.getAction().gotoPoint(cornerkickreceive4);
-									}
-								}
-							}*/
 						}
 						else if (player.getMemory().getPlayMode().compareTo("goal_kick_l") == 0){
 							player.getAction().goHome();
@@ -178,9 +180,6 @@ public class Brain extends Thread {
 		}
 	}
 	
-	/**
-	 * @return the currentMode
-	 */
 	public Mode getCurrentMode() {
 		return currentMode;
 	}
@@ -199,30 +198,18 @@ public class Brain extends Thread {
 		this.currentMode.setModename("O");
 	}
 
-	/**
-	 * @return the marked_team
-	 */
 	public String getMarked_team() {
 		return marked_team;
 	}
 
-	/**
-	 * @param marked_team the marked_team to set
-	 */
 	public void setMarked_team(String marked_team) {
 		this.marked_team = marked_team;
 	}
 
-	/**
-	 * @return the marked_unum
-	 */
 	public String getMarked_unum() {
 		return marked_unum;
 	}
 
-	/**
-	 * @param marked_unum the marked_unum to set
-	 */
 	public void setMarked_unum(String marked_unum) {
 		this.marked_unum = marked_unum;
 	}
@@ -235,11 +222,11 @@ public class Brain extends Thread {
 		this.actions = actions;
 	}
 
-	public Player getPlayer() {
+	public AbstractPlayer getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer(AbstractPlayer player) {
 		this.player = player;
 	}
 
@@ -262,4 +249,5 @@ public class Brain extends Thread {
 	public void setCurrentMode(Mode currentMode) {
 		this.currentMode = currentMode;
 	}
+	
 }

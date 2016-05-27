@@ -10,7 +10,7 @@ import java.util.HashMap;
 import com.github.robocup_atan.atan.model.ActionsPlayer;
 
 import robocup.geometry.Vector;
-import robocup.player.Player;
+import robocup.player.AbstractPlayer;
 
 /**
  *
@@ -19,8 +19,9 @@ import robocup.player.Player;
 public abstract class AbstractFormation {
 
 	private String name;
-	protected HashMap<Integer, Class<? extends Player> > playersMap = null;
+	protected HashMap<Integer, Class<? extends AbstractPlayer> > playersMap = null;
 	protected HashMap<Integer, Vector> playersPosition = null;
+	protected HashMap<Integer, String> playersStringPosition = null;
 
     public AbstractFormation() {
         setName("");
@@ -33,15 +34,20 @@ public abstract class AbstractFormation {
     	player.move((int) position.X(), (int) position.Y());    	
     }
         
-    public Player getPlayer(Integer playerNum) throws InstantiationException, IllegalAccessException{
+    public AbstractPlayer getPlayer(Integer playerNum) throws InstantiationException, IllegalAccessException{
     	assert(playerNum>=0 && playerNum<11);
-    	Class<? extends Player> playerClass = playersMap.get(playerNum);
+    	Class<? extends AbstractPlayer> playerClass = playersMap.get(playerNum);
     	return playerClass.newInstance();
     }
     
     public Vector getPlayerPosition(Integer playerNum){
     	assert(playerNum>=0 && playerNum<11);
     	return playersPosition.get(playerNum);
+    }
+    
+    public String getPlayerStringPosition(Integer playerNum){
+    	assert(playerNum>=0 && playerNum<11);
+    	return playersStringPosition.get(playerNum);    	
     }
 
 	public String getName() {

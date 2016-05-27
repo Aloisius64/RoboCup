@@ -20,8 +20,8 @@ public class FormationDefault extends AbstractFormation {
 
 	public FormationDefault() {
 		super();
-    	setName(this.getClass().getName());
-    	initMaps();
+		setName(this.getClass().getName());
+		initMaps();
 	}
 
 	@Override
@@ -45,12 +45,25 @@ public class FormationDefault extends AbstractFormation {
 		playersPosition.put(2, new Vector(-30, 0));
 		playersPosition.put(3, new Vector(-30, -25));
 		playersPosition.put(4, new Vector(-15, 0));		
-		playersPosition.put(5, new Vector(-5, -8));
+		playersPosition.put(5, new Vector(-5, -10));
 		playersPosition.put(6, new Vector(-15, 25));		
 		playersPosition.put(7, new Vector(-15, -25));
 		playersPosition.put(8, new Vector(-5, 10));
 		playersPosition.put(9, new Vector(-5, 25));
 		playersPosition.put(10, new Vector(-5, -25));
-	}
 
+		playersStringPosition = new HashMap<>();
+		playersStringPosition.put(0, "");
+		playersStringPosition.put(1, "right_fb");
+		playersStringPosition.put(2, "center_fb");
+		playersStringPosition.put(3, "left_fb");
+		playersStringPosition.put(4, "center_fwd");
+		playersStringPosition.put(5, "left_fwd");
+		playersStringPosition.put(6, "");
+		playersStringPosition.put(7, "");
+		playersStringPosition.put(8, "right_fwd");
+		playersStringPosition.put(9, "far_right_fwd");
+		playersStringPosition.put(10, "far_left_fwd");
+	}
+	
 }
