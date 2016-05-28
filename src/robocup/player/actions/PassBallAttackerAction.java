@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 PASS_BALL_ATTACK **********************************
@@ -30,33 +31,45 @@ PERFORMING:
  */
 public class PassBallAttackerAction extends GoapAction {
 
+	private boolean ballPassed = false;
+
 	public PassBallAttackerAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.TRY_TO_SCORE, true);
+		addEffect(GoapGlossary.BALL_CATCHED, false);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballPassed = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballPassed = false;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		L'attaccante controlla un indice di successo
+		//		(probabilità di segnare) ricevuto da altri
+		//		(serve comunicazione) attaccanti e lo confronta
+		//		con il proprio, oppure se è ostacolato da un
+		//		certo numero di avversari.
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		L'attaccante passa la palla ad un compagno che
+		//		ha l'indice di successo maggiore (si potrebbe
+		//		verificare forse che chi conduce palla ha il
+		//		massimo indice di successo ma essendo ostacolato
+		//		da un certo numero di avversari è meglio passare
+		//		la palla ad un compagno che dopo di lui ha il più
+		//		altro indice di successo)
 		return false;
 	}
 

@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 MARK_PLAYER ***************************************
@@ -22,33 +23,37 @@ PERFORMING:
  */
 public class MarkPlayerAction extends GoapAction {
 
+	private boolean playerMarked = false;
+
 	public MarkPlayerAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, false);
+		addPrecondition(GoapGlossary.BALL_NEAR, false);
+		addPrecondition(GoapGlossary.NEAR_NON_CONTROLLED_BALL_OPPONENT, false);		
+		addEffect(GoapGlossary.NEAR_NON_CONTROLLED_BALL_OPPONENT, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		playerMarked = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return playerMarked;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		Il difensore è ad una distanza maggiore ripetto
+		//		all'azione DEFENSOR_STOLE_BALL
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		Il difensore segue gli spostamenti dell'avversario
 		return false;
 	}
 

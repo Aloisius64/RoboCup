@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 CATCH_BALL_GOALIE *********************************
@@ -19,33 +20,38 @@ PERFORMING:
  */
 public class CatchBallGoalieAction extends GoapAction {
 
+	private boolean ballCatched = false;
+	
 	public CatchBallGoalieAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHABLE, true);
+		addPrecondition(GoapGlossary.BALL_CATCHED, false);
+		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballCatched = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballCatched;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+//		if(isBallCatcheable){
+//			ballCatched = catchTheBall;
+//			return true;
+//		}
+//		return false;
 		return false;
 	}
 

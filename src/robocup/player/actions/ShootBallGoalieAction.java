@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 SHOOT_BALL_GOALIE (Rinvio verso la metà campo) ***
@@ -23,33 +24,38 @@ SHOOT_BALL_GOALIE (Rinvio verso la metà campo) ***
  */
 public class ShootBallGoalieAction extends GoapAction {
 
+	private boolean ballShooted = false;
+
 	public ShootBallGoalieAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballShooted = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballShooted;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		Presenza di un certo numero di avversari
+		//		vicino la porta. Se tale numero è troppo
+		//		elevato (maggiore dei propri difensori)
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		Il portiere calcia la palla verso la metà 
+		//		campo (possibilmente verso un proprio 
+		//		compagno)
 		return false;
 	}
 

@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 GO_TO_MORE_FREE_PLACE *****************************
@@ -21,33 +22,36 @@ PERFORMING:
  */
 public class GoToMoreFreePlaceAction extends GoapAction {
 
+	private boolean moved = false;
+
 	public GoToMoreFreePlaceAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
+		addPrecondition(GoapGlossary.BALL_CATCHED_FROM_GOALIER, true);
 		//		addEffect(key, value);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		moved = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return moved;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//Il portiere controlla la palla
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		Il difensore si muove in una zona del campo
+		//		sempre nella propria metà campo, in cui la 
+		//		distanza rispetto agli avversari vicini è
+		//		maggiore
 		return false;
 	}
 

@@ -21,12 +21,10 @@ public class GoalierPlayer extends AbstractPlayer {
 
 	public GoalierPlayer() {
 		super();
-		//this.setAi(new GoalieAI(this));
 	}
 
 	public GoalierPlayer(String team){
 		super(team);
-		//this.setAi(new GoalieAI(this));
 	}
 	
 	/********************************************/
@@ -47,6 +45,9 @@ public class GoalierPlayer extends AbstractPlayer {
 		HashMap<String, Object> goal = new HashMap<>();
 
 		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
+		
+		//	Il goal dipende dal tipo di play mode
+		//	cambiarlo in base alla modalità di gioco
 		
 		return goal;
 	}

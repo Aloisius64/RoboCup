@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 DEFENSOR_STOLE_BALL ****************************************
@@ -24,33 +25,39 @@ PERFORMING:
  */
 public class StoleBallDefensorAction extends GoapAction {
 
+	private boolean ballStoled = false;
+
 	public StoleBallDefensorAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, false);
+		addPrecondition(GoapGlossary.BALL_NEAR, true);
+		addPrecondition(GoapGlossary.PLAYER_MARKED, false);
+		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballStoled = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballStoled;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		La palla è controllata da un avversario o
+		//		non, basta che sia nella propria metà campo,
+		//		ed è ad una certa distanza dal difensore
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		Il difensore si avvicina alla palla è cerca
+		//		di recuperarla
 		return false;
 	}
 

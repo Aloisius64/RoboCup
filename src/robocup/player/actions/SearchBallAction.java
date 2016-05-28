@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 SEARCH_BALL ***************************************
@@ -18,33 +19,33 @@ PERFORMING:
  */
 public class SearchBallAction extends GoapAction {
 
+	private boolean ballSeen = false;
+
 	public SearchBallAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
+		addPrecondition(GoapGlossary.BALL_SEEN, false);
+		addEffect(GoapGlossary.BALL_SEEN, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballSeen = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballSeen;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		// L'attaccante sa dove si trova la palla
 		return false;
 	}
 

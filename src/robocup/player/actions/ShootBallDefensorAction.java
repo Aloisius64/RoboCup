@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 SHOOT_BALL (Passaggio lungo oltre la metà campo) **
@@ -22,33 +23,37 @@ PERFORMING:
  */
 public class ShootBallDefensorAction extends GoapAction {
 
+	private boolean ballShooted = false;
+
 	public ShootBallDefensorAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.KEEP_AREA_SAFE, false);
+		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballShooted = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballShooted;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		Si è visto un attaccante particolarmente 
+		//		libero oltre la metà campo
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		La palla è calciata oltre la metà campo 
+		//		verso un proprio compagno
 		return false;
 	}
 

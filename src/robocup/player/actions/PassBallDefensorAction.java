@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 PASS_BALL *****************************************
@@ -23,33 +24,38 @@ PERFORMING:
  */
 public class PassBallDefensorAction extends GoapAction {
 
+	private boolean ballPassed = false;
+
 	public PassBallDefensorAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
+		addEffect(GoapGlossary.BALL_CATCHED, false);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballPassed = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballPassed = false;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		Numero di avversari vicini, compagni liberi
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		La palla viene passata ad un compagno se il
+		//		giocatore è ostacolato da un certo numero di
+		//		avversari e alcuni compagni sono in zone più
+		//		libere rispetto a lui.
 		return false;
 	}
 

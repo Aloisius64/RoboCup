@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 TRY_TO_SCORE **************************************
@@ -20,33 +21,35 @@ PERFORMING:
  */
 public class TryToScoreAction extends GoapAction {
 
+	private boolean tryToScore = false;
+
 	public TryToScoreAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.TRY_TO_SCORE, true);
+		addEffect(GoapGlossary.BALL_CATCHED, false);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		tryToScore = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return tryToScore;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		Il giocatore prova a tirare, qui usiamo la 
+		//		funzione smart kick.
 		return false;
 	}
 

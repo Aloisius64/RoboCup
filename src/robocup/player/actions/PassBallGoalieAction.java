@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 PASS_BALL_GOALIE **********************************
@@ -23,33 +24,38 @@ PASS_BALL_GOALIE **********************************
  */
 public class PassBallGoalieAction extends GoapAction {
 
+	private boolean ballPassed = false;
+
 	public PassBallGoalieAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballPassed = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballPassed = false;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		Presenza di un certo numero di avversari
+		//		vicino la porta. Se tale numero non è 
+		//		troppo elevato (minore o circa i propri
+		//		difensori)
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		Il portiere passa la palla al difensore
+		//		più libero
 		return false;
 	}
 

@@ -28,12 +28,10 @@ public class DefensivePlayer extends AbstractPlayer{
 
 	public DefensivePlayer() {
 		super();
-		//this.setAi(new DefensiveAI(this));
 	}
 
 	public DefensivePlayer(String team) {
 		super(team);
-		//this.setAi(new DefensiveAI(this));
 	}
 
 	/********************************************/
@@ -54,6 +52,9 @@ public class DefensivePlayer extends AbstractPlayer{
 		HashMap<String, Object> goal = new HashMap<>();
 		
 		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
+		
+		//	Il goal dipende dal tipo di play mode
+		//	cambiarlo in base alla modalità di gioco
 		
 		return goal;
 	}

@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 IDLE **********************************************
@@ -18,32 +19,41 @@ PERFORMING:
  */
 public class IdleAction extends GoapAction {
 
+	private boolean playerToHomePosition = false;
+
 	public IdleAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
+		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
+		playerToHomePosition = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return playerToHomePosition;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		if(playerNotAtHomePosition){
+		//			return true;
+		//		}
+		//		return false;
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		if(playerNotAtHomePosition){
+		//			returnToHomePoistion;
+		//			playerAtHomePosition = true;
+		//			return true;
+		//		}
+		//		return false;
 		return false;
 	}
 

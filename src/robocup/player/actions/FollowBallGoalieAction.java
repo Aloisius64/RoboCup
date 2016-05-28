@@ -1,6 +1,7 @@
 package robocup.player.actions;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
 
 /*
 FOLLOW_BALL_GOALIE ********************************
@@ -22,33 +23,43 @@ FOLLOW_BALL_GOALIE ********************************
  */
 public class FollowBallGoalieAction extends GoapAction {
 
+	private boolean ballFollowed = false;
+
 	public FollowBallGoalieAction() {
 		super(1.0f);
-		//		addPrecondition(key, value);
-		//		addEffect(key, value);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHABLE, false);
+		addEffect(GoapGlossary.BALL_CATCHABLE, true);
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		ballFollowed = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		return ballFollowed;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
-		return false;
+		//		La palla è controllata dall avversario o comunque
+		//		non è in una zona in cui il portiere è in grado
+		//		di catturarla.
+		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		// TODO Auto-generated method stub
+		//		if(ballIsControlledByOpponent){
+		//			if(!ballCatcheable)
+		//				goToLocationInGoalieAreaWichIsNearBall;
+		//			if(ballCatcheable)
+		//				ballFollowed = true;
+		//			return true;
+		//		}	
+		//		return false;
 		return false;
 	}
 

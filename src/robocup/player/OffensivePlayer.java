@@ -20,12 +20,10 @@ public class OffensivePlayer extends AbstractPlayer{
 
 	public OffensivePlayer() {
 		super();
-		//this.setAi(new OffensiveAI(this));
 	}
 
 	public OffensivePlayer(String team) {
 		super(team);
-		//this.setAi(new OffensiveAI(this));
 	}
 
 	/********************************************/
@@ -37,7 +35,7 @@ public class OffensivePlayer extends AbstractPlayer{
 		HashMap<String, Object> worldState = new HashMap<>();
 
 		// Set worldState from player memory
-		
+
 		return worldState;
 	}
 
@@ -46,20 +44,23 @@ public class OffensivePlayer extends AbstractPlayer{
 		HashMap<String, Object> goal = new HashMap<>();
 
 		goal.put(GoapGlossary.TRY_TO_SCORE, true);
-		
+
+		//	Il goal dipende dal tipo di play mode
+		//	cambiarlo in base alla modalità di gioco
+
 		return goal;
 	}
 
 	@Override
 	public List<GoapAction> getActions() {
 		List<GoapAction> actions = new ArrayList<>();
-		
+
 		actions.add(new SearchBallAction());
 		actions.add(new MarkPlayerAction());
 		actions.add(new PassBallAttackerAction());
 		actions.add(new TryToScoreAction());
 		actions.add(new StoleBallAttackerAction());
-		
+
 		return actions;
 	}
 
