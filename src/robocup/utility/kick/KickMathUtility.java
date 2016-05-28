@@ -2,16 +2,16 @@ package robocup.utility.kick;
 
 import java.util.List;
 
-import robocup.sensors.SeenPlayer;
+import robocup.objInfo.ObjPlayer;
 
 public class KickMathUtility {
 
-	public static GoalView getGoalView(double leftFlagDirection, double rightFlagDirection, List<SeenPlayer> otherPlayers,
+	public static GoalView getGoalView(double leftFlagDirection, double rightFlagDirection, List<ObjPlayer> otherPlayers,
 			double playerSize) {
 		GoalView goalView = new GoalView(leftFlagDirection, rightFlagDirection);
 		System.out.println("goalView " + goalView);
 		
-		for (SeenPlayer seenPlayer : otherPlayers) {
+		for (ObjPlayer seenPlayer : otherPlayers) {
 			ViewInterval opponentInterval = getPlayerInterval(seenPlayer, playerSize);
 			System.out.println("opponent interval " + opponentInterval);
 			goalView = goalView.subtractInterval(opponentInterval);
@@ -20,7 +20,7 @@ public class KickMathUtility {
 		return goalView;
 	}
 
-	private static ViewInterval getPlayerInterval(SeenPlayer seenPlayer, double playerSize) {
+	private static ViewInterval getPlayerInterval(ObjPlayer seenPlayer, double playerSize) {
 		double distance = seenPlayer.getDistance();
 		double theta = seenPlayer.getDirection();
 

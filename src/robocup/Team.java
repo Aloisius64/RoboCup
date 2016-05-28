@@ -1,34 +1,57 @@
 package robocup;
 
-import com.github.robocup_atan.atan.model.AbstractTeam;
-import com.github.robocup_atan.atan.model.ControllerCoach;
-import com.github.robocup_atan.atan.model.ControllerPlayer;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
-import robocup.formation.FormationManager;
-import robocup.player.AttackerPlayer;
+import robocup.formation.AbstractFormation;
+import robocup.geometry.Vector;
+import robocup.player.AbstractPlayer;
 import robocup.utility.Settings;
 
-public class Team extends AbstractTeam {
+public class Team {
+	private List<AbstractPlayer> players;
+	private String teamName;
+	private AbstractFormation teamFormation;
 
-	public Team(String teamName) {
-		super(teamName, Settings.PORT_NUMBER, Settings.IP_SERVER, false);
+	public Team(String teamName, AbstractFormation teamFormation) {
+		super();
+		this.teamName = teamName;
+		this.teamFormation = teamFormation;
+		this.players = new ArrayList<>();
 	}
 
-	@Override
-	public ControllerPlayer getNewControllerPlayer(int i) {
-		return new AttackerPlayer();
-		//return FormationManager.getFormation().getPlayer(i);
+	public void initTeam() throws SocketException, UnknownHostException, InterruptedException, InstantiationException, IllegalAccessException{
+		for (int i = 1; i <= Settings.TEAM_SIZE; i++) {
+			AbstractPlayer player = teamFormation.getPlayer(i);
+			player.getRoboClient().setTeam(teamName); 
+			player.setStringPosition(teamFormation.getPlayerStringPosition(i));
+			players.add(player);
+		}		
+
+		for (int i = 0; i < Settings.TEAM_SIZE; i++) {
+			AbstractPlayer player = players.get(i);
+			Vector position = teamFormation.getPlayerPosition(i+1);
+			player.initPlayer(position.X(), position.Y());
+			Thread.sleep(100);	
+		}
+
+		for (AbstractPlayer player : players) {
+			player.start();
+		}
 	}
 
-	@Override
-	public ControllerCoach getNewControllerCoach() {
-		return null;
+	public List<AbstractPlayer> getPlayers() {
+		return players;
 	}
 
-	@Override
-	public int size() {
-		return 1;
-//		return Settings.TEAM_SIZE;
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public AbstractFormation getTeamFormation() {
+		return teamFormation;
 	}
 
 }
