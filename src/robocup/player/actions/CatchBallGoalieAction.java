@@ -2,7 +2,28 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 
-public class MarkAction extends GoapAction {
+/*
+CATCH_BALL_GOALIE *********************************
+PRECONDITIONS:
+	KEEP_AREA_SAFE (FALSE)
+	BALL_CATCHABLE (TRUE)
+	BALL_CATCHED (FALSE)
+
+EFFECTS:
+	BALL_CATCHED (TRUE)	
+
+THINGS TO CHECK:
+
+PERFORMING:
+	Il portiere esegue l'azione di cattura
+ */
+public class CatchBallGoalieAction extends GoapAction {
+
+	public CatchBallGoalieAction() {
+		super(1.0f);
+		//		addPrecondition(key, value);
+		//		addEffect(key, value);
+	}
 
 	@Override
 	public void reset() {

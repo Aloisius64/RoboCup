@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
+import robocup.player.actions.GoToMoreFreePlaceAction;
+import robocup.player.actions.IdleAction;
+import robocup.player.actions.MarkPlayerAction;
+import robocup.player.actions.PassBallDefensorAction;
+import robocup.player.actions.ShootBallDefensorAction;
+import robocup.player.actions.StoleBallDefensorAction;
 
 /** @file FullBack.java
  * Class file for FullBack class
@@ -37,6 +44,8 @@ public class DefensivePlayer extends AbstractPlayer{
 	public HashMap<String, Object> getWorldState() {
 		HashMap<String, Object> worldState = new HashMap<>();
 		
+		// Set worldState from player memory
+		
 		return worldState;
 	}
 
@@ -44,12 +53,21 @@ public class DefensivePlayer extends AbstractPlayer{
 	public HashMap<String, Object> createGoalState() {
 		HashMap<String, Object> goal = new HashMap<>();
 		
+		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
+		
 		return goal;
 	}
 	
 	@Override
 	public List<GoapAction> getActions() {
 		List<GoapAction> actions = new ArrayList<>();
+		
+		actions.add(new IdleAction());
+		actions.add(new ShootBallDefensorAction());
+		actions.add(new PassBallDefensorAction());
+		actions.add(new StoleBallDefensorAction());
+		actions.add(new GoToMoreFreePlaceAction());
+		actions.add(new MarkPlayerAction());
 		
 		return actions;
 	}

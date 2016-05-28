@@ -2,7 +2,27 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 
-public class GoalieAction extends GoapAction {
+/*
+SEARCH_BALL ***************************************
+PRECONDITIONS:
+	TRY_TO_SCORE (FALSE)
+	BALL_SEEN (FALSE)
+
+EFFECTS:
+	BALL_SEEN (TRUE)
+
+THINGS TO CHECK:
+
+PERFORMING:
+	L'attaccante sa dove si trova la palla
+ */
+public class SearchBallAction extends GoapAction {
+
+	public SearchBallAction() {
+		super(1.0f);
+		//		addPrecondition(key, value);
+		//		addEffect(key, value);
+	}
 
 	@Override
 	public void reset() {

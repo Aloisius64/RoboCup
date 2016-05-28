@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapGlossary;
+import robocup.player.actions.CatchBallGoalieAction;
+import robocup.player.actions.FollowBallGoalieAction;
+import robocup.player.actions.IdleAction;
+import robocup.player.actions.PassBallGoalieAction;
+import robocup.player.actions.ShootBallGoalieAction;
 
 /** @class Goalie
  * The Goalie class inherits from the Player class.  The Goalie is a specialized
@@ -30,6 +36,8 @@ public class GoalierPlayer extends AbstractPlayer {
 	@Override
 	public HashMap<String, Object> getWorldState() {
 		HashMap<String, Object> worldState = new HashMap<>();
+
+		// Set worldState from player memory
 		
 		return worldState;
 	}
@@ -37,6 +45,8 @@ public class GoalierPlayer extends AbstractPlayer {
 	@Override
 	public HashMap<String, Object> createGoalState() {
 		HashMap<String, Object> goal = new HashMap<>();
+
+		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
 		
 		return goal;
 	}
@@ -44,6 +54,12 @@ public class GoalierPlayer extends AbstractPlayer {
 	@Override
 	public List<GoapAction> getActions() {
 		List<GoapAction> actions = new ArrayList<>();
+
+		actions.add(new IdleAction());
+		actions.add(new FollowBallGoalieAction());
+		actions.add(new CatchBallGoalieAction());
+		actions.add(new ShootBallGoalieAction());
+		actions.add(new PassBallGoalieAction());
 		
 		return actions;
 	}
