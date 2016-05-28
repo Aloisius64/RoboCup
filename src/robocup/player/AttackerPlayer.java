@@ -53,7 +53,7 @@ public class AttackerPlayer extends AbstractPlayer {
 									.getDirection());
 						} else {
 							if (!knowledgeBase.hasFlag(FlagCategory.GOAL_OTHER, Flag.LEFT)
-									|| !knowledgeBase.hasFlag(FlagCategory.GOAL_OTHER, Flag.LEFT)) {
+									|| !knowledgeBase.hasFlag(FlagCategory.GOAL_OTHER, Flag.RIGHT)) {
 								player.turn(knowledgeBase.getFlag(FlagCategory.GOAL_OTHER, Flag.CENTER).getDirection());
 							} else {
 								smartKick();
