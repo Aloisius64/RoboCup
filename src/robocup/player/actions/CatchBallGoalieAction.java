@@ -47,9 +47,9 @@ public class CatchBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
-//		if(isBallCatcheable){
-//			ballCatched = catchTheBall;
-//			return true;
+//		if(isBallCatcheable()){
+//			ballCatched = catchBall();
+//			return ballCatched;
 //		}
 //		return false;
 		return false;

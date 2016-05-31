@@ -30,7 +30,7 @@ public class DefensiveAI extends AbstractAI {
 			if(getPlayer().getMemory().timeCheck(getPlayer().getTime())) {
 				getPlayer().setTime(getPlayer().getMemTime());
 				try {
-					getPlayer().runDefense();
+					getPlayer().getAction().runDefense();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}			
