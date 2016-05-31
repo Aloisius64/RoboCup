@@ -37,39 +37,40 @@ public class DefensivePlayer extends AbstractPlayer{
 	/********************************************/
 	/* 			IGoap implementations 			*/
 	/********************************************/
-	
+
 	@Override
 	public HashMap<String, Object> getWorldState() {
 		HashMap<String, Object> worldState = new HashMap<>();
-		
+
 		// Set worldState from player memory
-		
+		//		worldState.add(GoapGlossary.KEEP_AREA_SAFE, isBallInOurField());
+
 		return worldState;
 	}
 
 	@Override
 	public HashMap<String, Object> createGoalState() {
 		HashMap<String, Object> goal = new HashMap<>();
-		
+
 		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
-		
+
 		//	Il goal dipende dal tipo di play mode
 		//	cambiarlo in base alla modalità di gioco
-		
+
 		return goal;
 	}
-	
+
 	@Override
 	public List<GoapAction> getActions() {
 		List<GoapAction> actions = new ArrayList<>();
-		
+
 		actions.add(new IdleAction());
 		actions.add(new ShootBallDefensorAction());
 		actions.add(new PassBallDefensorAction());
 		actions.add(new StoleBallDefensorAction());
 		actions.add(new GoToMoreFreePlaceAction());
 		actions.add(new MarkPlayerAction());
-		
+
 		return actions;
 	}
 

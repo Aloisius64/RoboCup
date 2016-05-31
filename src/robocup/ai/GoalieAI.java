@@ -34,28 +34,28 @@ public class GoalieAI extends AbstractAI {
 
 				if(getPlayer().getMemory().timeCheck(getPlayer().getTime())) {
 					getPlayer().setTime(getPlayer().getMemTime());
-					((GoalierPlayer)getPlayer()).followBall();
+					((GoalierPlayer)getPlayer()).getAction().followBall();
 
 
 					//Defining playmode behaviors for left side team
 					if (getPlayer().getMemory().getSide().compareTo("l") == 0) {				
 
 						if((getPlayer().getMemory().getPlayMode().compareTo("before_kick_off") == 0) && getPlayer().getTime() > 0) {
-							getPlayer().move(getPlayer().getHome().x, getPlayer().getHome().y);
+							getPlayer().getAction().move(getPlayer().getHome().x, getPlayer().getHome().y);
 						}else if(getPlayer().getMemory().getPlayMode().compareTo("play_on") == 0) {
-							((GoalierPlayer)getPlayer()).followBall();
+							((GoalierPlayer)getPlayer()).getAction().followBall();
 						}
 						else if (getPlayer().getMemory().getPlayMode().compareTo("goal_kick_l") == 0){
 							Polar upper = getPlayer().getMemory().getAbsPolar(getPlayer().getMemory().getFlagPos("fplt"));
-							getPlayer().turn(getPlayer().getAction().getTurn(upper));
+							getPlayer().getAction().turn(getPlayer().getAction().getTurn(upper));
 
 							if (getPlayer().getMemory().isObjVisible("ball")) {
 								getPlayer().getAction().gotoPoint(uppergoalkick);
-								getPlayer().kick(60, 0);
+								getPlayer().getAction().kick(60, 0);
 							}
 							else {
 								getPlayer().getAction().gotoPoint(lowergoalkick);
-								getPlayer().kick(60, 0);
+								getPlayer().getAction().kick(60, 0);
 							}
 						}					
 					}// end if
@@ -63,7 +63,7 @@ public class GoalieAI extends AbstractAI {
 					//Defining playmode behaviors for right side team
 					if (getPlayer().getMemory().getSide().compareTo("r") == 0) {
 						if((getPlayer().getMemory().getPlayMode().compareTo("before_kick_off") == 0) && getPlayer().getTime() > 0) {
-							getPlayer().move(getPlayer().getHome().x, getPlayer().getHome().y);
+							getPlayer().getAction().move(getPlayer().getHome().x, getPlayer().getHome().y);
 						}
 						else if(getPlayer().getMemory().getPlayMode().compareTo("play_on") == 0) {
 							getPlayer().getAction().findBall();

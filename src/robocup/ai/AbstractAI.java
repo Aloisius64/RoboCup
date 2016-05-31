@@ -23,14 +23,9 @@ public abstract class AbstractAI extends Thread {
 	private Memory memory;
 	private MathHelp mathHelp;
 
-	public AbstractAI() {
-		this.currentMode = new Mode();
-		this.actions = new Action();
-	}
-
 	public AbstractAI(AbstractPlayer p) {
 		this.currentMode = new Mode();
-		this.actions = new Action();
+		this.actions = p.getAction();
 		this.player = p;
 	}
 
@@ -69,7 +64,7 @@ public abstract class AbstractAI extends Thread {
 					if (player.getMemory().getSide().compareTo("l") == 0) {
 
 						if((player.getMemory().getPlayMode().compareTo("before_kick_off") == 0) && player.getTime() > 0) {
-							player.move(player.getHome().x, player.getHome().y);
+							player.getAction().move(player.getHome().x, player.getHome().y);
 						}						
 						else if(player.getMemory().getPlayMode().compareTo("play_on") == 0) {
 							player.getAction().findBall();
@@ -81,7 +76,7 @@ public abstract class AbstractAI extends Thread {
 						}
 						else if (player.getMemory().getPlayMode().compareTo("corner_kick_l") == 0){
 							while (!player.getMemory().isObjVisible("ball")) {
-								player.turn(15);
+								player.getAction().turn(15);
 							}
 
 							ballPos = mathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
@@ -145,7 +140,7 @@ public abstract class AbstractAI extends Thread {
 					if (player.getMemory().getSide().compareTo("r") == 0) {
 
 						if((player.getMemory().getPlayMode().compareTo("before_kick_off") == 0) && player.getTime() > 0) {
-							player.move(player.getHome().x, player.getHome().y);
+							player.getAction().move(player.getHome().x, player.getHome().y);
 						}
 						else if(player.getMemory().getPlayMode().compareTo("play_on") == 0) {
 							player.getAction().findBall();
