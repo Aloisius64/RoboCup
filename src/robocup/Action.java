@@ -119,7 +119,23 @@ public class Action {
 			gotoSidePoint(memory.getHome());
 		}
 	}
+	
 
+	public void forwardToGoal() throws UnknownHostException, InterruptedException {
+		if (getMemory().isObjVisible("ball")) {
+			ObjBall ball = getMemory().getBall();
+			if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
+				getRoboClient().turn(ball.getDirection() * (1 + (5 * getMemory().getAmountOfSpeed())));
+				Thread.sleep(100);
+			}
+
+			Pos ballPos = getMemory().getBallPos(ball);
+			System.out.println("step " + getMemory().getObjMemory().getTime() + " " + ballPos.x + " " + ballPos.x);
+			
+		} else {
+			getRoboClient().turn(30.0);
+		}
+	}
 	/**
 	 * A method to find the ball on the field. If it's not in view, the player turns
 	 * until he finds it. If the ball is too far, he dashes to get to it. If the ball
