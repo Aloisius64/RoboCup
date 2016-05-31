@@ -14,6 +14,10 @@ import java.util.ArrayList;
  */
 public class Field {
 
+	public static final int NO_RIGHT_POST = 20;
+	public static final int NO_LEFT_POST = 21;
+	public static final int BOTH_VISIBLE = 22;
+	
 	// The Array list that contains all the positions
 	public ArrayList<Pos> posList = new ArrayList<Pos>();
 

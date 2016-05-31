@@ -117,7 +117,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			}
 
 			// GOAP update
-			agent.update();
+			//agent.update();
 		}
 	}
 

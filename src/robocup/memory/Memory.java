@@ -604,6 +604,23 @@ public class Memory {
 			return (-1 * getSenseMemory().directionOfSpeed);
 		}
 	}
+	
+	public int seeOpponentPost() {
+		if (side.compareTo("l") == 0) {
+			if (getFlag("fgrt") == null) {
+				return Field.NO_LEFT_POST;
+			}
+			if (getFlag("fgrb") == null)
+				return Field.NO_RIGHT_POST;
+		} else {
+			if (getFlag("fglb") == null) {
+				return Field.NO_LEFT_POST;
+			}
+			if (getFlag("fglt") == null)
+				return Field.NO_RIGHT_POST;
+		}
+		return Field.BOTH_VISIBLE;
+	}
 
 	/**
 	 * The getter for the angle of the Player's head relative to the orientation

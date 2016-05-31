@@ -1,5 +1,6 @@
 package robocup.player;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class OffensivePlayer extends AbstractPlayer{
 		goal.put(GoapGlossary.TRY_TO_SCORE, true);
 
 		//	Il goal dipende dal tipo di play mode
-		//	cambiarlo in base alla modalità di gioco
+		//	cambiarlo in base alla modalitï¿½ di gioco
 
 		return goal;
 	}
@@ -62,6 +63,27 @@ public class OffensivePlayer extends AbstractPlayer{
 		actions.add(new StoleBallAttackerAction());
 
 		return actions;
+	}
+	
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				receiveInput();
+				Thread.sleep(50);
+				
+				
+				getAction().forwardToGoal();
+			} catch (UnknownHostException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	
 	}
 
 }
