@@ -23,17 +23,16 @@ import robocup.objInfo.ObjPlayer;
 import robocup.utility.Field;
 import robocup.utility.MathHelp;
 import robocup.utility.Polar;
-import robocup.utility.Pos;
+import robocup.utility.Position;
 
 /**
  * @class Memory
  */
 public class Memory {
 
-	private MathHelp mathHelp = new MathHelp();
 	private Field field;
-	private Pos home;
-	private Pos current = new Pos();
+	private Position home;
+	private Position current = new Position();
 	private boolean isHome = true;
 	private ArrayList<ObjPlayer> teammates = new ArrayList<ObjPlayer>();
 	private ArrayList<ObjPlayer> opponents = new ArrayList<ObjPlayer>();
@@ -70,7 +69,7 @@ public class Memory {
 	 * The Pos of the coordinates of the opponents goal
 	 */
 	@SuppressWarnings("unused")
-	private Pos oppGoal;	
+	private Position oppGoal;	
 
 	/**
 	 * The default constructor for the Memory.
@@ -172,8 +171,8 @@ public class Memory {
 		return null;
 	}
 
-	public Pos getBallPos(ObjBall b) {
-		Pos pt = getMathHelp().vAdd(getPosition(), getMathHelp().getPos(b.getDistance(), b.getDirection() + getDirection()));
+	public Position getBallPos(ObjBall b) {
+		Position pt = MathHelp.vAdd(getPosition(), MathHelp.getPos(b.getDistance(), b.getDirection() + getDirection()));
 		//pt.print("Ball Pos: ");
 		return (pt);
 	}
@@ -227,7 +226,7 @@ public class Memory {
 	 *
 	 * @return the Pos in the Field of your oppenent's goal
 	 */
-	public Pos getOppGoalPos() {
+	public Position getOppGoalPos() {
 		if (getSide().compareTo("l") == 0) {
 			return (getFlagPos("gr"));
 		} else {
@@ -259,7 +258,7 @@ public class Memory {
 	 *
 	 * @return the Pos in the Field of your goal
 	 */
-	public Pos getOwnGoalPos() {
+	public Position getOwnGoalPos() {
 		if (getSide().compareTo("l") == 0) {
 			return (getFlagPos("gl"));
 		} else {
@@ -406,8 +405,8 @@ public class Memory {
 		return (0.0);
 	}
 
-	public Polar getAbsPolar(Pos pt) {
-		Pos p = (getMathHelp().vSub(pt, getPosition()));
+	public Polar getAbsPolar(Position pt) {
+		Position p = (MathHelp.vSub(pt, getPosition()));
 		double r = Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2));
 		double t = (Math.toDegrees(Math.atan2(p.y, p.x)) - getDirection());
 		Polar n = new Polar(r, t);
@@ -512,7 +511,7 @@ public class Memory {
 	 *
 	 * @return Pos with coordinate of flag
 	 */
-	public Pos getFlagPos(String flagName) {
+	public Position getFlagPos(String flagName) {
 		for (int i = 0; i < field.posList.size(); i++) {
 			if (field.posList.get(i).name.compareTo(flagName) == 0) {
 				return field.posList.get(i);
@@ -531,16 +530,16 @@ public class Memory {
 	 * @return Pos containing the coordinate on the field of the player's
 	 * absolute position
 	 */
-	public Pos getPosition() {
+	public Position getPosition() {
 
 		ObjFlag flag = getClosestFlag();
 
 		//System.out.println("getPosition flag: (" + flag.getDistance() + ", " + flag.getDirection() + ")");
 		{
 
-			Pos flagCoord = getFlagPos(flag.getFlagName());
-			Pos toFlag = getMathHelp().getPos(flag.getDistance(), getDirection() + flag.getDirection());
-			Pos self = getMathHelp().vSub(flagCoord, toFlag);
+			Position flagCoord = getFlagPos(flag.getFlagName());
+			Position toFlag = MathHelp.getPos(flag.getDistance(), getDirection() + flag.getDirection());
+			Position self = MathHelp.vSub(flagCoord, toFlag);
 
 			return (self);
 
@@ -560,7 +559,7 @@ public class Memory {
 	 * @return double containing the angle of the goal
 	 */
 	public double getNullGoalAngle() {
-		Pos g = getMathHelp().vSub(getPosition(), new Pos(50.5, 0));
+		Position g = MathHelp.vSub(getPosition(), new Position(50.5, 0));
 		double ga = Math.atan(g.y / g.x);
 		return (ga - getDirection());
 	}
@@ -604,7 +603,7 @@ public class Memory {
 			return (-1 * getSenseMemory().directionOfSpeed);
 		}
 	}
-	
+
 	public int seeOpponentPost() {
 		if (side.compareTo("l") == 0) {
 			if (getFlag("fgrt") == null) {
@@ -670,11 +669,11 @@ public class Memory {
 		this.isHome = isHome;
 	}
 
-	public Pos getCurrent() {
+	public Position getCurrent() {
 		return current;
 	}
 
-	public void setCurrent(Pos current) {
+	public void setCurrent(Position current) {
 		this.current = current;
 	}
 
@@ -686,7 +685,7 @@ public class Memory {
 		this.uNum = uNum;
 	}
 
-	public void setOppGoal(Pos oppGoal) {
+	public void setOppGoal(Position oppGoal) {
 		this.oppGoal = oppGoal;
 	}
 
@@ -718,20 +717,12 @@ public class Memory {
 		this.senseMemory = senseMemory;
 	}
 
-	public Pos getHome() {
+	public Position getHome() {
 		return home;
 	}
 
-	public void setHome(Pos home) {
+	public void setHome(Position home) {
 		this.home = home;
-	}
-
-	public MathHelp getMathHelp() {
-		return mathHelp;
-	}
-
-	public void setMathHelp(MathHelp mathHelp) {
-		this.mathHelp = mathHelp;
 	}
 
 }

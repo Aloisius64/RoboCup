@@ -10,7 +10,6 @@ public class OffensiveAI extends AbstractAI {
 		
 	public OffensiveAI(OffensivePlayer offensivePlayer) {
 		super(offensivePlayer);
-		start();
 	}
 
 }

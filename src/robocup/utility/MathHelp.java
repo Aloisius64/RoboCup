@@ -14,8 +14,6 @@ import robocup.objInfo.ObjPlayer;
  *
  */
 
-
-
 public class MathHelp {
 
 	/**
@@ -25,12 +23,12 @@ public class MathHelp {
 	 * @param t the angle, in degrees, of the arm from the x-axis
 	 * @return A new Cartesian Pos converted from the r and t of a Polar vector
 	 */
-	public Pos getPos(double r, double t) {
+	public static Position getPos(double r, double t) {
 		
 		double x = r * Math.cos(Math.toRadians(t));
 		double y = r * Math.sin(Math.toRadians(t));
 		
-		return(new Pos(x, y));
+		return(new Position(x, y));
 		
 	}
 	
@@ -43,7 +41,7 @@ public class MathHelp {
 	 * @param p The polar coordinates you want to convert
 	 * @return A new Pos with the Cartesian version of your Polar vector
 	 */
-	public Pos getPos(Polar p) {
+	public static Position getPos(Polar p) {
 		return(getPos(p.r, p.t));
 	}
 	
@@ -54,7 +52,7 @@ public class MathHelp {
 	 * @param y the y coordinate of the Cartesian vector
 	 * @return A new Polar vector converted from the Cartesian vector
 	 */
-	public Polar getPolar(double x, double y) {		
+	public static Polar getPolar(double x, double y) {		
 		double r = Math.sqrt(x*x + y*y);
 		double t = Math.toDegrees(Math.atan(y/x));		
 		return(new Polar(r, t));
@@ -69,7 +67,7 @@ public class MathHelp {
 	 * @param p the Cartesian vector
 	 * @return A new Polar vector converted from the Cartesian vector
 	 */
-	public Polar getPolar(Pos p) {
+	public static Polar getPolar(Position p) {
 		return(getPolar(p.x, p.y));
 	}
 	
@@ -80,8 +78,8 @@ public class MathHelp {
 	 * @param p2 second position
 	 * @return New position with the sum of the two arguments
 	 */
-	public Pos vAdd(Pos p1, Pos p2) {
-		return(new Pos((p1.x + p2.x), (p1.y + p2.y)));
+	public static Position vAdd(Position p1, Position p2) {
+		return(new Position((p1.x + p2.x), (p1.y + p2.y)));
 	}
 	
 	
@@ -92,8 +90,8 @@ public class MathHelp {
 	 * @param p1 initial position
 	 * @return new Pos with the difference between p2 and p1
 	 */
-	public Pos vSub(Pos p2, Pos p1) {
-		return(new Pos((p2.x - p1.x), (p2.y - p1.y)));
+	public static Position vSub(Position p2, Position p1) {
+		return(new Position((p2.x - p1.x), (p2.y - p1.y)));
 	}
 	
 	/**
@@ -102,8 +100,8 @@ public class MathHelp {
 	 * @param n the scalar
 	 * @return A Pos vector multiplied by a scalar value
 	 */
-	public Pos vMul(Pos p, double n) {
-		return(new Pos((p.x*n), (p.y*n)));
+	public static Position vMul(Position p, double n) {
+		return(new Position((p.x*n), (p.y*n)));
 	}
 	
 	/**
@@ -112,8 +110,8 @@ public class MathHelp {
 	 * @param n the scalar
 	 * @return A Pos vector divided by a scalar value
 	 */
-	public Pos vDiv(Pos p, double n) {
-		return(new Pos((p.x/n), (p.y/n)));
+	public static Position vDiv(Position p, double n) {
+		return(new Position((p.x/n), (p.y/n)));
 	}
 	
 	/**
@@ -122,7 +120,7 @@ public class MathHelp {
 	 * @param p the Pos of the vector
 	 * @return A double containing the magnitude of the vector
 	 */
-	public double mag(Pos p) {
+	public static double mag(Position p) {
 		return(Math.sqrt(p.x*p.x + p.y*p.y));
 	}
 
@@ -131,7 +129,7 @@ public class MathHelp {
 	 * @param p the vector to find the normal of
 	 * @return a Pos of the unit vector of p
 	 */
-	public Pos norm(Pos p) {
+	public static Position norm(Position p) {
 		return(norm(mag(p), p));
 	}
 	
@@ -142,8 +140,8 @@ public class MathHelp {
 	 * @param a the vector to be normalized
 	 * @return a Pos of the unit vector of p
 	 */
-	public Pos norm(double dist, Pos a) {
-		return(new Pos((a.x/dist),(a.y/dist)));
+	public static Position norm(double dist, Position a) {
+		return(new Position((a.x/dist),(a.y/dist)));
 	}
 	
 	/**
@@ -153,7 +151,7 @@ public class MathHelp {
 	 * @param power The Power of the dash
 	 * @return the product of effort x power x dash_power_rate (0.006)
 	 */
-	public double edp(double effort, double stamina) {
+	public static double edp(double effort, double stamina) {
 		return(Math.min(100, stamina) * effort * .006 * 100);
 	}
 	
@@ -166,7 +164,7 @@ public class MathHelp {
 	 * @param vel_t the direction of the player's velocity
 	 * @return The power needed to accelerate the player to the desired location
 	 */
-	public double getDashPower(Pos p, double vel_r, double vel_t, double effort, double stamina) {
+	public static double getDashPower(Position p, double vel_r, double vel_t, double effort, double stamina) {
 		
 		Polar pt = getPolar(p);
 		double v = mag(getPos(vel_r, vel_t-pt.t));
@@ -207,10 +205,10 @@ public class MathHelp {
 	 * @param ball
 	 * @return A Polar coordinate with the theoretical position of the ball at time t+1
 	 */
-	public Polar getNextBallPoint(ObjBall ball) {
+	public static Polar getNextBallPoint(ObjBall ball) {
 		
-		Pos pb = getPos(new Polar(ball.getDistance(), ball.getDirection()));
-		Pos pb2 = getPos(new Polar(0.94 * ball.getDistChng(), 0.94 * ball.getDirChng()));
+		Position pb = getPos(new Polar(ball.getDistance(), ball.getDirection()));
+		Position pb2 = getPos(new Polar(0.94 * ball.getDistChng(), 0.94 * ball.getDirChng()));
 		
 		return(getPolar(vAdd(pb, pb2)));
 		
@@ -223,9 +221,9 @@ public class MathHelp {
 	 * @param opponent An ObjPlayer object representing the opponent to track
 	 * @return A Polar coordinate with the predicted position of the opponent at time t+1
 	 */
-	public Polar getNextPlayerPoint(ObjPlayer player) {
-		Pos po = getPos(new Polar(player.getDistance(), player.getDirection()));
-		Pos po2 = getPos(new Polar(player.getDistChng(), player.getDirChng()));		
+	public static Polar getNextPlayerPoint(ObjPlayer player) {
+		Position po = getPos(new Polar(player.getDistance(), player.getDirection()));
+		Position po2 = getPos(new Polar(player.getDistChng(), player.getDirChng()));		
 		return (getPolar(vAdd(po,po2)));
 	}
 	
@@ -241,7 +239,7 @@ public class MathHelp {
 	 * 
 	 * @return power of kick
 	 */
-	public double getKickPower(Polar p, double vel_r, double vel_t, double ball_r, double ball_t) {
+	public static double getKickPower(Polar p, double vel_r, double vel_t, double ball_r, double ball_t) {
 		double r = 1/0.94;
 		double n = (Math.log(((p.r*(r-1))/0.05)+1)/Math.log(r));
 		//System.out.println("n: " + n);
@@ -264,7 +262,7 @@ public class MathHelp {
 	 * 
 	 * @return power of kick
 	 */
-	public double getKickPower(Pos p, double vel_r, double vel_t, double ball_r, double ball_t) {
+	public static double getKickPower(Position p, double vel_r, double vel_t, double ball_r, double ball_t) {
 		return(getKickPower(getPolar(p), vel_r, vel_t, ball_r, ball_t));
 	}
 	

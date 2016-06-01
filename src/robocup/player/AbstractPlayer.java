@@ -14,9 +14,8 @@ import robocup.goap.IGoap;
 import robocup.memory.Memory;
 import robocup.network.RoboClient;
 import robocup.objInfo.ObjInfo;
-import robocup.utility.MathHelp;
 import robocup.utility.Parser;
-import robocup.utility.Pos;
+import robocup.utility.Position;
 
 /** @class Player
  * The Player class defines all objects and methods used for the 
@@ -35,16 +34,10 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	protected Parser parser;
 	protected Action action;
 	protected int time;
-	protected MathHelp mathHelp;
 	protected boolean wait;
 	protected String position;
 	protected AbstractAI ai;
 	protected GoapAgent agent;	
-
-	public AbstractPlayer() {
-		super();
-		init();
-	}
 
 	public AbstractPlayer(String team){
 		super();
@@ -57,9 +50,8 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.memory = new Memory();
 		this.objInfo = new ObjInfo();
 		this.parser = new Parser();
-		this.action = new Action(memory, roboClient, this);
+		this.action = new Action(this);
 		this.time = 0;
-		this.mathHelp = new MathHelp();
 		this.wait = true;
 		this.position = "left";
 		this.agent = new GoapAgent(this);
@@ -69,7 +61,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		position = pos;
 		roboClient.setDsock(new DatagramSocket());
 		roboClient.init(getParser(), getMemory());
-		getMemory().setHome(new Pos(x, y));
+		getMemory().setHome(new Position(x, y));
 
 		try {
 			getAction().move(x, y);
@@ -85,7 +77,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	public void initPlayer(double x, double y) throws SocketException, UnknownHostException {
 		roboClient.setDsock(new DatagramSocket());
 		roboClient.init(getParser(), getMemory());
-		getMemory().setHome(new Pos(x, y));
+		getMemory().setHome(new Position(x, y));
 
 		try {
 			getAction().move(x, y);
@@ -153,7 +145,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		return (getMemory().getDirection());
 	}
 
-	public Pos getHome() {
+	public Position getHome() {
 		return getMemory().getHome();
 	}
 
@@ -209,14 +201,6 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.time = time;
 	}
 
-	public MathHelp getMathHelp() {
-		return mathHelp;
-	}
-
-	public void setMathHelp(MathHelp mathHelp) {
-		this.mathHelp = mathHelp;
-	}
-
 	public boolean isWait() {
 		return wait;
 	}
@@ -225,7 +209,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.wait = wait;
 	}
 
-	public Pos getPosition() {
+	public Position getPosition() {
 		return (getMemory().getPosition());
 	}
 

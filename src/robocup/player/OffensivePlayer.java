@@ -19,10 +19,6 @@ import robocup.player.actions.TryToScoreAction;
  */
 public class OffensivePlayer extends AbstractPlayer{
 
-	public OffensivePlayer() {
-		super();
-	}
-
 	public OffensivePlayer(String team) {
 		super(team);
 	}

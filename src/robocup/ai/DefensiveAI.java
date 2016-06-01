@@ -10,7 +10,6 @@ public class DefensiveAI extends AbstractAI {
 	
 	public DefensiveAI(DefensivePlayer defensivePlayer) {
 		super(defensivePlayer);
-		start();
 	}
 
 	/**

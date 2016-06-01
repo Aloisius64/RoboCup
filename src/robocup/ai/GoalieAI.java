@@ -2,7 +2,7 @@ package robocup.ai;
 
 import robocup.player.GoalierPlayer;
 import robocup.utility.Polar;
-import robocup.utility.Pos;
+import robocup.utility.Position;
 
 /**@class Brain
  * The brain serves as a place to store the Player modes, marked players for
@@ -12,7 +12,6 @@ public class GoalieAI extends AbstractAI {
 
 	public GoalieAI(GoalierPlayer goalierPlayer) {
 		super(goalierPlayer);
-		start();
 	}
 
 	/**
@@ -23,8 +22,8 @@ public class GoalieAI extends AbstractAI {
 	public void run() {
 		try {
 
-			Pos uppergoalkick = new Pos(-47.36, -8.74);
-			Pos lowergoalkick = new Pos(-47.36, 8.74);
+			Position uppergoalkick = new Position(-47.36, -8.74);
+			Position lowergoalkick = new Position(-47.36, 8.74);
 
 			while (true) {			
 

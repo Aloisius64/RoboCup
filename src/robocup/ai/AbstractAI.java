@@ -7,7 +7,7 @@ import robocup.objInfo.ObjBall;
 import robocup.player.AbstractPlayer;
 import robocup.utility.MathHelp;
 import robocup.utility.Polar;
-import robocup.utility.Pos;
+import robocup.utility.Position;
 
 /**@class Brain
  * The brain serves as a place to store the Player modes, marked players for
@@ -38,15 +38,15 @@ public abstract class AbstractAI extends Thread {
 	public void run() {
 
 		ObjBall ball = player.getMemory().getBall();
-		Pos ballPos = new Pos();
-		Pos uppercorner = new Pos(53, -35);
-		Pos lowercorner = new Pos(53, 35);
-		Pos uppercornerkickpoint = new Pos(40, -9);
-		Pos lowercornerkickpoint = new Pos(40, 9);
-		Pos cornerkickreceive1 = new Pos(32, -10);
-		Pos cornerkickreceive2 = new Pos(38, -10);
-		Pos cornerkickreceive3 = new Pos(35, -10);
-		Pos cornerkickreceive4 = new Pos(35, -5);
+		Position ballPos = new Position();
+		Position uppercorner = new Position(53, -35);
+		Position lowercorner = new Position(53, 35);
+		Position uppercornerkickpoint = new Position(40, -9);
+		Position lowercornerkickpoint = new Position(40, 9);
+		Position cornerkickreceive1 = new Position(32, -10);
+		Position cornerkickreceive2 = new Position(38, -10);
+		Position cornerkickreceive3 = new Position(35, -10);
+		Position cornerkickreceive4 = new Position(35, -5);
 
 		while(true) {
 

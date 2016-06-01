@@ -19,10 +19,6 @@ import robocup.player.actions.ShootBallGoalieAction;
  */
 public class GoalierPlayer extends AbstractPlayer {
 
-	public GoalierPlayer() {
-		super();
-	}
-
 	public GoalierPlayer(String team){
 		super(team);
 	}
