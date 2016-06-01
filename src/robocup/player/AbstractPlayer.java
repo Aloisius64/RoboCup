@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Queue;
 
 import robocup.Action;
-import robocup.ai.AbstractAI;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.IGoap;
@@ -34,9 +33,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	protected Parser parser;
 	protected Action action;
 	protected int time;
-	protected boolean wait;
 	protected String position;
-	protected AbstractAI ai;
 	protected GoapAgent agent;	
 
 	public AbstractPlayer(String team){
@@ -52,7 +49,6 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.parser = new Parser();
 		this.action = new Action(this);
 		this.time = 0;
-		this.wait = true;
 		this.position = "left";
 		this.agent = new GoapAgent(this);
 	}
@@ -201,14 +197,6 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.time = time;
 	}
 
-	public boolean isWait() {
-		return wait;
-	}
-
-	public void setWait(boolean wait) {
-		this.wait = wait;
-	}
-
 	public Position getPosition() {
 		return (getMemory().getPosition());
 	}
@@ -219,14 +207,6 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 
 	public void setStringPosition(String position) {
 		this.position = position;
-	}
-
-	public AbstractAI getAi() {
-		return ai;
-	}
-
-	public void setAi(AbstractAI brain) {
-		this.ai = brain;
 	}
 
 }

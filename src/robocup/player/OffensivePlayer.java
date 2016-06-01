@@ -1,6 +1,5 @@
 package robocup.player;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,25 +60,4 @@ public class OffensivePlayer extends AbstractPlayer{
 		return actions;
 	}
 	
-	@Override
-	public void run() {
-		while (true) {
-			try {
-				receiveInput();
-				Thread.sleep(50);
-				
-				
-				getAction().forwardToGoal();
-			} catch (UnknownHostException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-	
-	}
-
 }
