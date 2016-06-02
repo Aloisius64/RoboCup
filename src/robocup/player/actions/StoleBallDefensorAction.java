@@ -55,6 +55,16 @@ public class StoleBallDefensorAction extends GoapAction {
 		//		La palla è controllata da un avversario o
 		//		non, basta che sia nella propria metà campo,
 		//		ed è ad una certa distanza dal difensore
+
+		AbstractPlayer player = (AbstractPlayer) agent;
+		
+		if (player.getMemory().isObjVisible("ball")) {
+			ObjBall ball = player.getMemory().getBall();
+			if(ball.getDistance() > 25){
+				return false;
+			}
+		}
+
 		return true;
 	}
 
@@ -63,19 +73,19 @@ public class StoleBallDefensorAction extends GoapAction {
 		//		Il difensore si avvicina alla palla è cerca
 		//		di recuperarla
 
-		System.out.println("Performing "+getClass().getSimpleName());
-		
+//		System.out.println("Performing "+getClass().getSimpleName());
+
 		AbstractPlayer player = (AbstractPlayer) agent;
 
 		try {
 			if (player.getMemory().isObjVisible("ball")) {
 				ObjBall ball = player.getMemory().getBall();
-				
+
 				if ((ball.getDirection() > 5.0 
 						|| ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}
-				
+
 				if(ball.getDistance() > 25){
 					return false;
 				} else if (ball.getDistance() > 0.7 
@@ -84,13 +94,13 @@ public class StoleBallDefensorAction extends GoapAction {
 				} else if (ball.getDistance() <= 0.7) {
 					ballStoled = true;
 				}
-				
+
 				if(!player.getAction().isBallInOurField().booleanValue()){
 					return false;
 				}				
-				
+
 				return true;
-				
+
 			} else {
 				player.getRoboClient().turn(30);
 			}
@@ -102,7 +112,7 @@ public class StoleBallDefensorAction extends GoapAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 

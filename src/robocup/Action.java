@@ -8,7 +8,6 @@ import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjGoal;
 import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
-import robocup.utility.Field;
 import robocup.utility.MathHelp;
 import robocup.utility.Polar;
 import robocup.utility.Position;
@@ -18,12 +17,18 @@ import robocup.utility.kick.KickMathUtility;
 import robocup.utility.kick.ViewInterval;
 
 /**
+ * <<<<<<< HEAD
+ * 
  * @class Action
  *
  *        This class holds basic actions for the player to perform, such as ball
  *        searching and intercepting, dashing to points, finding the ball and
  *        points and getting their coordinates.
  *
+ *        ======= This class holds basic actions for the player to perform, such
+ *        as ball searching and intercepting, dashing to points, finding the
+ *        ball and points and getting their coordinates. >>>>>>> branch 'master'
+ *        of https://MarcoCos@bitbucket.org/MarcoCos/robocup.git
  */
 public class Action {
 
@@ -120,7 +125,9 @@ public class Action {
 	public void goHome() throws Exception {
 		if (!player.getMemory().isHome()) {
 			gotoPoint(player.getMemory().getHome());
+
 			// gotoSidePoint(player.getMemory().getHome());
+
 		}
 	}
 
@@ -132,22 +139,23 @@ public class Action {
 		double leftFlagDirection = flagLeft.getDirection();
 		double rightFlagDirection = flagRight.getDirection();
 
-		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents();
+		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents("Team");
 		double playerSize = 0.7;
 
 		GoalView goalView = KickMathUtility.getGoalView(leftFlagDirection, rightFlagDirection, otherPlayers,
 				playerSize);
 
 		ViewInterval largerInterval = goalView.getLargerInterval();
-		System.out.println("intervallo tra"+ largerInterval.getStart().getAngle() +" - "+"");
-		
-//		if (largerInterval.getStart().getBoundType() == BoundType.POST) {
-//			kick(9001, largerInterval.getStart().getAngle() + 5);
-//		} else if (largerInterval.getEnd().getBoundType() == BoundType.POST) {
-//			kick(9001, largerInterval.getEnd().getAngle() - 5);
-//		} else {
-//			kick(9001, largerInterval.getMidAngle());
-//		}
+		System.out.println("intervallo tra" + largerInterval.getStart().getAngle() + " - " + "");
+
+		// if (largerInterval.getStart().getBoundType() == BoundType.POST) {
+		// kick(9001, largerInterval.getStart().getAngle() + 5);
+		// } else if (largerInterval.getEnd().getBoundType() == BoundType.POST)
+		// {
+		// kick(9001, largerInterval.getEnd().getAngle() - 5);
+		// } else {
+		// kick(9001, largerInterval.getMidAngle());
+		// }
 	}
 
 	public void forwardToGoal() throws Exception {
@@ -265,9 +273,13 @@ public class Action {
 	 * 
 	 * @post The ball has been kicked to the forward.
 	 */
-	public void passBall(ObjBall ball, ObjPlayer p) throws UnknownHostException {
-		player.getRoboClient().say("pass" + p.getuNum());
-		kickToPoint(ball, MathHelp.getNextPlayerPoint(p));
+	public boolean passBall(ObjBall ball, ObjPlayer p) throws UnknownHostException {
+		if (p != null) {
+			// player.getRoboClient().say("pass" + p.getuNum());
+			kickToPoint(ball, MathHelp.getNextPlayerPoint(p));
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -292,7 +304,7 @@ public class Action {
 				interceptBall(ball);
 			} else if (ball.getDistance() <= 0.7) {
 				// kickToPoint(ball, new Pos(0,0));
-				passBall(ball, closestPlayer());
+				passBall(ball, closestTeammate());
 			}
 		} else
 			player.getRoboClient().turn(30);
@@ -314,11 +326,13 @@ public class Action {
 			return false;
 		else if (stayInBounds()) {
 			gotoPoint(p);
+
 			// player.getRoboClient().dash(MathHelp.getDashPower(MathHelp.getPos(p),
 			// player.getMemory().getAmountOfSpeed(),
 			// player.getMemory().getDirection(),
 			// player.getMemory().getEffort(),
 			// player.getMemory().getStamina()));
+
 		}
 		return true;
 	}
@@ -827,6 +841,26 @@ public class Action {
 		}
 	}
 
+	public void smartKick(String flagLeft, String flagRight) throws UnknownHostException, InterruptedException {
+		double leftFlagDirection = player.getMemory().getFlag(flagLeft).getDirection();
+		double rightFlagDirection = player.getMemory().getFlag(flagRight).getDirection();
+
+		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents(player.getRoboClient().getTeam());
+		double playerSize = 0.7;
+
+		GoalView goalView = KickMathUtility.getGoalView(leftFlagDirection, rightFlagDirection, otherPlayers,
+				playerSize);
+
+		ViewInterval largerInterval = goalView.getLargerInterval();
+		if (largerInterval.getStart().getBoundType() == BoundType.POST) {
+			kick(9001, largerInterval.getStart().getAngle() + 5);
+		} else if (largerInterval.getEnd().getBoundType() == BoundType.POST) {
+			kick(9001, largerInterval.getEnd().getAngle() - 5);
+		} else {
+			kick(9001, largerInterval.getMidAngle());
+		}
+	}
+
 	/**
 	 * Returns the closest opponent to the player
 	 * 
@@ -870,34 +904,43 @@ public class Action {
 		return closestOpponent;
 	}
 
-	/**
-	 * Returns the closest player to the FullBack on the same team.
-	 * 
-	 * @post The closest player to the FullBack has been determined.
-	 * @return ObjPlayer
-	 * @throws InterruptedException
-	 * @throws UnknownHostException
-	 */
-	public ObjPlayer closestPlayer() throws UnknownHostException, InterruptedException {
-		ObjPlayer closestPlayer = new ObjPlayer();
-		double distance = 0;
+	public ObjPlayer closestTeammate() throws UnknownHostException, InterruptedException {
 
-		// Loop through arraylist of ObjPlayers
+		if (player.getMemory().getPlayers() == null)
+			return null;
+
+		ObjPlayer closestPlayer = null;
+		double distance = 100;
+		String playerTeam = "\"" + player.getRoboClient().getTeam() + "\"";
+
+		System.out.println("Teammates " + player.getMemory().getPlayers().size());
+
 		for (int i = 0; i < player.getMemory().getPlayers().size(); ++i) {
-			if (player.getMemory().getPlayers().isEmpty()) {
-				turn(30);
-			}
-
-			if (!player.getMemory().getPlayers().isEmpty()) {
-				if (distance == 0
-						&& player.getMemory().getPlayers().get(i).getTeam() == player.getRoboClient().getTeam()) {
-					distance = player.getMemory().getPlayers().get(i).getDistance();
-				} else {
-					// Test if this player is closer than the previous one
-					if (distance > player.getMemory().getPlayers().get(i).getDistance()
-							&& player.getMemory().getPlayers().get(i).getTeam() == player.getRoboClient().getTeam()) {
-						distance = player.getMemory().getPlayers().get(i).getDistance();
-						closestPlayer = player.getMemory().getPlayers().get(i);
+			// <<<<<<< HEAD
+			// if (player.getMemory().getPlayers().isEmpty()) {
+			// turn(30);
+			// }
+			//
+			// if (!player.getMemory().getPlayers().isEmpty()) {
+			// if (distance == 0
+			// && player.getMemory().getPlayers().get(i).getTeam() ==
+			// player.getRoboClient().getTeam()) {
+			// distance = player.getMemory().getPlayers().get(i).getDistance();
+			// } else {
+			// // Test if this player is closer than the previous one
+			// if (distance >
+			// player.getMemory().getPlayers().get(i).getDistance()
+			// && player.getMemory().getPlayers().get(i).getTeam() ==
+			// player.getRoboClient().getTeam()) {
+			// distance = player.getMemory().getPlayers().get(i).getDistance();
+			// closestPlayer = player.getMemory().getPlayers().get(i);
+			// =======
+			ObjPlayer currentPlayer = player.getMemory().getPlayers().get(i);
+			if (currentPlayer.getuNum() != 0 && currentPlayer.getTeam() != null) {
+				if (currentPlayer.getTeam().equals(playerTeam)) {
+					if (currentPlayer.getDistance() < distance) {
+						closestPlayer = currentPlayer;
+						distance = currentPlayer.getDistance();
 					}
 				}
 			}
@@ -906,39 +949,11 @@ public class Action {
 		return closestPlayer;
 	}
 
-	/**
-	 * Follows opposing players on defense (Currently unused)
-	 * 
-	 * @throws Exception
-	 */
-	// public void runDefense() throws UnknownHostException,
-	// InterruptedException {
-	// ai.setDefensive();
-	//
-	// while (closestOpponent() == null){
-	// turn(15);
-	// Thread.sleep(100);
-	// }
-	//
-	// //System.out.println("Closest Opponent: " + closestOpponent().getTeam() +
-	// " " + closestOpponent().getuNum());
-	// action.gotoPoint(getMemory().getMathHelp().getNextPlayerPoint(closestOpponent()));
-	//
-	// if (getMemory().isObjVisible("player")) {
-	// markOpponent(getMemory().getPlayer().getTeam(),
-	// Integer.toString(getMemory().getPlayer().getuNum()));
-	// //System.out.println("Marked Player " + ai.getMarked_team() + " " +
-	// ai.getMarked_unum());
-	// }
-	// }
-	public void runDefense() throws Exception {
-		if (!inFullBackZone()) {
-			goHome();
-		}
-
-		FullBack_findBall();
-	}
-
+	// non credo vada poichè se parti da destra il server ti manda valori negativi
+	// per la tua side quindi non serve fare distizioni tra le side
+	// per questo nella classe field ho commentato l'inizializzazione delle flag
+	// penso che ci sia stato qualche aggiornamento da quando questo framework sia stato creato
+	// anche per questo tutti i metodi di closestFlag ecc.. non funzionano bene
 	public Boolean isBallInOurField() {
 		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
 			ObjBall objBall = player.getMemory().getBall();
@@ -950,6 +965,7 @@ public class Action {
 			if (player.getMemory().getSide().equals("l")) {
 				// if(ballPos.x <= 0)
 				// System.out.println("--- Ball in left field ---");
+
 				return ballPos.x <= 0;
 			}
 

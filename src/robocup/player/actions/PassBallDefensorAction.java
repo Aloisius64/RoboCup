@@ -1,8 +1,11 @@
 package robocup.player.actions;
 
+import java.net.UnknownHostException;
+
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
+import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
 import robocup.utility.Position;
 
@@ -60,14 +63,28 @@ public class PassBallDefensorAction extends GoapAction {
 		//		avversari e alcuni compagni sono in zone più
 		//		libere rispetto a lui.
 
-		System.out.println("Performing "+getClass().getSimpleName());
+//		System.out.println("Performing "+getClass().getSimpleName());
 		
 		AbstractPlayer player = (AbstractPlayer) agent;
 		ballPassed = true;
 
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
-			player.getAction().kickToPoint(ball, new Position(0,0));
+			ObjPlayer closestPlayer = null;
+			try {
+				closestPlayer = player.getAction().closestTeammate();
+				if(closestPlayer!=null){
+					System.out.println("Try to pass to player: "+closestPlayer.getuNum());
+					return player.getAction().passBall(ball, closestPlayer);
+				} else {
+					player.getAction().kickToPoint(ball, new Position(0,0));
+				}
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 			return true;
 		}
 		

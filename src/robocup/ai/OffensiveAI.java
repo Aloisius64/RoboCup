@@ -31,7 +31,7 @@ public class OffensiveAI extends AbstractAI {
 				try {
 					if (getPlayer().getMemory().getPlayMode().compareTo("play_on") == 0) {
 						getPlayer().getAction().forwardToGoal();
-						getPlayer().setTime(getPlayer().getTime() + 1);
+						//getPlayer().setTime(getPlayer().getTime() + 1);
 					}
 
 				} catch (Exception e) {

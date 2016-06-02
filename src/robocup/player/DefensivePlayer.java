@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.Queue;
 
 import robocup.goap.GoapAction;
-import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
-import robocup.player.actions.ShootBallDefensorAction;
 import robocup.player.actions.StoleBallDefensorAction;
 
 public class DefensivePlayer extends AbstractPlayer{
@@ -29,22 +27,22 @@ public class DefensivePlayer extends AbstractPlayer{
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player "+getMemory().getuNum()+" - Plan failed");
+		//		System.err.println("Player "+getMemory().getuNum()+" - Plan failed");
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.err.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
+		//		System.err.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
 	public void actionsFinished() {
-		System.err.println("Player "+getMemory().getuNum()+" - Actions finished");
+		//		System.err.println("Player "+getMemory().getuNum()+" - Actions finished");
 	}
 
 	@Override
 	public void planAborted(GoapAction aborter) {
-//		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
+		//		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
 	}
 
 	@Override
@@ -52,10 +50,8 @@ public class DefensivePlayer extends AbstractPlayer{
 		HashMap<String, Boolean> worldState = new HashMap<>();
 
 		// Set worldState from player memory
-		if(getAction()!=null){
-			worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
-			worldState.put(GoapGlossary.BALL_CATCHED, false);
-		}
+		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
+		worldState.put(GoapGlossary.BALL_CATCHED, false);
 
 		return worldState;
 	}
@@ -77,11 +73,11 @@ public class DefensivePlayer extends AbstractPlayer{
 		List<GoapAction> actions = new ArrayList<>();
 
 		actions.add(new IdleAction());
-		actions.add(new ShootBallDefensorAction());
+		//		actions.add(new ShootBallDefensorAction());
 		actions.add(new PassBallDefensorAction());
 		actions.add(new StoleBallDefensorAction());
-//		actions.add(new GoToMoreFreePlaceAction());
-//		actions.add(new MarkPlayerAction());
+		//		actions.add(new GoToMoreFreePlaceAction());
+		//		actions.add(new MarkPlayerAction());
 
 		return actions;
 	}

@@ -12,6 +12,7 @@ package robocup.memory;
  *
  */
 import java.util.ArrayList;
+import java.util.List;
 
 import robocup.objInfo.ObjBall;
 import robocup.objInfo.ObjFlag;
@@ -33,8 +34,6 @@ public class Memory {
 	private Field field;
 	private Position home;
 	private Position current = new Position();
-	private ArrayList<ObjPlayer> teammates = new ArrayList<ObjPlayer>();
-	private ArrayList<ObjPlayer> opponents = new ArrayList<ObjPlayer>();
 	/**
 	 * The memory that stores all parsed ObjInfo
 	 */
@@ -668,22 +667,6 @@ public class Memory {
 		this.hearMemory = hearMemory;
 	}
 
-	public ArrayList<ObjPlayer> getTeammates() {
-		return teammates;
-	}
-
-	public void setTeammates(ArrayList<ObjPlayer> teammates) {
-		this.teammates = teammates;
-	}
-
-	public ArrayList<ObjPlayer> getOpponents() {
-		return opponents;
-	}
-
-	public void setOpponents(ArrayList<ObjPlayer> opponents) {
-		this.opponents = opponents;
-	}
-
 	public boolean isHome() {
 		return home.equals(current);
 	}
@@ -742,6 +725,19 @@ public class Memory {
 
 	public void setHome(Position home) {
 		this.home = home;
+	}
+
+	public List<ObjPlayer> getOpponents(String myTeam) {
+		ArrayList<ObjPlayer> players = new ArrayList<ObjPlayer>();
+		for (int i = 0; i < getObjMemory().getSize(); i++) {
+			if (getObj(i).getObjName().compareTo("player") == 0) {
+				ObjPlayer playerToAdd = (ObjPlayer) getObj(i);
+				if(!playerToAdd.getTeam().equals(myTeam)){
+					players.add(playerToAdd);
+				}
+			}            
+		}
+		return players;
 	}
 
 }
