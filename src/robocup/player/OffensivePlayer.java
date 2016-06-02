@@ -26,14 +26,14 @@ public class OffensivePlayer extends AbstractPlayer {
 
 	public OffensivePlayer() {
 		super("st");
-		AbstractAI ai = new OffensiveAI(this);
-		ai.start();
+//		AbstractAI ai = new OffensiveAI(this);
+//		ai.start();
 	}
 	
 	public OffensivePlayer(String team) {
 		super(team);
-		AbstractAI ai = new OffensiveAI(this);
-		ai.start();
+//		AbstractAI ai = new OffensiveAI(this);
+//		ai.start();
 	}
 
 	/********************************************/
