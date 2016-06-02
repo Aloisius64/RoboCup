@@ -1,10 +1,10 @@
 package robocup.player;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import robocup.ai.OffensiveAI;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.player.actions.MarkPlayerAction;
@@ -13,22 +13,27 @@ import robocup.player.actions.SearchBallAction;
 import robocup.player.actions.StoleBallAttackerAction;
 import robocup.player.actions.TryToScoreAction;
 
-/** @class Forward (currently unused)
- * The Forward class inherits from the Player class.  The Forward is a specialized
- * type of Player that focuses on offensive behaviors such as scoring and ball interception.
+/**
+ * @class Forward (currently unused) The Forward class inherits from the Player
+ *        class. The Forward is a specialized type of Player that focuses on
+ *        offensive behaviors such as scoring and ball interception.
  */
-public class OffensivePlayer extends AbstractPlayer{
+public class OffensivePlayer extends AbstractPlayer {
 
 	public OffensivePlayer() {
-		super();
+		super("st");
+		ai = new OffensiveAI(this);
+		ai.start();
 	}
 
 	public OffensivePlayer(String team) {
 		super(team);
+		ai = new OffensiveAI(this);
+
 	}
 
 	/********************************************/
-	/* 			IGoap implementations 			*/
+	/* IGoap implementations */
 	/********************************************/
 
 	@Override
@@ -46,8 +51,8 @@ public class OffensivePlayer extends AbstractPlayer{
 
 		goal.put(GoapGlossary.TRY_TO_SCORE, true);
 
-		//	Il goal dipende dal tipo di play mode
-		//	cambiarlo in base alla modalit� di gioco
+		// Il goal dipende dal tipo di play mode
+		// cambiarlo in base alla modalit� di gioco
 
 		return goal;
 	}
@@ -64,26 +69,22 @@ public class OffensivePlayer extends AbstractPlayer{
 
 		return actions;
 	}
-	
+
 	@Override
 	public void run() {
 		while (true) {
+
 			try {
+
 				receiveInput();
-				Thread.sleep(50);
-				
-				
-				getAction().forwardToGoal();
-			} catch (UnknownHostException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				Thread.sleep(50);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-	
+
 	}
 
 }

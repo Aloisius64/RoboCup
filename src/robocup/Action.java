@@ -142,10 +142,13 @@ public class Action {
 	public void forwardToGoal() throws Exception {
 		if (getMemory().getPlayMode().equals("play_on")) {
 			if (getMemory().isObjVisible("ball")) {
+
 				ObjBall ball = getMemory().getBall();
-				Pos ballPos = getMemory().getBallPos(ball);
-				System.out.println("step " + getMemory().getObjMemory().getTime() + " " + ballPos.x + " " + ballPos.x);
+				// System.out.println("step " +
+				// getMemory().getObjMemory().getTime() + " " + ballPos.x + " "
+				// + ballPos.x);
 				if (getMemory().getOppGoal() != null && getMemory().getOppGoal().getDistance() < 20.0) {
+					System.out.println("i am in the shooting area");
 					if (getMemory().seeOpponentPost() == Field.NO_LEFT_POST) {
 						turn(-30.0);
 					} else if (getMemory().seeOpponentPost() == Field.NO_RIGHT_POST) {
@@ -163,19 +166,22 @@ public class Action {
 						}
 					}
 				} else {
+
 					if (ball.getDistance() < 0.7) {
+
 						if (getMemory().getOppGoal() != null)
-							kick(10, getMemory().getOppGoal().getDirection());
+							kick(30, getMemory().getOppGoal().getDirection());
 						else {
 							turn(30.0);
 						}
 					} else {
-						turn(ball.getDirection());
-						dash(100);
+						System.out.println("ball near");
+						// turn(ball.getDirection());
+						dash(10);
 					}
 				}
 			} else {
-				getRoboClient().turn(30.0);
+				turn(30.0);
 			}
 		}
 	}
@@ -188,10 +194,11 @@ public class Action {
 	 * @throws Exception
 	 */
 	public void findBall() throws Exception {
-		if (memory.isObjVisible("ball")) {
+		if (player.getMemory().isObjVisible("ball")) {
+			System.out.println("vedo la palla");
 			ObjBall ball = memory.getBall();
 			if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
-				roboClient.turn(ball.getDirection() * (1 + (5 * memory.getAmountOfSpeed())));
+				turn(ball.getDirection() * (1 + (5 * memory.getAmountOfSpeed())));
 				Thread.sleep(100);
 			}
 
@@ -200,6 +207,7 @@ public class Action {
 			if ((ballPos.x > 52) || (ballPos.x < -20) || (ballPos.y > (memory.getHome().y + 6.4))
 					|| (ballPos.y < (memory.getHome().y - 6.4))) {
 				gotoSidePoint(new Pos(memory.getBallPos(ball).x, memory.getHome().y));
+
 			} else if ((ballPos.x <= 52) && (ballPos.x >= -20) && (ballPos.y <= (memory.getHome().y + 6.4))
 					&& (ballPos.y >= (memory.getHome().y - 6.4)) && (ball.getDistance() > 0.7)) {
 				interceptBall(ball);
@@ -208,8 +216,10 @@ public class Action {
 			}
 			// Receive pass if hear call from other player
 			// TODO
-		} else
-			roboClient.turn(30);
+		} else {
+
+			//turn(30);
+		}
 	}
 
 	/**
@@ -386,11 +396,12 @@ public class Action {
 	 * 
 	 * @param ball
 	 * @throws UnknownHostException
+	 * @throws InterruptedException
 	 * 
 	 * @pre The ball should not be null
 	 * @post This will result in a dribble and a shoot
 	 */
-	public void dribbleToGoal(ObjBall ball) throws UnknownHostException {
+	public void dribbleToGoal(ObjBall ball) throws UnknownHostException, InterruptedException {
 		if (stayInBounds()) {
 			ObjGoal goal = memory.getOppGoal();
 
@@ -400,6 +411,15 @@ public class Action {
 			} else if ((goal != null) && (memory.getPosition().x >= 35.0)) {
 				System.out.println("Ready to shoot");
 				kickToGoal(ball);
+				if (getMemory().getSide().equals("l")) {
+					String flagLeft = "fgrt";
+					String flagRight = "fgrb";
+					smartKick(flagLeft, flagRight);
+				} else {
+					String flagLeft = "fglb";
+					String flagRight = "fglt";
+					smartKick(flagLeft, flagRight);
+				}
 			} else if (goal == null) {
 				roboClient.kick(5.0, memory.getNullGoalAngle());
 			}
