@@ -67,7 +67,7 @@ public class Memory {
 	 * The Pos of the coordinates of the opponents goal
 	 */
 	@SuppressWarnings("unused")
-	private Position oppGoal;	
+	private Position oppGoal;
 
 	/**
 	 * The default constructor for the Memory.
@@ -110,8 +110,9 @@ public class Memory {
 	 * This fetches the ObjInfo at index i of the ArrayList ObjArray in
 	 * ObjMemory, and returns it as an ObjInfo.
 	 *
-	 * @param i the index number of the location of the desired ObjInfo in
-	 * ObjArray
+	 * @param i
+	 *            the index number of the location of the desired ObjInfo in
+	 *            ObjArray
 	 * @pre An index needs to be supplied when calling this
 	 * @post A basic ObjInfo will be given.
 	 * @return ObjInfo the ObjInfo at location i of the ObjArray
@@ -135,9 +136,10 @@ public class Memory {
 	/**
 	 * Is this ObjInfo visible?
 	 *
-	 * @param name the ObjName of the ObjInfo we're detecting visibility of
+	 * @param name
+	 *            the ObjName of the ObjInfo we're detecting visibility of
 	 * @return true if the ball is in the ObjMemory, false if it is not or if
-	 * the the ObjMemory is empty
+	 *         the the ObjMemory is empty
 	 */
 	public boolean isObjVisible(String name) {
 		if (getObjMemory().getSize() == 0) {
@@ -152,12 +154,16 @@ public class Memory {
 		}
 	}
 
+	public boolean isGoalVisible() {
+		return getOppGoal() != null;
+	}
+
 	/**
 	 * The Ball Getter
 	 *
 	 * @pre Make sure you either check visibility first
 	 * @post If the ball is in the Memory, it will be returned. Otherwise a Null
-	 * ObjBall will be sent.
+	 *       ObjBall will be sent.
 	 * @return ObjBall containing the ball
 	 */
 	public ObjBall getBall() {
@@ -171,7 +177,7 @@ public class Memory {
 
 	public Position getBallPos(ObjBall b) {
 		Position pt = MathHelp.vAdd(getPosition(), MathHelp.getPos(b.getDistance(), b.getDirection() + getDirection()));
-		//pt.print("Ball Pos: ");
+		// pt.print("Ball Pos: ");
 		return (pt);
 	}
 
@@ -184,7 +190,7 @@ public class Memory {
 	 *
 	 * @pre Make sure you either check visibility first
 	 * @post If the flag is in the Memory, it will be returned. Otherwise a Null
-	 * ObjFlag will be sent.
+	 *       ObjFlag will be sent.
 	 * @return ObjFlag containing the flag with specified name
 	 */
 	public ObjFlag getFlag(String name) {
@@ -192,12 +198,27 @@ public class Memory {
 		for (int i = 0; i < getObjMemory().getSize(); i++) {
 			if (getObj(i).getObjName().compareTo("flag") == 0) {
 				newFlag = (ObjFlag) getObj(i);
+				if (newFlag.getFlagName().compareTo(name) == 0) {
+					return newFlag;
+				}
 			}
-			if (newFlag.getFlagName().compareTo(name) == 0) {
-				return newFlag;
-			}
+			
 		}
 		return null;
+	}
+
+	public ObjFlag getRightPost() {
+		if (side.equals("l"))
+			return getFlag("fgrt");
+		else
+			return getFlag("fglt");
+	}
+
+	public ObjFlag getLeftPost() {
+		if (side.equals("l"))
+			return getFlag("fgrb");
+		else
+			return getFlag("fglb");
 	}
 
 	/**
@@ -206,7 +227,7 @@ public class Memory {
 	 * This will get the Opponent's ObjGoal if it's in your field of vision.
 	 *
 	 * @post If you're facing the opponenet's goal, an ObjGoal with it's
-	 * information will be returned. Otherwise a null ObjGoal will be sent
+	 *       information will be returned. Otherwise a null ObjGoal will be sent
 	 * @return ObjGoal containing the goal if it's in your vision, null if not
 	 */
 	public ObjGoal getOppGoal() {
@@ -238,7 +259,7 @@ public class Memory {
 	 * This will get your own ObjGoal if it's in your field of vision.
 	 *
 	 * @post If you're facing your goal, an ObjGoal with it's information will
-	 * be returned. Otherwise a null ObjGoal will be sent
+	 *       be returned. Otherwise a null ObjGoal will be sent
 	 * @return ObjGoal containing the goal if it's in your vision, null if not
 	 */
 	public ObjGoal getOwnGoal() {
@@ -299,12 +320,14 @@ public class Memory {
 	 * can be used to ensure that more than one action will not be attempted
 	 * during a single simulation step.
 	 *
-	 * @param t the Player's local time
+	 * @param t
+	 *            the Player's local time
 	 * @pre A player's local time must be initialized and passed in
 	 * @post The player's local time needs to be set to the Memory's time after
-	 * a true is returned.
+	 *       a true is returned.
 	 * @return true if the newly parsed Memory's time is greater than the
-	 * players local time. False if the memory time is <= the local time.
+	 *         players local time. False if the memory time is <= the local
+	 *         time.
 	 */
 	public boolean timeCheck(int t) {
 		if (t < getObjMemory().getTime()) {
@@ -324,7 +347,7 @@ public class Memory {
 		for (int i = 0; i < getObjMemory().getSize(); i++) {
 			if (getObj(i).getObjName().compareTo("player") == 0) {
 				players.add((ObjPlayer) getObj(i));
-			}            
+			}
 		}
 		return players;
 	}
@@ -408,7 +431,7 @@ public class Memory {
 		double r = Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2));
 		double t = (Math.toDegrees(Math.atan2(p.y, p.x)) - getDirection());
 		Polar n = new Polar(r, t);
-		//n.print("AbsPolar: ");
+		// n.print("AbsPolar: ");
 		return (n);
 	}
 
@@ -526,13 +549,14 @@ public class Memory {
 	 * found from the closest line.
 	 *
 	 * @return Pos containing the coordinate on the field of the player's
-	 * absolute position
+	 *         absolute position
 	 */
 	public Position getPosition() {
 
 		ObjFlag flag = getClosestFlag();
 
-		//System.out.println("getPosition flag: (" + flag.getDistance() + ", " + flag.getDirection() + ")");
+		// System.out.println("getPosition flag: (" + flag.getDistance() + ", "
+		// + flag.getDirection() + ")");
 		{
 
 			Position flagCoord = getFlagPos(flag.getFlagName());

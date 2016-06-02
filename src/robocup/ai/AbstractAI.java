@@ -31,6 +31,7 @@ public abstract class AbstractAI extends Thread {
 	 * @pre RoboCup server is active.
 	 * @post Player will exhibit soccer behaviors.
 	 */
+
 	@Override
 	public void run() {
 		while (true) {	
@@ -181,7 +182,7 @@ public abstract class AbstractAI extends Thread {
 	//			}
 	//		}
 	//	}
-
+	
 	public Mode getCurrentMode() {
 		return currentMode;
 	}
