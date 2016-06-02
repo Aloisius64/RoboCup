@@ -19,7 +19,7 @@ package robocup.utility;
  * players and objects
  *
  */
-public class Pos {
+public class Position {
 
 	/**
 	 * Default constructor
@@ -28,7 +28,7 @@ public class Pos {
 	 * pointer error
 	 * 
 	 */
-	public Pos() {
+	public Position() {
 		name = " ";
 		x = 0.0;
 		y = 0.0;
@@ -44,7 +44,7 @@ public class Pos {
 	 * @param x x-coordinate
 	 * @param y y-coordinate
 	 */
-	public Pos(String name, double x, double y) {
+	public Position(String name, double x, double y) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -59,7 +59,7 @@ public class Pos {
 	 * @param x x-coordinate
 	 * @param y y-coordinate
 	 */
-	public Pos(double x, double y) {
+	public Position(double x, double y) {
 		this.x = x;
 		this.y = y;
 		name = " ";

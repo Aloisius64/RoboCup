@@ -2,6 +2,9 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.player.AbstractPlayer;
+import robocup.utility.Position;
 
 /*
 SHOOT_BALL (Passaggio lungo oltre la metà campo) **
@@ -54,6 +57,17 @@ public class ShootBallDefensorAction extends GoapAction {
 	public boolean perform(Object agent) {
 		//		La palla è calciata oltre la metà campo 
 		//		verso un proprio compagno
+		System.out.println("Performing "+getClass().getSimpleName());
+		
+		AbstractPlayer player = (AbstractPlayer) agent;
+		ballShooted = true;
+
+		if (player.getMemory().isObjVisible("ball")) {
+			ObjBall ball = player.getMemory().getBall();
+			player.getAction().kickToPoint(ball, new Position(0,0));
+			return true;
+		}
+		
 		return false;
 	}
 

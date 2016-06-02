@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public abstract class GoapAction {
 
-    private HashMap<String, Object> preconditions;
-    private HashMap<String, Object> effects;
+    private HashMap<String, Boolean> preconditions;
+    private HashMap<String, Boolean> effects;
 
     /* The cost of performing the action. 
 	 * Figure out a weight that suits the action. 
@@ -13,25 +13,13 @@ public abstract class GoapAction {
      */
     private float cost;
 
-    /**
-	 * An action often has to perform on an object. This is that object. Can be null. 
-     */
-    public Object target;
-
-    public GoapAction() {
-        preconditions = new HashMap<>();
-        effects = new HashMap<>();
-        cost = 1.0f;
+    public GoapAction(float cost) {
+        this.cost = cost;
+		preconditions = new HashMap<>();
+        effects = new HashMap<>();        
     }
     
-    public GoapAction(float cost) {
-		preconditions = new HashMap<>();
-        effects = new HashMap<>();
-        this.cost = cost;
-    }
-
     public void doReset() {
-        target = null;
         reset();
     }
 
@@ -59,7 +47,7 @@ public abstract class GoapAction {
 	 */
     public abstract boolean perform(Object agent);
         
-    public void addPrecondition(String key, Object value) {
+    public void addPrecondition(String key, Boolean value) {
         preconditions.put(key, value);
     }
 
@@ -67,7 +55,7 @@ public abstract class GoapAction {
     	preconditions.remove(key);
     }
 
-    public void addEffect(String key, Object value) {
+    public void addEffect(String key, Boolean value) {
         effects.put(key, value);
     }
 
@@ -75,11 +63,11 @@ public abstract class GoapAction {
     	effects.remove(key);
     }
 
-	public HashMap<String, Object> getPreconditions() {
+	public HashMap<String, Boolean> getPreconditions() {
 		return preconditions;
 	}
 
-	public HashMap<String, Object> getEffects() {
+	public HashMap<String, Boolean> getEffects() {
 		return effects;
 	}
 

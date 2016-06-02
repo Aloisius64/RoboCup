@@ -2,6 +2,9 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.player.AbstractPlayer;
+import robocup.utility.Position;
 
 /*
 PASS_BALL *****************************************
@@ -41,7 +44,7 @@ public class PassBallDefensorAction extends GoapAction {
 
 	@Override
 	public boolean isDone() {
-		return ballPassed = false;
+		return ballPassed;
 	}
 
 	@Override
@@ -56,6 +59,18 @@ public class PassBallDefensorAction extends GoapAction {
 		//		giocatore è ostacolato da un certo numero di
 		//		avversari e alcuni compagni sono in zone più
 		//		libere rispetto a lui.
+
+		System.out.println("Performing "+getClass().getSimpleName());
+		
+		AbstractPlayer player = (AbstractPlayer) agent;
+		ballPassed = true;
+
+		if (player.getMemory().isObjVisible("ball")) {
+			ObjBall ball = player.getMemory().getBall();
+			player.getAction().kickToPoint(ball, new Position(0,0));
+			return true;
+		}
+		
 		return false;
 	}
 

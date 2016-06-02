@@ -8,7 +8,7 @@ public class ActionB extends GoapAction {
 	private boolean done = false;
 	
 	public ActionB() {
-		super();
+		super(1.0f);
 		addPrecondition(GoapGlossary.P_B, true);
 		addEffect(GoapGlossary.GOAL, true);
 	}

@@ -3,6 +3,7 @@ package robocup.player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Queue;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
@@ -12,17 +13,12 @@ import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallGoalieAction;
 import robocup.player.actions.ShootBallGoalieAction;
 
-/** @class Goalie
- * The Goalie class inherits from the Player class.  The Goalie is a specialized
- * type of Player that may catch the ball under certain conditions and defends the goal
- * from the opposing team. 
- */
 public class GoalierPlayer extends AbstractPlayer {
 
-	public GoalierPlayer() {
+	public GoalierPlayer(){
 		super();
-	}
-
+	}	
+	
 	public GoalierPlayer(String team){
 		super(team);
 	}
@@ -32,17 +28,38 @@ public class GoalierPlayer extends AbstractPlayer {
 	/********************************************/
 	
 	@Override
-	public HashMap<String, Object> getWorldState() {
-		HashMap<String, Object> worldState = new HashMap<>();
+	public void planFailed(HashMap<String, Boolean> failedGoal) {
+	
+	}
+
+	@Override
+	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
+	
+	}
+
+	@Override
+	public void actionsFinished() {
+	
+	}
+
+	@Override
+	public void planAborted(GoapAction aborter) {
+	
+	}
+	
+	@Override
+	public HashMap<String, Boolean> getWorldState() {
+		HashMap<String, Boolean> worldState = new HashMap<>();
 
 		// Set worldState from player memory
+		worldState.put(GoapGlossary.KEEP_AREA_SAFE, true);
 		
 		return worldState;
 	}
 
 	@Override
-	public HashMap<String, Object> createGoalState() {
-		HashMap<String, Object> goal = new HashMap<>();
+	public HashMap<String, Boolean> createGoalState() {
+		HashMap<String, Boolean> goal = new HashMap<>();
 
 		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
 		

@@ -3,22 +3,17 @@ package robocup.player;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Queue;
 
 import robocup.Action;
-import robocup.ai.AbstractAI;
-import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.IGoap;
 import robocup.memory.Memory;
 import robocup.network.RoboClient;
 import robocup.objInfo.ObjInfo;
-import robocup.utility.MathHelp;
 import robocup.utility.Parser;
-import robocup.utility.Pos;
+import robocup.utility.Position;
 
-/** @class Player
+/**
  * The Player class defines all objects and methods used for the 
  * Player within the RoboCup match.  The Player establishes a connection
  * to the server, initializes itself on the team, and 
@@ -35,13 +30,10 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	protected Parser parser;
 	protected Action action;
 	protected int time;
-	protected MathHelp mathHelp;
-	protected boolean wait;
 	protected String position;
-	protected AbstractAI ai;
-	protected GoapAgent agent;	
+	private GoapAgent agent;
 
-	public AbstractPlayer() {
+	public AbstractPlayer(){
 		super();
 		init();
 	}
@@ -57,19 +49,17 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.memory = new Memory();
 		this.objInfo = new ObjInfo();
 		this.parser = new Parser();
-		this.action = new Action(memory, roboClient, this);
+		this.action = new Action(this);
 		this.time = 0;
-		this.mathHelp = new MathHelp();
-		this.wait = true;
 		this.position = "left";
-		this.agent = new GoapAgent(this);
+		this.setAgent(new GoapAgent(this));
 	}
 
 	public void initPlayer(double x, double y, String pos) throws SocketException, UnknownHostException {
 		position = pos;
 		roboClient.setDsock(new DatagramSocket());
 		roboClient.init(getParser(), getMemory());
-		getMemory().setHome(new Pos(x, y));
+		getMemory().setHome(new Position(x, y));
 
 		try {
 			getAction().move(x, y);
@@ -85,7 +75,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	public void initPlayer(double x, double y) throws SocketException, UnknownHostException {
 		roboClient.setDsock(new DatagramSocket());
 		roboClient.init(getParser(), getMemory());
-		getMemory().setHome(new Pos(x, y));
+		getMemory().setHome(new Position(x, y));
 
 		try {
 			getAction().move(x, y);
@@ -106,43 +96,24 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	public void receiveInput() throws InterruptedException  {		
 		parser.Parse(roboClient.receive(), memory);
 	}
-	
+
 	@Override
 	public void run() {
 		while(true) {
+
 			try {
 				receiveInput();
+				//				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			// GOAP update
-			//agent.update();
+			if(getMemory().timeCheck(getTime())) {
+				setTime(getMemory().getObjMemory().getTime());
+				getAgent().update();
+			}
+
 		}
-	}
-
-	/********************************************/
-	/* 			IGoap implementations 			*/
-	/********************************************/
-
-	@Override
-	public void planFailed(HashMap<String, Object> failedGoal) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan failed");
-	}
-
-	@Override
-	public void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
-	}
-
-	@Override
-	public void actionsFinished() {
-		System.out.println("Player "+getMemory().getuNum()+" - Actions finished");
-	}
-
-	@Override
-	public void planAborted(GoapAction aborter) {
-		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
 	}
 
 	/********************************************/
@@ -153,7 +124,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		return (getMemory().getDirection());
 	}
 
-	public Pos getHome() {
+	public Position getHome() {
 		return getMemory().getHome();
 	}
 
@@ -209,23 +180,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.time = time;
 	}
 
-	public MathHelp getMathHelp() {
-		return mathHelp;
-	}
-
-	public void setMathHelp(MathHelp mathHelp) {
-		this.mathHelp = mathHelp;
-	}
-
-	public boolean isWait() {
-		return wait;
-	}
-
-	public void setWait(boolean wait) {
-		this.wait = wait;
-	}
-
-	public Pos getPosition() {
+	public Position getPosition() {
 		return (getMemory().getPosition());
 	}
 
@@ -237,12 +192,12 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.position = position;
 	}
 
-	public AbstractAI getAi() {
-		return ai;
+	public GoapAgent getAgent() {
+		return agent;
 	}
 
-	public void setAi(AbstractAI brain) {
-		this.ai = brain;
+	public void setAgent(GoapAgent agent) {
+		this.agent = agent;
 	}
-
+	
 }

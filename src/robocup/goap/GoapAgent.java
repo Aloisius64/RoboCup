@@ -61,8 +61,8 @@ public class GoapAgent {
 			public void update(FSM fsm, Object object) {
 
 				// get the world state and the goal we want to plan for
-				HashMap<String, Object> worldState = dataProvider.getWorldState();
-				HashMap<String, Object> goal = dataProvider.createGoalState();
+				HashMap<String, Boolean> worldState = dataProvider.getWorldState();
+				HashMap<String, Boolean> goal = dataProvider.createGoalState();
 
 				// Plan
 				Queue<GoapAction> plan = planner.plan(object, availableActions, worldState, goal);
@@ -155,7 +155,7 @@ public class GoapAgent {
 	public static String prettyPrint(Queue<GoapAction> actions) {
 		String s = "";
 		for (GoapAction action : actions) {
-			s += action.getClass().getName();
+			s += action.getClass().getSimpleName();
 			s += "-> ";
 		}
 		s += "GOAL";
@@ -165,14 +165,14 @@ public class GoapAgent {
 	public static String prettyPrint(List<GoapAction> actions) {
 		String s = "";
 		for (GoapAction action : actions) {
-			s += action.getClass().getName();
+			s += action.getClass().getSimpleName();
 			s += ", ";
 		}
 		return s;
 	}
 
 	public static String prettyPrint(GoapAction action) {
-		String s = "" + action.getClass().getName();
+		String s = "" + action.getClass().getSimpleName();
 		return s;
 	}
 }

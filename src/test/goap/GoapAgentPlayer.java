@@ -23,19 +23,23 @@ public class GoapAgentPlayer implements IGoap {
 	}
 
 	@Override
-	public HashMap<String, Object> getWorldState() {
-		HashMap<String, Object> worldData = new HashMap<>();
+	public HashMap<String, Boolean> getWorldState() {
+		HashMap<String, Boolean> worldData = new HashMap<>();
 				
-		worldData.put(GoapGlossary.P_A, false);
-//		worldData.put(GoapGlossary.P_B, false);
+		worldData.put(GoapGlossary.P_A_1, false);
+		worldData.put(GoapGlossary.P_A, true);
+		worldData.put(GoapGlossary.P_B, false);
+		//worldData.put(GoapGlossary.P_B, false);
 //		worldData.put(GoapGlossary.GOAL, false);
+		
+//		GoapPlanner.printMap(worldData);
 		
 		return worldData;
 	}
 
 	@Override
-	public HashMap<String, Object> createGoalState() {
-		HashMap<String, Object> goal = new HashMap<>();
+	public HashMap<String, Boolean> createGoalState() {
+		HashMap<String, Boolean> goal = new HashMap<>();
 		
 		goal.put(GoapGlossary.GOAL, true);
 		
@@ -43,12 +47,12 @@ public class GoapAgentPlayer implements IGoap {
 	}
 
 	@Override
-	public void planFailed(HashMap<String, Object> failedGoal) {
+	public void planFailed(HashMap<String, Boolean> failedGoal) {
 		System.out.println("Plan failed");
 	}
 
 	@Override
-	public void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions) {
+	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
 		System.out.println("Plan found "+GoapAgent.prettyPrint(actions));
 	}
 

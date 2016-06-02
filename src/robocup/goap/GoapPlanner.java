@@ -16,8 +16,8 @@ public class GoapPlanner {
 
 	public Queue<GoapAction> plan(Object agent,
 			HashSet<GoapAction> availableActions,
-			HashMap<String, Object> worldState,
-			HashMap<String, Object> goal) {
+			HashMap<String, Boolean> worldState,
+			HashMap<String, Boolean> goal) {
 		// reset the actions so we can start fresh with them
 		for (GoapAction goapAction : availableActions) {
 			goapAction.doReset();
@@ -82,17 +82,17 @@ public class GoapPlanner {
 	 * 'runningCost' value where the lowest cost will be the best action
 	 * sequence.
 	 */
-	private boolean buildGraph(Node parent, List<Node> leaves, HashSet<GoapAction> usableActions, HashMap<String, Object> goal) {
+	private boolean buildGraph(Node parent, List<Node> leaves, HashSet<GoapAction> usableActions, HashMap<String, Boolean> goal) {
 		boolean foundOne = false;
 
 		// go through each action available at this node and see if we can use it here
 		for (GoapAction action : usableActions) {
-
+			
 			// if the parent state has the conditions for this action's preconditions, we can use it here
 			if (inState(action.getPreconditions(), parent.state)) {
-
+				
 				// apply the action's effects to the parent state
-				HashMap<String, Object> currentState = populateState(parent.state, action.getEffects());
+				HashMap<String, Boolean> currentState = populateState(parent.state, action.getEffects());
 
 				//System.out.println(GoapAgent.prettyPrint(currentState));
 
@@ -121,7 +121,7 @@ public class GoapPlanner {
 	private HashSet<GoapAction> actionSubset(HashSet<GoapAction> actions, GoapAction removeMe) {
 		HashSet<GoapAction> subset = new HashSet<GoapAction>();
 		for (GoapAction a : actions) {
-			if (!a.equals(removeMe))
+			if (!a.getClass().getName().equals(removeMe.getClass().getName()))
 				subset.add(a);
 		}
 		return subset;
@@ -131,16 +131,19 @@ public class GoapPlanner {
 	 * Check that all items in 'test' are in 'state'. If just one does not match or is not there
 	 * then this returns false.
 	 */
-	private boolean inState(HashMap<String, Object> test, HashMap<String, Object> state) {
+	private boolean inState(HashMap<String, Boolean> test, HashMap<String, Boolean> state) {
 		boolean allMatch = true;
 
-		for (String keyTetst : test.keySet()) {
+		for (String keyTest : test.keySet()) {
 			boolean match = false;
 			for (String keyState : state.keySet()) {
-				//if(state.get(keyState).equals(test.get(keyTetst))){
-				if(keyState.equals(keyTetst)){
+//				System.out.print("Match ("+keyState+", "+state.get(keyState).booleanValue()+") with "
+//						+ "("+keyTest+", "+test.get(keyTest).booleanValue()+")");
+				if(keyState.equals(keyTest) && state.get(keyState).booleanValue() == test.get(keyTest).booleanValue()){
+//					System.err.println("MATCH");
 					match = true;
-					break;
+				} else {
+//					System.err.println("NO_MATCH");				
 				}
 			}
 			if(!match)
@@ -152,8 +155,8 @@ public class GoapPlanner {
 	/**
 	 * Apply the stateChange to the currentState
 	 */
-	private HashMap<String, Object> populateState(HashMap<String, Object> currentState, HashMap<String, Object> stateChange) {
-		HashMap<String, Object> state = new HashMap<>();
+	private HashMap<String, Boolean> populateState(HashMap<String, Boolean> currentState, HashMap<String, Boolean> stateChange) {
+		HashMap<String, Boolean> state = new HashMap<>();
 
 		// copy the KVPs over as new objects
 		for (String key : currentState.keySet()) {
@@ -165,15 +168,16 @@ public class GoapPlanner {
 			boolean exists = false;
 
 			for (String stateKey : state.keySet()) {
-				if (stateKey.equals(stateChangeKey)) {
+				if (state.get(stateKey).booleanValue()
+						==stateChange.get(stateChangeKey).booleanValue()){
 					exists = true;
-					break;
+					//break;
 				}
 			}
 
 			if (exists) {
 				state.remove(stateChangeKey);
-				Object value = stateChange.get(stateChangeKey);
+				Boolean value = stateChange.get(stateChangeKey);
 				state.put(stateChangeKey, value);
 			} else { // if it does not exist in the current state, add it
 				state.put(stateChangeKey, stateChange.get(stateChangeKey));
@@ -188,14 +192,21 @@ public class GoapPlanner {
 	private class Node {
 		public Node parent;
 		public float runningCost;
-		public HashMap<String, Object> state;
+		public HashMap<String, Boolean> state;
 		public GoapAction action;
 
-		public Node(Node parent, float runningCost, HashMap<String, Object> state, GoapAction action) {
+		public Node(Node parent, float runningCost, HashMap<String, Boolean> state, GoapAction action) {
 			this.parent = parent;
 			this.runningCost = runningCost;
 			this.state = state;
 			this.action = action;
+		}
+	}
+	
+	public static void printMap(HashMap<String, Boolean> map){
+		System.out.println("- Print Map -");
+		for (String key : map.keySet()){
+			System.out.println("\t Key: "+key+", Value: "+map.get(key));
 		}
 	}
 

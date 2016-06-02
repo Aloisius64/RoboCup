@@ -19,25 +19,25 @@ public interface IGoap {
 	 * The starting state of the Agent and the world.
 	 * Supply what states are needed for actions to run.
 	 */
-    HashMap<String, Object> getWorldState();
+    HashMap<String, Boolean> getWorldState();
 
     /**
 	 * Give the planner a new goal so it can figure out 
 	 * the actions needed to fulfill it.
 	 */
-    HashMap<String, Object> createGoalState();
+    HashMap<String, Boolean> createGoalState();
 
     /**
 	 * No sequence of actions could be found for the supplied goal.
 	 * You will need to try another goal
 	 */
-    void planFailed(HashMap<String, Object> failedGoal);
+    void planFailed(HashMap<String, Boolean> failedGoal);
 
     /**
 	 * A plan was found for the supplied goal.
 	 * These are the actions the Agent will perform, in order.
 	 */
-    void planFound(HashMap<String, Object> goal, Queue<GoapAction> actions);
+    void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions);
 
     /**
 	 * All actions are complete and the goal was reached. Hooray!

@@ -3,30 +3,19 @@ package robocup.player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Queue;
 
 import robocup.goap.GoapAction;
+import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
-import robocup.player.actions.GoToMoreFreePlaceAction;
 import robocup.player.actions.IdleAction;
-import robocup.player.actions.MarkPlayerAction;
 import robocup.player.actions.PassBallDefensorAction;
 import robocup.player.actions.ShootBallDefensorAction;
 import robocup.player.actions.StoleBallDefensorAction;
 
-/** @file FullBack.java
- * Class file for FullBack class
- * @author Joel Tanzi
- * @date 5 November 2011
- * @version 1.0 
- */
-
-/** @class FullBack
- * The FullBack class inherits from the Player class.  The FullBack is a specialized
- * type of Player that focuses on defensive behaviors such as interfering with opponent scoring.
- */
 public class DefensivePlayer extends AbstractPlayer{
 
-	public DefensivePlayer() {
+	public DefensivePlayer(){
 		super();
 	}
 
@@ -39,18 +28,41 @@ public class DefensivePlayer extends AbstractPlayer{
 	/********************************************/
 
 	@Override
-	public HashMap<String, Object> getWorldState() {
-		HashMap<String, Object> worldState = new HashMap<>();
+	public void planFailed(HashMap<String, Boolean> failedGoal) {
+		System.err.println("Player "+getMemory().getuNum()+" - Plan failed");
+	}
+
+	@Override
+	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
+		System.err.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
+	}
+
+	@Override
+	public void actionsFinished() {
+		System.err.println("Player "+getMemory().getuNum()+" - Actions finished");
+	}
+
+	@Override
+	public void planAborted(GoapAction aborter) {
+//		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
+	}
+
+	@Override
+	public HashMap<String, Boolean> getWorldState() {
+		HashMap<String, Boolean> worldState = new HashMap<>();
 
 		// Set worldState from player memory
-		//		worldState.add(GoapGlossary.KEEP_AREA_SAFE, isBallInOurField());
+		if(getAction()!=null){
+			worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
+			worldState.put(GoapGlossary.BALL_CATCHED, false);
+		}
 
 		return worldState;
 	}
 
 	@Override
-	public HashMap<String, Object> createGoalState() {
-		HashMap<String, Object> goal = new HashMap<>();
+	public HashMap<String, Boolean> createGoalState() {
+		HashMap<String, Boolean> goal = new HashMap<>();
 
 		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
 
@@ -68,8 +80,8 @@ public class DefensivePlayer extends AbstractPlayer{
 		actions.add(new ShootBallDefensorAction());
 		actions.add(new PassBallDefensorAction());
 		actions.add(new StoleBallDefensorAction());
-		actions.add(new GoToMoreFreePlaceAction());
-		actions.add(new MarkPlayerAction());
+//		actions.add(new GoToMoreFreePlaceAction());
+//		actions.add(new MarkPlayerAction());
 
 		return actions;
 	}

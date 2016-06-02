@@ -2,6 +2,7 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.player.AbstractPlayer;
 
 /*
 IDLE **********************************************
@@ -39,22 +40,29 @@ public class IdleAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		if(playerNotAtHomePosition){
-		//			return true;
-		//		}
-		//		return false;
 		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		//		if(playerNotAtHomePosition){
-		//			returnToHomePoistion;
-		//			playerAtHomePosition = true;
-		//			return true;
-		//		}
-		//		return false;
-		return false;
+		AbstractPlayer player = ((AbstractPlayer) agent);
+
+		System.out.println("Performing "+getClass().getSimpleName());
+
+		playerToHomePosition = true;
+
+		try {
+			if(!player.getAction().isHome()){
+				player.getAction().goHome();
+			} 
+			
+			player.getRoboClient().turn(30);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return true;
 	}
 
 }
