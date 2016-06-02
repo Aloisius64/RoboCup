@@ -47,7 +47,7 @@ public class IdleAction extends GoapAction {
 	public boolean perform(Object agent) {
 		AbstractPlayer player = ((AbstractPlayer) agent);
 
-		System.out.println("Performing "+getClass().getSimpleName());
+//		System.out.println("Performing "+getClass().getSimpleName());
 
 		playerToHomePosition = true;
 
