@@ -32,6 +32,7 @@ public class ShootBallDefensorAction extends GoapAction {
 		super(1.0f);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, false);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, false);
 		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
@@ -50,7 +51,16 @@ public class ShootBallDefensorAction extends GoapAction {
 	public boolean checkProceduralPrecondition(Object agent) {
 		//		Si è visto un attaccante particolarmente 
 		//		libero oltre la metà campo
-		return true;
+		
+		AbstractPlayer player = (AbstractPlayer) agent;
+		String teamName = player.getRoboClient().getTeam();
+
+		int teammates = player.getMemory().getTeammates(teamName).size();
+		int opponents = player.getMemory().getOpponents(teamName).size();
+
+		//		System.out.println("Teammates "+teammates+", Opponents: "+opponents);
+
+		return player.getAction().isBallNearTeammateAttacker() || teammates < opponents;
 	}
 
 	@Override

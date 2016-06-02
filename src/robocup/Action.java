@@ -3,11 +3,14 @@ package robocup;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import robocup.formation.AbstractFormation;
+import robocup.formation.FormationManager;
 import robocup.objInfo.ObjBall;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjGoal;
 import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
+import robocup.player.OffensivePlayer;
 import robocup.utility.Field;
 import robocup.utility.MathHelp;
 import robocup.utility.Polar;
@@ -861,7 +864,7 @@ public class Action {
 		double distance = 100;
 		String playerTeam = "\""+player.getRoboClient().getTeam()+"\"";
 
-		System.out.println("Teammates "+player.getMemory().getPlayers().size());
+		//		System.out.println("Teammates "+player.getMemory().getPlayers().size());
 
 		for (int i = 0; i < player.getMemory().getPlayers().size(); ++i) {
 			ObjPlayer currentPlayer = player.getMemory().getPlayers().get(i);
@@ -889,6 +892,45 @@ public class Action {
 			} 
 
 			return ballPos.x > 0;
+		}
+
+		return false;
+	}
+
+	public Boolean isBallInRangeOf(double range){
+		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall()!=null) {
+			ObjBall objBall = player.getMemory().getBall();
+			return objBall.getDistance() <= range;
+		}
+		return false;
+	}
+
+	public Boolean isBallNearTeammateAttacker() {
+		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall()!=null) {
+			ObjBall objBall = player.getMemory().getBall();
+			List<ObjPlayer> teammates = player.getMemory().getTeammates(player.getRoboClient().getTeam());
+
+			Position ballPos = MathHelp.getPos(objBall.getDistance(), player.getDirection() + objBall.getDirection());
+			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+
+			AbstractFormation formation = FormationManager.getFormation(player.getFormationName());
+
+			for(ObjPlayer objPlayer : teammates){
+				int playerNumber = objPlayer.getuNum()+1;
+				
+				if(playerNumber>0 
+						&& playerNumber<=11 
+						&& formation.getPlayerClass(playerNumber).equals(OffensivePlayer.class.getSimpleName())){
+					Position objPlayerPosition = MathHelp.getPos(objPlayer.getDistance(), player.getDirection() + objPlayer.getDirection());
+					objPlayerPosition = MathHelp.vAdd(player.getPosition(), objPlayerPosition);
+
+					Position vSub = MathHelp.vSub(ballPos, objPlayerPosition);
+
+					if(MathHelp.mag(vSub)<=10.0){
+						return true;
+					}
+				}
+			}
 		}
 
 		return false;

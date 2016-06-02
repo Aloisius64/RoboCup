@@ -10,6 +10,8 @@ public class GoapGlossary {
 	public static final String NEAR_NON_CONTROLLED_BALL_OPPONENT = "NEAR_NON_CONTROLLED_BALL_OPPONENT";
 	public static final String BALL_SEEN = "BALL_SEEN";
 	public static final String PLAYER_MARKED = "PLAYER_MARKED";
+	public static final String BALL_NEAR_OPPONENT = "BALL_NEAR_OPPONENT";
+	public static final String BALL_NEAR_TEAMMATE_ATTACKER = "BALL_NEAR_TEAMMATE_ATTACKER";
 	
     // Test variables
 	public static final String VALUE = "VALUE";

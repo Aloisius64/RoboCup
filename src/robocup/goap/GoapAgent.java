@@ -65,7 +65,7 @@ public class GoapAgent {
 				HashMap<String, Boolean> goal = dataProvider.createGoalState();
 
 				// Plan
-				Queue<GoapAction> plan = planner.plan(object, availableActions, worldState, goal);
+				Queue<GoapAction> plan = planner.plan(targetObject, availableActions, worldState, goal);
 				if (plan != null) {
 					// we have a plan, hooray!
 					currentActions = plan;

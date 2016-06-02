@@ -35,8 +35,9 @@ public class StoleBallDefensorAction extends GoapAction {
 		super(1.0f);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
-		//		addPrecondition(GoapGlossary.BALL_NEAR, true);
+		addPrecondition(GoapGlossary.BALL_NEAR, true);
 		//		addPrecondition(GoapGlossary.PLAYER_MARKED, false);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, false);
 		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
 
@@ -57,7 +58,7 @@ public class StoleBallDefensorAction extends GoapAction {
 		//		ed è ad una certa distanza dal difensore
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-		
+
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
 			if(ball.getDistance() > 25){
@@ -73,7 +74,7 @@ public class StoleBallDefensorAction extends GoapAction {
 		//		Il difensore si avvicina alla palla è cerca
 		//		di recuperarla
 
-//		System.out.println("Performing "+getClass().getSimpleName());
+		//		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 
@@ -86,9 +87,7 @@ public class StoleBallDefensorAction extends GoapAction {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 
-				if(ball.getDistance() > 25){
-					return false;
-				} else if (ball.getDistance() > 0.7 
+				if (ball.getDistance() > 0.7 
 						&& player.getAction().isBallInOurField().booleanValue()) {
 					player.getAction().interceptBall(ball);					
 				} else if (ball.getDistance() <= 0.7) {

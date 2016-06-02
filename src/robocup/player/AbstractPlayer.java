@@ -32,6 +32,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	protected int time;
 	protected String position;
 	private GoapAgent agent;
+	private String formationName;
 
 	public AbstractPlayer(){
 		super();
@@ -198,6 +199,14 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 
 	public void setAgent(GoapAgent agent) {
 		this.agent = agent;
+	}
+
+	public String getFormationName() {
+		return formationName;
+	}
+
+	public void setFormationName(String formationName) {
+		this.formationName = formationName;
 	}
 	
 }
