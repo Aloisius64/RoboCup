@@ -8,7 +8,6 @@ import java.util.Queue;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
-import robocup.goap.GoapPlanner;
 import robocup.goap.IGoap;
 
 public class GoapAgentPlayer implements IGoap {

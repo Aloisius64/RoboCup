@@ -13,17 +13,11 @@ import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallGoalieAction;
 import robocup.player.actions.ShootBallGoalieAction;
 
-/** @class Goalie
- * The Goalie class inherits from the Player class.  The Goalie is a specialized
- * type of Player that may catch the ball under certain conditions and defends the goal
- * from the opposing team. 
- */
 public class GoalierPlayer extends AbstractPlayer {
 
 	public GoalierPlayer(){
 		super();
-	}
-	
+	}	
 	
 	public GoalierPlayer(String team){
 		super(team);

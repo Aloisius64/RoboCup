@@ -5,7 +5,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import robocup.Action;
-import robocup.ai.AbstractAI;
 import robocup.goap.GoapAgent;
 import robocup.goap.IGoap;
 import robocup.memory.Memory;
@@ -14,7 +13,7 @@ import robocup.objInfo.ObjInfo;
 import robocup.utility.Parser;
 import robocup.utility.Position;
 
-/** @class Player
+/**
  * The Player class defines all objects and methods used for the 
  * Player within the RoboCup match.  The Player establishes a connection
  * to the server, initializes itself on the team, and 
@@ -33,7 +32,6 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	protected int time;
 	protected String position;
 	private GoapAgent agent;
-	private AbstractAI ai;
 
 	public AbstractPlayer(){
 		super();
@@ -201,13 +199,5 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	public void setAgent(GoapAgent agent) {
 		this.agent = agent;
 	}
-
-	public AbstractAI getAi() {
-		return ai;
-	}
-
-	public void setAi(AbstractAI ai) {
-		this.ai = ai;
-	}
-
+	
 }
