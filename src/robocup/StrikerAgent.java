@@ -8,7 +8,7 @@ public class StrikerAgent {
 	public static void main(String[] args) throws Exception {
 
 		AbstractPlayer p = new OffensivePlayer("Team");
-		p.initPlayer(-5, -10);
+		p.initPlayer(30, 0);
 
 		p.start();
 	}

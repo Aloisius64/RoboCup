@@ -99,11 +99,10 @@ public class OffensivePlayer extends AbstractPlayer {
 	@Override
 	public void run() {
 		while (true) {
-
 			try {
 
 				receiveInput();
-//				Thread.sleep(50);
+//				Thread.sleep(30);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

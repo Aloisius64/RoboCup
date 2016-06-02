@@ -18,20 +18,22 @@ public class OffensiveAI extends AbstractAI {
 	public void run() {
 
 		while (true) {
+
 			try {
-				sleep(10);
+				sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			System.out.println("play a turn" + getPlayer().getMemTime());
 			if (getPlayer().getMemory().timeCheck(getPlayer().getTime())) {
 				getPlayer().setTime(getPlayer().getMemory().getObjMemory().getTime());
 				try {
 					if (getPlayer().getMemory().getPlayMode().compareTo("play_on") == 0) {
-						getPlayer().getAction().findBall();
+						getPlayer().getAction().forwardToGoal();
+						getPlayer().setTime(getPlayer().getTime() + 1);
 					}
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

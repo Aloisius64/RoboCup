@@ -128,52 +128,75 @@ public class Action {
 		return player.getMemory().isHome();
 	}
 
+	public void smartKick(ObjFlag flagLeft, ObjFlag flagRight) throws UnknownHostException, InterruptedException {
+		double leftFlagDirection = flagLeft.getDirection();
+		double rightFlagDirection = flagRight.getDirection();
+
+		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents();
+		double playerSize = 0.7;
+
+		GoalView goalView = KickMathUtility.getGoalView(leftFlagDirection, rightFlagDirection, otherPlayers,
+				playerSize);
+
+		ViewInterval largerInterval = goalView.getLargerInterval();
+		System.out.println("intervallo tra"+ largerInterval.getStart().getAngle() +" - "+"");
+		
+//		if (largerInterval.getStart().getBoundType() == BoundType.POST) {
+//			kick(9001, largerInterval.getStart().getAngle() + 5);
+//		} else if (largerInterval.getEnd().getBoundType() == BoundType.POST) {
+//			kick(9001, largerInterval.getEnd().getAngle() - 5);
+//		} else {
+//			kick(9001, largerInterval.getMidAngle());
+//		}
+	}
+
 	public void forwardToGoal() throws Exception {
 
-		if (player.getMemory().getPlayMode().equals("play_on")) {
-			if (player.getMemory().isObjVisible("ball")) {
-				ObjBall ball = player.getMemory().getBall();
-				Position ballPos = player.getMemory().getBallPos(ball);
-				System.out.println(
-						"step " + player.getMemory().getObjMemory().getTime() + " " + ballPos.x + " " + ballPos.x);
-				if (player.getMemory().getOppGoal() != null && player.getMemory().getOppGoal().getDistance() < 20.0) {
-					if (player.getMemory().seeOpponentPost() == Field.NO_LEFT_POST) {
-						turn(-30.0);
-					} else if (player.getMemory().seeOpponentPost() == Field.NO_RIGHT_POST) {
-						turn(30.0);
+		if (player.getMemory().isObjVisible("ball")) {
 
-					} else {
-						if (player.getMemory().getSide().equals("l")) {
-							String flagLeft = "fgrt";
-							String flagRight = "fgrb";
-							smartKick(flagLeft, flagRight);
+			ObjBall ball = player.getMemory().getBall();
+			if (ball.getDistance() <= 0.7) {// ball in kickable margin
+				ObjGoal goal = player.getMemory().getOppGoal();
+				if (goal != null) {// vediamo la porta?
+					if (goal.getDistance() <= 17) {// dentro l'area
+						if (ball.getDistance() > 1) {
+							System.out.println("goooool");
 						} else {
-							String flagLeft = "fglb";
-							String flagRight = "fglt";
-							smartKick(flagLeft, flagRight);
-						}
-					}
-				} else {
+							if (player.getMemory().getLeftPost() == null) {
 
-					if (ball.getDistance() < 0.7) {
-
-						if (player.getMemory().getOppGoal() != null)
-							kick(10, player.getMemory().getOppGoal().getDirection());
-
-						else {
-							turn(30.0);
+								System.out.println(goal.getDirection());
+								turn(30);
+								// Thread.sleep(50);
+							} else if (player.getMemory().getRightPost() == null) {
+								turn(-30);
+							} else {
+								ObjFlag flagLeft = player.getMemory().getLeftPost();
+								ObjFlag flagRight = player.getMemory().getRightPost();
+								smartKick(flagLeft, flagRight);
+							}
 						}
 					} else {
-						System.out.println("ball near");
-						// turn(ball.getDirection());
-						dash(10);
+						kick(5, goal.getDirection());
 					}
+
+				} else {
+					turn(30);
+					// Thread.sleep(50);
 				}
 			} else {
-
-				player.getRoboClient().turn(30.0);
+				if (ball.getDirection() == 0)
+					dash(50);
+				else
+					turn(ball.getDirection());
+				// Thread.sleep(50);
 			}
+		} else
+
+		{
+
+			player.getRoboClient().turn(30.0);
 		}
+
 	}
 
 	/**
@@ -406,15 +429,7 @@ public class Action {
 			} else if ((goal != null) && (player.getMemory().getPosition().x >= 35.0)) {
 				System.out.println("Ready to shoot");
 				kickToGoal(ball);
-				if (player.getMemory().getSide().equals("l")) {
-					String flagLeft = "fgrt";
-					String flagRight = "fgrb";
-					smartKick(flagLeft, flagRight);
-				} else {
-					String flagLeft = "fglb";
-					String flagRight = "fglt";
-					smartKick(flagLeft, flagRight);
-				}
+
 			} else if (goal == null) {
 				player.getRoboClient().kick(5.0, player.getMemory().getNullGoalAngle());
 			}
@@ -809,26 +824,6 @@ public class Action {
 			}
 		} catch (UnknownHostException | InterruptedException e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void smartKick(String flagLeft, String flagRight) throws UnknownHostException, InterruptedException {
-		double leftFlagDirection = player.getMemory().getFlag(flagLeft).getDirection();
-		double rightFlagDirection = player.getMemory().getFlag(flagRight).getDirection();
-
-		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents();
-		double playerSize = 0.7;
-
-		GoalView goalView = KickMathUtility.getGoalView(leftFlagDirection, rightFlagDirection, otherPlayers,
-				playerSize);
-
-		ViewInterval largerInterval = goalView.getLargerInterval();
-		if (largerInterval.getStart().getBoundType() == BoundType.POST) {
-			kick(9001, largerInterval.getStart().getAngle() + 5);
-		} else if (largerInterval.getEnd().getBoundType() == BoundType.POST) {
-			kick(9001, largerInterval.getEnd().getAngle() - 5);
-		} else {
-			kick(9001, largerInterval.getMidAngle());
 		}
 	}
 
