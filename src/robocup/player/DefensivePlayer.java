@@ -10,6 +10,7 @@ import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
+import robocup.player.actions.ShootBallDefensorAction;
 import robocup.player.actions.StoleBallDefensorAction;
 
 /** @file FullBack.java
@@ -65,9 +66,7 @@ public class DefensivePlayer extends AbstractPlayer{
 
 		// Set worldState from player memory
 		if(getAction()!=null){
-			Boolean value = !getAction().isBallInOurField().booleanValue();
-			System.out.println("KEEP_AREA_SAFE "+value.booleanValue());
-			worldState.put(GoapGlossary.KEEP_AREA_SAFE, value.booleanValue());
+			worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
 			worldState.put(GoapGlossary.BALL_CATCHED, false);
 		}
 
@@ -91,7 +90,7 @@ public class DefensivePlayer extends AbstractPlayer{
 		List<GoapAction> actions = new ArrayList<>();
 
 		actions.add(new IdleAction());
-//		actions.add(new ShootBallDefensorAction());
+		actions.add(new ShootBallDefensorAction());
 		actions.add(new PassBallDefensorAction());
 		actions.add(new StoleBallDefensorAction());
 //		actions.add(new GoToMoreFreePlaceAction());

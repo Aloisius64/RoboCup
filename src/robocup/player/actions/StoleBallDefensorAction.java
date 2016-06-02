@@ -76,7 +76,9 @@ public class StoleBallDefensorAction extends GoapAction {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 				
-				if (ball.getDistance() > 0.7 
+				if(ball.getDistance() > 25){
+					return false;
+				} else if (ball.getDistance() > 0.7 
 						&& player.getAction().isBallInOurField().booleanValue()) {
 					player.getAction().interceptBall(ball);					
 				} else if (ball.getDistance() <= 0.7) {
