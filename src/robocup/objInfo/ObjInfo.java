@@ -67,7 +67,6 @@ public class ObjInfo {
 		this.side = objSide;
 	}
 
-
 	/**
 	 * The distance getter
 	 * 

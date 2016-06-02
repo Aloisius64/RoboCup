@@ -33,7 +33,6 @@ public class Memory {
 	private Field field;
 	private Position home;
 	private Position current = new Position();
-	private boolean isHome = true;
 	private ArrayList<ObjPlayer> teammates = new ArrayList<ObjPlayer>();
 	private ArrayList<ObjPlayer> opponents = new ArrayList<ObjPlayer>();
 	/**
@@ -662,11 +661,7 @@ public class Memory {
 	}
 
 	public boolean isHome() {
-		return isHome;
-	}
-
-	public void setHome(boolean isHome) {
-		this.isHome = isHome;
+		return home.equals(current);
 	}
 
 	public Position getCurrent() {

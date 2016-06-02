@@ -14,6 +14,8 @@ public class GoapGlossary {
     // Test variables
 	public static final String VALUE = "VALUE";
     public static final String P_A = "P_A";
+    public static final String P_A_1 = "P_A_1";
+    public static final String P_A_2 = "P_A_2";
     public static final String P_B = "P_B";
     public static final String GOAL = "GOAL";
 }
