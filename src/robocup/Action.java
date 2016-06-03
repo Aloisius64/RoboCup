@@ -157,6 +157,28 @@ public class Action {
 		// kick(9001, largerInterval.getMidAngle());
 		// }
 	}
+	public void fakeAction() throws Exception{
+		if (player.getMemory().isObjVisible("ball")) {
+
+			ObjBall ball = player.getMemory().getBall();
+			if (ball.getDistance() <= 0.7) {// ball in kickable margin
+				
+				kickToPoint(ball, player.getMemory().getOppGoalPos());
+				
+			} else {
+				if (ball.getDirection() == 0)
+					dash(50);
+				else
+					turn(ball.getDirection());
+				// Thread.sleep(50);
+			}
+		} else
+
+		{
+
+			player.getRoboClient().turn(30.0);
+		}
+	}
 
 	public void forwardToGoal() throws Exception {
 
@@ -165,6 +187,7 @@ public class Action {
 			ObjBall ball = player.getMemory().getBall();
 			if (ball.getDistance() <= 0.7) {// ball in kickable margin
 				ObjGoal goal = player.getMemory().getOppGoal();
+			
 				if (goal != null) {// vediamo la porta?
 					if (goal.getDistance() <= 17) {// dentro l'area
 						if (ball.getDistance() > 1) {
