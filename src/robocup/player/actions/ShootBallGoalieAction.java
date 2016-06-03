@@ -2,6 +2,9 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.player.AbstractPlayer;
+import robocup.utility.Position;
 
 /*
 SHOOT_BALL_GOALIE (Rinvio verso la metà campo) ***
@@ -24,7 +27,8 @@ SHOOT_BALL_GOALIE (Rinvio verso la metà campo) ***
  */
 public class ShootBallGoalieAction extends GoapAction {
 
-	private boolean ballShooted = false;
+	private boolean ballShooted = false;		
+	private Position pointToShoot = new Position(0, 0);
 
 	public ShootBallGoalieAction() {
 		super(1.0f);
@@ -48,7 +52,16 @@ public class ShootBallGoalieAction extends GoapAction {
 		//		Presenza di un certo numero di avversari
 		//		vicino la porta. Se tale numero è troppo
 		//		elevato (maggiore dei propri difensori)
-		return true;
+		
+		AbstractPlayer player = (AbstractPlayer) agent;
+		String teamName = player.getRoboClient().getTeam();
+
+		int teammates = player.getMemory().getTeammates(teamName).size();
+		int opponents = player.getMemory().getOpponents(teamName).size();
+
+		//		System.out.println("Teammates "+teammates+", Opponents: "+opponents);
+
+		return player.getAction().isBallNearTeammateAttacker() || teammates < opponents;
 	}
 
 	@Override
@@ -56,6 +69,18 @@ public class ShootBallGoalieAction extends GoapAction {
 		//		Il portiere calcia la palla verso la metà 
 		//		campo (possibilmente verso un proprio 
 		//		compagno)
+
+		System.out.println("Performing "+getClass().getSimpleName());
+
+		AbstractPlayer player = (AbstractPlayer) agent;
+
+		if(player.getMemory().isObjVisible("ball") && player.getAction().isBallInRangeOf(1.0)){
+			ObjBall ball = player.getMemory().getBall();
+			player.getAction().kickToPoint(ball, pointToShoot);
+			ballShooted = true;
+			return true;
+		}
+
 		return false;
 	}
 

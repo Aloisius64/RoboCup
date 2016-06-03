@@ -1,7 +1,10 @@
 package robocup.player.actions;
 
+import java.net.UnknownHostException;
+
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.player.AbstractPlayer;
 
 /*
 CATCH_BALL_GOALIE *********************************
@@ -21,7 +24,7 @@ PERFORMING:
 public class CatchBallGoalieAction extends GoapAction {
 
 	private boolean ballCatched = false;
-	
+
 	public CatchBallGoalieAction() {
 		super(1.0f);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
@@ -47,12 +50,28 @@ public class CatchBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
-//		if(isBallCatcheable()){
-//			ballCatched = catchBall();
-//			return ballCatched;
-//		}
-//		return false;
+
+		System.out.println("Performing "+getClass().getSimpleName());
+
+		AbstractPlayer player = (AbstractPlayer) agent;
+
+		try {
+			if(player.getMemory().isObjVisible("ball") && player.getAction().isBallInRangeOf(1.0)){
+				player.getAction().catchball(player.getMemory().getBall().getDirection());
+				ballCatched = true;
+				return true;
+			}
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+
 		return false;
+
+		//		if(isBallCatcheable()){
+		//			ballCatched = catchBall();
+		//			return ballCatched;
+		//		}
+		//		return false;
 	}
 
 }

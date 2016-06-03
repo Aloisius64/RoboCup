@@ -6,6 +6,8 @@ import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
 import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
+import robocup.utility.Position;
 
 /*
 FOLLOW_BALL_GOALIE ********************************
@@ -28,6 +30,9 @@ FOLLOW_BALL_GOALIE ********************************
 public class FollowBallGoalieAction extends GoapAction {
 
 	private boolean ballFollowed = false;
+	private Position upper = new Position(-49, -6);
+	private Position middle = new Position(-49, 0);
+	private Position lower = new Position(-49, 6);
 
 	public FollowBallGoalieAction() {
 		super(1.0f);
@@ -64,9 +69,11 @@ public class FollowBallGoalieAction extends GoapAction {
 		//			return true;
 		//		}	
 		//		return false;
-		
+
+		System.out.println("Performing "+getClass().getSimpleName());
+
 		AbstractPlayer player = (AbstractPlayer) agent;
-		
+
 		try {
 			if (!player.getMemory().isObjVisible("ball")) {
 				player.getAction().turn(30);
@@ -77,11 +84,38 @@ public class FollowBallGoalieAction extends GoapAction {
 				if ((ball.getDirection() > 5.0) || (ball.getDirection() < -5.0)) {
 					player.getAction().turn(ball.getDirection() * (1 + (5 * player.getMemory().getAmountOfSpeed())));
 				}
-				
+
 				if (player.getAction().ballInGoalzone(ball)) {
-					player.getAction().defendGoal(ball);
+					//					player.getAction().defendGoal(ball);
+
+					if (ball.getDistance() > 1.0) {
+						player.getAction().gotoPoint(MathHelp.getNextBallPoint(ball));
+					} else {
+						ballFollowed = true;
+					}
+
 				} else {
-					player.getAction().positionGoalie(ball);
+					//					player.getAction().positionGoalie(ball);
+
+					Position ballPos = MathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
+					ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+
+					if (ballPos.y < -18) { // If ball is in upper portion of field
+						// System.out.println("flag1");
+						player.getAction().gotoSidePoint(upper);
+//						Thread.sleep(100);
+					} else if (ballPos.y > -18 && ballPos.y < 18) { // If ball is
+						// midfield
+						// vertically
+						// System.out.println("flag2");
+						player.getAction().gotoSidePoint(middle);
+//						Thread.sleep(100);
+					} else { // If ball is in lower portion of field
+						// System.out.println("flag3");
+						player.getAction().gotoSidePoint(lower);
+//						Thread.sleep(100);
+					}
+
 				}
 			}
 		} catch (UnknownHostException | InterruptedException e) {
@@ -89,8 +123,8 @@ public class FollowBallGoalieAction extends GoapAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return false;
+
+		return true;
 	}
 
 }
