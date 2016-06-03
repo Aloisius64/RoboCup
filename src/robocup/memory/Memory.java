@@ -728,16 +728,37 @@ public class Memory {
 	}
 
 	public List<ObjPlayer> getOpponents(String myTeam) {
+		myTeam = "\""+myTeam+"\"";
 		ArrayList<ObjPlayer> players = new ArrayList<ObjPlayer>();
 		for (int i = 0; i < getObjMemory().getSize(); i++) {
 			if (getObj(i).getObjName().compareTo("player") == 0) {
 				ObjPlayer playerToAdd = (ObjPlayer) getObj(i);
-				if(!playerToAdd.getTeam().equals(myTeam)){
+				
+				if(playerToAdd != null 
+						&& playerToAdd.getTeam() != null 
+						&& !playerToAdd.getTeam().equals(myTeam)){
 					players.add(playerToAdd);
 				}
 			}            
 		}
 		return players;
 	}
-
+	
+	public List<ObjPlayer> getTeammates(String myTeam) {
+		myTeam = "\""+myTeam+"\"";
+		ArrayList<ObjPlayer> players = new ArrayList<ObjPlayer>();
+		for (int i = 0; i < getObjMemory().getSize(); i++) {
+			if (getObj(i).getObjName().compareTo("player") == 0) {
+				ObjPlayer playerToAdd = (ObjPlayer) getObj(i);
+				
+				if(playerToAdd != null 
+						&& playerToAdd.getTeam() != null 
+						&& playerToAdd.getTeam().equals(myTeam)){
+					players.add(playerToAdd);
+				}
+			}            
+		}
+		return players;
+	}
+	
 }

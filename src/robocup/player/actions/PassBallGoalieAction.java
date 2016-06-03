@@ -1,7 +1,13 @@
 package robocup.player.actions;
 
+import java.net.UnknownHostException;
+
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.objInfo.ObjPlayer;
+import robocup.player.AbstractPlayer;
+import robocup.utility.Position;
 
 /*
 PASS_BALL_GOALIE **********************************
@@ -25,6 +31,7 @@ PASS_BALL_GOALIE **********************************
 public class PassBallGoalieAction extends GoapAction {
 
 	private boolean ballPassed = false;
+	private Position pointToShoot = new Position(0, 0);
 
 	public PassBallGoalieAction() {
 		super(1.0f);
@@ -40,7 +47,7 @@ public class PassBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean isDone() {
-		return ballPassed = false;
+		return ballPassed;
 	}
 
 	@Override
@@ -49,13 +56,47 @@ public class PassBallGoalieAction extends GoapAction {
 		//		vicino la porta. Se tale numero non è 
 		//		troppo elevato (minore o circa i propri
 		//		difensori)
-		return true;
+		
+		AbstractPlayer player = (AbstractPlayer) agent;
+		String teamName = player.getRoboClient().getTeam();
+		int teammates = player.getMemory().getTeammates(teamName).size();
+		int opponents = player.getMemory().getOpponents(teamName).size();
+
+		//		System.out.println("Teammates "+teammates+", Opponents: "+opponents);
+
+		return teammates >= opponents;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
 		//		Il portiere passa la palla al difensore
 		//		più libero
+
+		System.out.println("Performing "+getClass().getSimpleName());
+
+		AbstractPlayer player = (AbstractPlayer) agent;
+
+		try {
+			if(player.getMemory().isObjVisible("ball") && player.getAction().isBallInRangeOf(1.0)){
+				ObjBall ball = player.getMemory().getBall();
+				ObjPlayer closestTeammate;
+				closestTeammate = player.getAction().closestTeammate();
+				if(closestTeammate!=null){
+					player.getAction().kickToPlayer(closestTeammate);
+				} else {
+					player.getAction().kickToPoint(ball, pointToShoot);
+				}
+				ballPassed = true;
+				return true;
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 

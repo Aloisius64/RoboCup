@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 
-import robocup.ai.AbstractAI;
-import robocup.ai.OffensiveAI;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.player.actions.MarkPlayerAction;
@@ -15,25 +13,14 @@ import robocup.player.actions.SearchBallAction;
 import robocup.player.actions.StoleBallAttackerAction;
 import robocup.player.actions.TryToScoreAction;
 
-
-/**
- * @class Forward (currently unused) The Forward class inherits from the Player
- *        class. The Forward is a specialized type of Player that focuses on
- *        offensive behaviors such as scoring and ball interception.
- */
 public class OffensivePlayer extends AbstractPlayer {
 
-
 	public OffensivePlayer() {
-		super("st");
-		AbstractAI ai = new OffensiveAI(this);
-		ai.start();
+		super("Team");
 	}
 	
 	public OffensivePlayer(String team) {
 		super(team);
-		AbstractAI ai = new OffensiveAI(this);
-		ai.start();
 	}
 
 	/********************************************/
@@ -94,21 +81,5 @@ public class OffensivePlayer extends AbstractPlayer {
 
 		return actions;
 	}
-
-
-	@Override
-	public void run() {
-		while (true) {
-			try {
-
-				receiveInput();
-//				Thread.sleep(30);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-	}
+	
 }

@@ -1,7 +1,13 @@
 package robocup.player.actions;
 
+import java.net.UnknownHostException;
+
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
+import robocup.utility.Position;
 
 /*
 FOLLOW_BALL_GOALIE ********************************
@@ -24,6 +30,9 @@ FOLLOW_BALL_GOALIE ********************************
 public class FollowBallGoalieAction extends GoapAction {
 
 	private boolean ballFollowed = false;
+	private Position upper = new Position(-49, -6);
+	private Position middle = new Position(-49, 0);
+	private Position lower = new Position(-49, 6);
 
 	public FollowBallGoalieAction() {
 		super(1.0f);
@@ -52,15 +61,47 @@ public class FollowBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
-		//		if(ballIsControlledByOpponent){
-		//			if(!ballCatcheable)
-		//				goToLocationInGoalieAreaWichIsNearBall;
-		//			if(ballCatcheable)
-		//				ballFollowed = true;
-		//			return true;
-		//		}	
-		//		return false;
-		return false;
+		System.out.println("Performing "+getClass().getSimpleName());
+
+		AbstractPlayer player = (AbstractPlayer) agent;
+
+		try {
+			if (!player.getMemory().isObjVisible("ball")) {
+				player.getAction().turn(30);
+				return false;
+			} else {
+				ObjBall ball = player.getMemory().getBall();
+
+				if ((ball.getDirection() > 5.0) || (ball.getDirection() < -5.0)) {
+					player.getAction().turn(ball.getDirection() * (1 + (5 * player.getMemory().getAmountOfSpeed())));
+				}
+
+				if (player.getAction().ballInGoalzone(ball)) {
+					if (ball.getDistance() > 1.0) {
+						player.getAction().goToPoint(MathHelp.getNextBallPoint(ball));
+					} else {
+						ballFollowed = true;
+					}
+				} else {
+					Position ballPos = MathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
+					ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+
+					if (ballPos.y < -18) {
+						player.getAction().goToSidePoint(upper);
+					} else if (ballPos.y > -18 && ballPos.y < 18) {
+						player.getAction().goToSidePoint(middle);
+					} else {
+						player.getAction().goToSidePoint(lower);
+					}
+				}
+			}
+		} catch (UnknownHostException | InterruptedException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return true;
 	}
 
 }

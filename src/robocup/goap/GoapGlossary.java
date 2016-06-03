@@ -3,6 +3,7 @@ package robocup.goap;
 public class GoapGlossary {
 	public static final String KEEP_AREA_SAFE = "KEEP_AREA_SAFE";
 	public static final String TRY_TO_SCORE = "TRY_TO_SCORE";
+	public static final String PUT_BALL_IN_PLAY = "PUT_BALL_IN_PLAY";
 	public static final String BALL_CATCHABLE = "BALL_CATCHABLE"; 
 	public static final String BALL_CATCHED = "BALL_CATCHED";
 	public static final String BALL_CATCHED_FROM_GOALIER = "BALL_CATCHED_FROM_GOALIER";
@@ -10,6 +11,8 @@ public class GoapGlossary {
 	public static final String NEAR_NON_CONTROLLED_BALL_OPPONENT = "NEAR_NON_CONTROLLED_BALL_OPPONENT";
 	public static final String BALL_SEEN = "BALL_SEEN";
 	public static final String PLAYER_MARKED = "PLAYER_MARKED";
+	public static final String BALL_NEAR_OPPONENT = "BALL_NEAR_OPPONENT";
+	public static final String BALL_NEAR_TEAMMATE_ATTACKER = "BALL_NEAR_TEAMMATE_ATTACKER";
 	
     // Test variables
 	public static final String VALUE = "VALUE";

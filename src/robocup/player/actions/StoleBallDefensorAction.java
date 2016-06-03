@@ -6,6 +6,9 @@ import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
 import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
+import robocup.utility.Polar;
+import robocup.utility.Position;
 
 /*
 DEFENSOR_STOLE_BALL ****************************************
@@ -35,8 +38,9 @@ public class StoleBallDefensorAction extends GoapAction {
 		super(1.0f);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
-		//		addPrecondition(GoapGlossary.BALL_NEAR, true);
+		addPrecondition(GoapGlossary.BALL_NEAR, true);
 		//		addPrecondition(GoapGlossary.PLAYER_MARKED, false);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, false);
 		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
 
@@ -60,8 +64,9 @@ public class StoleBallDefensorAction extends GoapAction {
 		
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
-			if(ball.getDistance() > 25){
-				return false;
+			if(ball.getDistance() > 10){
+//				return false;
+				return !player.getAction().isBallNearTeammateAttacker();						
 			}
 		}
 
@@ -73,7 +78,7 @@ public class StoleBallDefensorAction extends GoapAction {
 		//		Il difensore si avvicina alla palla è cerca
 		//		di recuperarla
 
-//		System.out.println("Performing "+getClass().getSimpleName());
+		//		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 
@@ -86,11 +91,19 @@ public class StoleBallDefensorAction extends GoapAction {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 
-				if(ball.getDistance() > 25){
-					return false;
-				} else if (ball.getDistance() > 0.7 
+				if (ball.getDistance() > 0.7 
 						&& player.getAction().isBallInOurField().booleanValue()) {
-					player.getAction().interceptBall(ball);					
+//					player.getAction().interceptBall(ball);
+					
+					Polar p = MathHelp.getNextBallPoint(ball);
+					Position p2 = MathHelp.getPos(p);
+					if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
+						return false;
+					else if (player.getAction().stayInBounds()) {						
+						player.getAction().goToPoint(p);
+					}
+					return true;
+					
 				} else if (ball.getDistance() <= 0.7) {
 					ballStoled = true;
 				}

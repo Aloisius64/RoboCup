@@ -7,40 +7,38 @@ import robocup.goap.GoapGlossary;
 import robocup.player.AbstractPlayer;
 
 /*
-CATCH_BALL_GOALIE *********************************
+PUT_BALL_IN_PLAY *********************************
 PRECONDITIONS:
-	KEEP_AREA_SAFE (FALSE)
-	BALL_CATCHABLE (TRUE)
+	PUT_BALL_IN_PLAY (FALSE)
 	BALL_CATCHED (FALSE)
 
 EFFECTS:
-	BALL_CATCHED (TRUE)	
+	PUT_BALL_IN_PLAY (TRUE)
 
 THINGS TO CHECK:
 
 PERFORMING:
-	Il portiere esegue l'azione di cattura
+	Il giocatore (portiere) mette la palla in gioco
  */
-public class CatchBallGoalieAction extends GoapAction {
+public class PutBallInPlayAction extends GoapAction {
 
-	private boolean ballCatched = false;
+	private boolean ballInPlay = false;
 
-	public CatchBallGoalieAction() {
+	public PutBallInPlayAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
-		addPrecondition(GoapGlossary.BALL_CATCHABLE, true);
+		addPrecondition(GoapGlossary.PUT_BALL_IN_PLAY, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
-		addEffect(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.PUT_BALL_IN_PLAY, true);
 	}
 
 	@Override
 	public void reset() {
-		ballCatched = false;
+		ballInPlay = false;
 	}
 
 	@Override
 	public boolean isDone() {
-		return ballCatched;
+		return ballInPlay;
 	}
 
 	@Override
@@ -57,11 +55,17 @@ public class CatchBallGoalieAction extends GoapAction {
 
 		try {
 			if(player.getMemory().isObjVisible("ball") && player.getAction().isBallInRangeOf(1.0)){
-				player.getAction().catchball(player.getMemory().getBall().getDirection());
-				ballCatched = true;
+				Thread.sleep(500);
+				player.getAction().turn(-player.getMemory().getDirection());
+				Thread.sleep(200);
+				player.getAction().kick(100, 0);
+				
+				ballInPlay = true;
 				return true;
 			}
 		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 

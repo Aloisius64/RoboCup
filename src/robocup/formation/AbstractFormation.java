@@ -26,16 +26,18 @@ public abstract class AbstractFormation {
     }
 
     protected abstract void initMaps();
-    
-//    public void movePlayerToItsPosition(ActionsPlayer player){
-//    	Vector position = playersPosition.get(player.getNumber());
-//    	player.move((int) position.X(), (int) position.Y());    	
-//    }
-        
+            
     public AbstractPlayer getPlayer(Integer playerNum) throws InstantiationException, IllegalAccessException{
     	assert(playerNum>=0 && playerNum<11);
     	Class<? extends AbstractPlayer> playerClass = playersMap.get(playerNum);
-    	return playerClass.newInstance();
+    	AbstractPlayer newInstance = playerClass.newInstance();
+    	newInstance.setFormationName(this.getClass().getName());
+    	return newInstance;
+    }
+    
+    public String getPlayerClass(Integer playerNum){
+    	Class<? extends AbstractPlayer> playerClass = playersMap.get(playerNum);
+    	return playerClass.getSimpleName();
     }
     
     public Vector getPlayerPosition(Integer playerNum){
