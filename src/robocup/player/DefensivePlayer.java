@@ -16,7 +16,7 @@ import robocup.player.actions.StoleBallDefensorAction;
 public class DefensivePlayer extends AbstractPlayer{
 
 	public DefensivePlayer(){
-		super();
+		super("Team");
 	}
 
 	public DefensivePlayer(String team) {
