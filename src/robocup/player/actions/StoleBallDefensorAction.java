@@ -6,6 +6,9 @@ import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
 import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
+import robocup.utility.Polar;
+import robocup.utility.Position;
 
 /*
 DEFENSOR_STOLE_BALL ****************************************
@@ -58,11 +61,12 @@ public class StoleBallDefensorAction extends GoapAction {
 		//		ed è ad una certa distanza dal difensore
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
-			if(ball.getDistance() > 25){
-				return false;
+			if(ball.getDistance() > 10){
+//				return false;
+				return !player.getAction().isBallNearTeammateAttacker();						
 			}
 		}
 
@@ -89,7 +93,17 @@ public class StoleBallDefensorAction extends GoapAction {
 
 				if (ball.getDistance() > 0.7 
 						&& player.getAction().isBallInOurField().booleanValue()) {
-					player.getAction().interceptBall(ball);					
+//					player.getAction().interceptBall(ball);
+					
+					Polar p = MathHelp.getNextBallPoint(ball);
+					Position p2 = MathHelp.getPos(p);
+					if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
+						return false;
+					else if (player.getAction().stayInBounds()) {						
+						player.getAction().gotoPoint(p);
+					}
+					return true;
+					
 				} else if (ball.getDistance() <= 0.7) {
 					ballStoled = true;
 				}

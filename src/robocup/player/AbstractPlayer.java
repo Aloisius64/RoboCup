@@ -81,7 +81,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		try {
 			getAction().move(x, y);
 			Thread.sleep(100);
-			if(getMemory().getSide().compareTo("r") == 0) {
+			if(getMemory().getSide().equals("r")) {
 				getAction().turn(180);
 			}
 		} catch (InterruptedException e) {

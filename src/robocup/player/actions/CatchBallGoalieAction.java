@@ -66,12 +66,6 @@ public class CatchBallGoalieAction extends GoapAction {
 		}
 
 		return false;
-
-		//		if(isBallCatcheable()){
-		//			ballCatched = catchBall();
-		//			return ballCatched;
-		//		}
-		//		return false;
 	}
 
 }

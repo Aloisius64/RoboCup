@@ -53,7 +53,7 @@ public class IdleAction extends GoapAction {
 
 		try {
 			if(!player.getAction().isHome()){
-				player.getAction().goHome();
+				player.getAction().gotoPoint(player.getMemory().getHome());
 			} 
 			
 			player.getRoboClient().turn(30);

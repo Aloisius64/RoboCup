@@ -7,6 +7,7 @@ import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
 import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
 import robocup.utility.Position;
 
 /*
@@ -74,7 +75,6 @@ public class PassBallDefensorAction extends GoapAction {
 		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-		ballPassed = true;
 
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
@@ -82,8 +82,11 @@ public class PassBallDefensorAction extends GoapAction {
 			try {
 				closestPlayer = player.getAction().closestTeammate();
 				if(closestPlayer!=null){
-					//					System.out.println("Try to pass to player: "+closestPlayer.getuNum());
-					return player.getAction().passBall(ball, closestPlayer);
+					//					System.out.println(player.getMemory().getuNum()+" is trying to pass to player: "+closestPlayer.getuNum());
+					player.getAction().kickToPoint(ball, MathHelp.getNextPlayerPoint(closestPlayer));
+					Thread.sleep(1000);
+					ballPassed = true;
+					return true;
 				} else {
 					player.getAction().kickToPoint(ball, new Position(0,0));
 				}

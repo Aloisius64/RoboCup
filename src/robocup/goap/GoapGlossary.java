@@ -3,6 +3,7 @@ package robocup.goap;
 public class GoapGlossary {
 	public static final String KEEP_AREA_SAFE = "KEEP_AREA_SAFE";
 	public static final String TRY_TO_SCORE = "TRY_TO_SCORE";
+	public static final String PUT_BALL_IN_PLAY = "PUT_BALL_IN_PLAY";
 	public static final String BALL_CATCHABLE = "BALL_CATCHABLE"; 
 	public static final String BALL_CATCHED = "BALL_CATCHED";
 	public static final String BALL_CATCHED_FROM_GOALIER = "BALL_CATCHED_FROM_GOALIER";

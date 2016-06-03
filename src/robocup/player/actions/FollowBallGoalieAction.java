@@ -61,15 +61,6 @@ public class FollowBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
-		//		if(ballIsControlledByOpponent){
-		//			if(!ballCatcheable)
-		//				goToLocationInGoalieAreaWichIsNearBall;
-		//			if(ballCatcheable)
-		//				ballFollowed = true;
-		//			return true;
-		//		}	
-		//		return false;
-
 		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
@@ -86,36 +77,22 @@ public class FollowBallGoalieAction extends GoapAction {
 				}
 
 				if (player.getAction().ballInGoalzone(ball)) {
-					//					player.getAction().defendGoal(ball);
-
 					if (ball.getDistance() > 1.0) {
 						player.getAction().gotoPoint(MathHelp.getNextBallPoint(ball));
 					} else {
 						ballFollowed = true;
 					}
-
 				} else {
-					//					player.getAction().positionGoalie(ball);
-
 					Position ballPos = MathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
 					ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
 
-					if (ballPos.y < -18) { // If ball is in upper portion of field
-						// System.out.println("flag1");
+					if (ballPos.y < -18) {
 						player.getAction().gotoSidePoint(upper);
-//						Thread.sleep(100);
-					} else if (ballPos.y > -18 && ballPos.y < 18) { // If ball is
-						// midfield
-						// vertically
-						// System.out.println("flag2");
+					} else if (ballPos.y > -18 && ballPos.y < 18) {
 						player.getAction().gotoSidePoint(middle);
-//						Thread.sleep(100);
-					} else { // If ball is in lower portion of field
-						// System.out.println("flag3");
+					} else {
 						player.getAction().gotoSidePoint(lower);
-//						Thread.sleep(100);
 					}
-
 				}
 			}
 		} catch (UnknownHostException | InterruptedException e) {
