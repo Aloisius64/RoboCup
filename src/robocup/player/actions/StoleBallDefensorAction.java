@@ -100,7 +100,7 @@ public class StoleBallDefensorAction extends GoapAction {
 					if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
 						return false;
 					else if (player.getAction().stayInBounds()) {						
-						player.getAction().gotoPoint(p);
+						player.getAction().goToPoint(p);
 					}
 					return true;
 					

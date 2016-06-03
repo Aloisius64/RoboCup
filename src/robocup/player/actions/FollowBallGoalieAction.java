@@ -78,7 +78,7 @@ public class FollowBallGoalieAction extends GoapAction {
 
 				if (player.getAction().ballInGoalzone(ball)) {
 					if (ball.getDistance() > 1.0) {
-						player.getAction().gotoPoint(MathHelp.getNextBallPoint(ball));
+						player.getAction().goToPoint(MathHelp.getNextBallPoint(ball));
 					} else {
 						ballFollowed = true;
 					}
@@ -87,11 +87,11 @@ public class FollowBallGoalieAction extends GoapAction {
 					ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
 
 					if (ballPos.y < -18) {
-						player.getAction().gotoSidePoint(upper);
+						player.getAction().goToSidePoint(upper);
 					} else if (ballPos.y > -18 && ballPos.y < 18) {
-						player.getAction().gotoSidePoint(middle);
+						player.getAction().goToSidePoint(middle);
 					} else {
-						player.getAction().gotoSidePoint(lower);
+						player.getAction().goToSidePoint(lower);
 					}
 				}
 			}
