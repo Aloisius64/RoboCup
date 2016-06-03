@@ -406,16 +406,18 @@ public class Action {
 	}
 
 	public boolean ballInGoalzone(ObjBall ball) {
-		if (ball == null)
-			return false;
+		if (ball != null){
+			Position ballPos = MathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
+			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
 
-		Position ballPos = MathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
-		ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+			boolean yCheck = (-20.16 <= ballPos.y) && (ballPos.y <= 20.16);
+			boolean xCheckLeft = (ballPos.x <= -36) && (ballPos.x >= -52.5);
+			boolean xCheckRight = (ballPos.x >= 36) && (ballPos.x <= 52.5);
+			
+			return yCheck && (xCheckLeft || xCheckRight);
+		}
 
-		if (((ballPos.x <= -36) && (ballPos.x >= -52.5)) && ((-20.16 <= ballPos.y) && (ballPos.y <= 20.16)))
-			return true;
-		else
-			return false;
+		return false;
 	}
 
 	public void defendGoal(ObjBall ball) throws Exception {

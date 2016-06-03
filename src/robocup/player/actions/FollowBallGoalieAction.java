@@ -1,7 +1,11 @@
 package robocup.player.actions;
 
+import java.net.UnknownHostException;
+
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.player.AbstractPlayer;
 
 /*
 FOLLOW_BALL_GOALIE ********************************
@@ -60,6 +64,32 @@ public class FollowBallGoalieAction extends GoapAction {
 		//			return true;
 		//		}	
 		//		return false;
+		
+		AbstractPlayer player = (AbstractPlayer) agent;
+		
+		try {
+			if (!player.getMemory().isObjVisible("ball")) {
+				player.getAction().turn(30);
+				return false;
+			} else {
+				ObjBall ball = player.getMemory().getBall();
+
+				if ((ball.getDirection() > 5.0) || (ball.getDirection() < -5.0)) {
+					player.getAction().turn(ball.getDirection() * (1 + (5 * player.getMemory().getAmountOfSpeed())));
+				}
+				
+				if (player.getAction().ballInGoalzone(ball)) {
+					player.getAction().defendGoal(ball);
+				} else {
+					player.getAction().positionGoalie(ball);
+				}
+			}
+		} catch (UnknownHostException | InterruptedException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
