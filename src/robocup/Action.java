@@ -101,6 +101,13 @@ public class Action {
 		// kick(9001, largerInterval.getMidAngle());
 		// }
 	}
+	
+	public boolean isBallVisible() {
+		if (player.getMemory().isObjVisible("ball")) {
+			return player.getMemory().getBall() != null;
+		}
+		return false;
+	}
 
 	public void forwardToGoal() throws Exception {
 		if (player.getMemory().isObjVisible("ball")) {
@@ -505,6 +512,31 @@ public class Action {
 
 					if(MathHelp.mag(objPos)<4.0){
 						System.out.println("FOUND PLAYER "+playerNumber);
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+	
+	public Boolean isBallNearTeammate() {
+		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
+			ObjBall objBall = player.getMemory().getBall();
+			Position ballPos = MathHelp.getPos(objBall.getDistance(), player.getDirection() + objBall.getDirection());
+			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+
+			for(ObjPlayer objPlayer : player.getMemory().getTeammates(player.getRoboClient().getTeam())){
+				int playerNumber = objPlayer.getuNum()+1;
+
+				if(playerNumber > 0
+						&& playerNumber <= 11){
+					Position objPos = MathHelp.getPos(objPlayer.getDistance(), player.getDirection() + objPlayer.getDirection());
+					objPos = MathHelp.vAdd(player.getPosition(), objPos);
+
+					if(MathHelp.mag(objPos)<4.0){
+						System.out.println("Found teammate "+playerNumber);
 						return true;
 					}
 				}

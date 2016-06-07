@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Queue;
 
 import robocup.goap.GoapAction;
-import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
@@ -29,12 +28,12 @@ public class DefensivePlayer extends AbstractPlayer{
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player "+getMemory().getuNum()+" - Plan failed");
+//		System.err.println("Player "+getMemory().getuNum()+" - Plan failed");
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.err.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
+//		System.err.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
 	}
 
 	@Override

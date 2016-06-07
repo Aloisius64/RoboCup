@@ -2,6 +2,7 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.player.AbstractPlayer;
 
 /*
 TRY_TO_SCORE **************************************
@@ -50,6 +51,13 @@ public class TryToScoreAction extends GoapAction {
 	public boolean perform(Object agent) {
 		//		Il giocatore prova a tirare, qui usiamo la 
 		//		funzione smart kick.
+		
+		AbstractPlayer player = ((AbstractPlayer) agent);
+
+		System.out.println("Performing "+getClass().getSimpleName());
+		
+		
+		
 		return false;
 	}
 
