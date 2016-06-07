@@ -103,6 +103,13 @@ public class Action {
 		// kick(9001, largerInterval.getMidAngle());
 		// }
 	}
+	
+	public boolean isBallVisible() {
+		if (player.getMemory().isObjVisible("ball")) {
+			return player.getMemory().getBall() != null;
+		}
+		return false;
+	}
 
 	public void forwardToGoal() throws Exception {
 		if (player.getMemory().isObjVisible("ball")) {
@@ -510,4 +517,151 @@ public class Action {
 		return false;
 	}
 
+	
+	public Boolean isBallNearTeammate() {
+		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
+			ObjBall objBall = player.getMemory().getBall();
+			Position ballPos = MathHelp.getPos(objBall.getDistance(), player.getDirection() + objBall.getDirection());
+			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+
+			for(ObjPlayer objPlayer : player.getMemory().getTeammates(player.getRoboClient().getTeam())){
+				int playerNumber = objPlayer.getuNum()+1;
+
+				if(playerNumber > 0
+						&& playerNumber <= 11){
+					Position objPos = MathHelp.getPos(objPlayer.getDistance(), player.getDirection() + objPlayer.getDirection());
+					objPos = MathHelp.vAdd(player.getPosition(), objPos);
+
+					if(MathHelp.mag(objPos)<4.0){
+						System.out.println("Found teammate "+playerNumber);
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**************************************************************/
+	/*	THIS CODE CAN BE REMOVED	*******************************/
+	/**************************************************************/
+
+	//	public boolean passBall(ObjBall ball, ObjPlayer p) throws UnknownHostException {
+	//	if (p != null) {
+	//		// player.getRoboClient().say("pass" + p.getuNum());
+	//		kickToPoint(ball, MathHelp.getNextPlayerPoint(p));
+	//		return true;
+	//	}
+	//	return false;
+	//}
+
+	//public void FullBack_findBall() throws Exception {
+	//	if (player.getMemory().isObjVisible("ball")) {
+	//		ObjBall ball = player.getMemory().getBall();
+	//		if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
+	//			player.getRoboClient().turn(ball.getDirection());
+	//			Thread.sleep(100);
+	//		}
+	//
+	//		if ((ball.getDistance() > 15) && (player.getMemory().isHome() == false)) {
+	//			goHome();
+	//		} else if ((ball.getDistance() <= 15.0) && (ball.getDistance() > 0.7)) {
+	//			interceptBall(ball);
+	//		} else if (ball.getDistance() <= 0.7) {
+	//			// kickToPoint(ball, new Pos(0,0));
+	//			passBall(ball, closestTeammate());
+	//		}
+	//	} else
+	//		player.getRoboClient().turn(30);
+	//}
+
+	//	public void defendGoal(ObjBall ball) throws Exception {
+	//	Position ridBallPoint = new Position(0, 0);
+	//
+	//	// Move to catchable range of ball
+	//	if (ball.getDistance() > 1.0) {
+	//		gotoPoint(MathHelp.getNextBallPoint(ball));
+	//	} else {
+	//		if ((player.getMemory().getSide().compareTo("l") == 0)
+	//				&& ((player.getMemory().getPlayMode().compareTo("goalie catch ball_l") == 0)
+	//						|| (player.getMemory().getPlayMode().compareTo("free_kick_l") == 0))) {
+	//			Thread.sleep(500);
+	//			turn(-player.getMemory().getDirection());
+	//			Thread.sleep(200);
+	//			kick(100, 0);
+	//			Thread.sleep(100);
+	//		} else if ((player.getMemory().getSide().compareTo("r") == 0)
+	//				&& ((player.getMemory().getPlayMode().compareTo("goalie catch ball_r") == 0)
+	//						|| (player.getMemory().getPlayMode().compareTo("free_kick_r") == 0))) {
+	//			Thread.sleep(500);
+	//			turn(-player.getMemory().getDirection());
+	//			Thread.sleep(200);
+	//			kick(100, 0);
+	//			Thread.sleep(100);
+	//		} else {
+	//			catchball(player.getMemory().getBall().getDirection());
+	//		}
+	//
+	//		// If ball is in catchable area, catch it
+	//		System.out.println("catchable");
+	//		if (!ballCaught) {
+	//			catchball(player.getMemory().getBall().getDirection());
+	//			Thread.sleep(100);
+	//			ballCaught = true;
+	//		}
+	//		// kickToPlayer(closestPlayer());
+	//		kickToPoint(ball, ridBallPoint);
+	//		Thread.sleep(100);
+	//	}
+	//}
+
+	//public void positionGoalie(ObjBall ball) throws Exception {
+	//	Position ballPos = MathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
+	//	ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+	//	Position upper = new Position(-49, -6);
+	//	Position middle = new Position(-49, 0);
+	//	Position lower = new Position(-49, 6);
+	//
+	//	if (!ballInGoalzone(ball)) {
+	//		if (ballPos.y < -18) { // If ball is in upper portion of field
+	//			// System.out.println("flag1");
+	//			gotoSidePoint(upper);
+	//			Thread.sleep(100);
+	//		} else if (ballPos.y > -18 && ballPos.y < 18) { // If ball is
+	//			// midfield
+	//			// vertically
+	//			// System.out.println("flag2");
+	//			gotoSidePoint(middle);
+	//			Thread.sleep(100);
+	//		} else { // If ball is in lower portion of field
+	//			// System.out.println("flag3");
+	//			gotoSidePoint(lower);
+	//			Thread.sleep(100);
+	//		}
+	//	}
+	//}
+
+	//	public void followBall() throws Exception {
+	//	try {
+	//		if (!player.getMemory().isObjVisible("ball")) {
+	//			turn(45);
+	//			return;
+	//		}
+	//		if (player.getMemory().isObjVisible("ball")) {
+	//			ObjBall ball = player.getMemory().getBall();
+	//
+	//			if ((ball.getDirection() > 5.0) || (ball.getDirection() < -5.0)) {
+	//				turn(ball.getDirection() * (1 + (5 * player.getMemory().getAmountOfSpeed())));
+	//			}
+	//			if (ballInGoalzone(ball)) {
+	//				defendGoal(ball);
+	//			} else {
+	//				positionGoalie(ball);
+	//			}
+	//		}
+	//	} catch (UnknownHostException | InterruptedException e) {
+	//		e.printStackTrace();
+	//	}
+	//}
 }

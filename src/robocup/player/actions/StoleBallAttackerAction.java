@@ -1,7 +1,14 @@
 package robocup.player.actions;
 
+import java.net.UnknownHostException;
+
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
+import robocup.utility.Polar;
+import robocup.utility.Position;
 
 /*
 ATTACKER_STOLE_BALL *******************************
@@ -29,7 +36,11 @@ public class StoleBallAttackerAction extends GoapAction {
 		super(1.0f);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, false);
+		addPrecondition(GoapGlossary.BALL_NEAR_OPPONENT, true);
 		addEffect(GoapGlossary.BALL_CATCHED, true);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
+		addPrecondition(GoapGlossary.BALL_NEAR_OPPONENT, false);
 	}
 
 	@Override
@@ -54,6 +65,48 @@ public class StoleBallAttackerAction extends GoapAction {
 	public boolean perform(Object agent) {
 		//		Il difensore si avvicina alla palla è cerca
 		//		di recuperarla
+		
+		AbstractPlayer player = (AbstractPlayer) agent;
+
+		System.out.println("Performing "+getClass().getSimpleName());
+		
+		try {
+			if (player.getAction().isBallVisible()) {
+				ObjBall ball = player.getMemory().getBall();
+
+				if ((ball.getDirection() > 5.0 
+						|| ball.getDirection() < -5.0)) {
+					player.getRoboClient().turn(ball.getDirection());
+				}
+
+				if (ball.getDistance() > 0.7 ) {
+					Polar p = MathHelp.getNextBallPoint(ball);
+					Position p2 = MathHelp.getPos(p);
+					if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
+						return false;
+					else if (player.getAction().stayInBounds()) {						
+						player.getAction().goToPoint(p);
+					}
+					return true;
+					
+				} else if (ball.getDistance() <= 0.7) {
+					ballStoled = true;
+				}
+
+				return true;
+
+			} else {
+				player.getRoboClient().turn(30);
+			}
+
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
