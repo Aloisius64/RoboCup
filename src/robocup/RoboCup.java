@@ -15,8 +15,8 @@ public class RoboCup {
     	Team dropTableUsers = new Team("DropTableUsers", formation);
     	dropTableUsers.initTeam();
     	
-//    	Team fox = new Team("Fox", formation);
-//    	fox.initTeam();
+    	Team fox = new Team("Fox", formation);
+    	fox.initTeam();
     	
     }
 
