@@ -48,6 +48,7 @@ public class TryToScoreAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
+		
 		//		Il giocatore prova a tirare, qui usiamo la 
 		//		funzione smart kick.
 		return false;
