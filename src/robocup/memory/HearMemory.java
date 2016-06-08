@@ -46,9 +46,9 @@ public class HearMemory {
 		String splittedDouble = msg.getMessage().replace('p', '.').substring(1, msg.getMessage().length() - 1);
 		// System.out.println(splittedDouble);
 		double messageDistance = Double.parseDouble(splittedDouble);
-		if (msg.getTeam().equals(memory.getAbstractPlayer().getRoboClient().getTeam())) {
-			if (msg.getPlayerSender() >= 0 && msg.getPlayerSender() <= 11)
-				ourMessages.put(msg.getPlayerSender(), messageDistance);
+		if (msg.getTeam().equals("our")) {
+//			System.out.println(memory.getuNum() + " distance :" + messageDistance + " sender:" + msg.getPlayerSender());
+			ourMessages.put(msg.getPlayerSender(), messageDistance);
 		}
 
 		// throw new UnsupportedOperationException("Not supported yet."); //To
