@@ -100,6 +100,8 @@ public class OffensivePlayer extends AbstractPlayer {
 	@Override
 	public int evaluate() {
 		int evaluation = 0;
+		double weightDistance = 0.5;
+		double weightGoalView = 1.0 - weightDistance;
 		double goalViewEvaluationValue = 0;
 		if (getMemory().getOppGoal() != null) {
 			List<ObjPlayer> otherPlayers = getMemory().getOpponents(getRoboClient().getTeam());
@@ -109,8 +111,9 @@ public class OffensivePlayer extends AbstractPlayer {
 			double rightDir = rightPost == null ? 45.0 : rightPost.getDirection();
 			GoalView goalView = KickMathUtility.getGoalView(leftDir, rightDir, otherPlayers, 0.7);
 			goalViewEvaluationValue = goalView.getLargerInterval().getSize();
-
+			
 		}
+		double distanceEvaluationValue = 100.0-getMemory().getOppGoal().getDirection();
 		evaluation = (int) Math.round(goalViewEvaluationValue * 100 / MAX_VIEW);
 		return evaluation;
 	}

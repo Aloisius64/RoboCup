@@ -58,7 +58,6 @@ public class TryToScoreAction extends GoapAction {
 		// funzione smart kick.
 
 		AbstractPlayer player = ((AbstractPlayer) agent);
-
 //		System.out.println("Performing " + getClass().getSimpleName());
 
 		try {
