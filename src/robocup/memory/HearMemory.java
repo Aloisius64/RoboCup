@@ -42,15 +42,20 @@ public class HearMemory {
 		// ourMessages.put(msg.getPlayerSender(), msg);
 		// }
 		// msg tipo 23.5 ---> 23p5
+		if (msg.getMessage().startsWith("A")) {
 
-		String splittedDouble = msg.getMessage().replace('p', '.').substring(1, msg.getMessage().length() - 1);
-		// System.out.println(splittedDouble);
-		double messageDistance = Double.parseDouble(splittedDouble);
-		if (msg.getTeam().equals("our")) {
-//			System.out.println(memory.getuNum() + " distance :" + messageDistance + " sender:" + msg.getPlayerSender());
-			ourMessages.put(msg.getPlayerSender(), messageDistance);
+		} else if (msg.getMessage().startsWith("D")) {
+
+		} else {
+			String splittedDouble = msg.getMessage().replace('p', '.').substring(1, msg.getMessage().length() - 1);
+			// System.out.println(splittedDouble);
+			double messageDistance = Double.parseDouble(splittedDouble);
+			if (msg.getTeam().equals("our")) {
+				// System.out.println(memory.getuNum() + " distance :" +
+				// messageDistance + " sender:" + msg.getPlayerSender());
+				ourMessages.put(msg.getPlayerSender(), messageDistance);
+			}
 		}
-
 		// throw new UnsupportedOperationException("Not supported yet."); //To
 		// change body of generated methods, choose Tools | Templates.
 	}
@@ -72,7 +77,7 @@ public class HearMemory {
 	}
 
 	public void ourMessagePrint() {
-		System.out.println("print                        here");
+//		System.out.println("print                        here");
 		for (Integer i : ourMessages.keySet()) {
 			System.out.println(memory.getuNum() + ":  " + i + " " + ourMessages.get(i));
 		}

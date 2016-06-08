@@ -86,7 +86,7 @@ public class Action {
 		double leftFlagDirection = flagLeft.getDirection();
 		double rightFlagDirection = flagRight.getDirection();
 
-		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents("Team");
+		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents(player.getRoboClient().getTeam());
 		double playerSize = 0.7;
 
 		GoalView goalView = KickMathUtility.getGoalView(leftFlagDirection, rightFlagDirection, otherPlayers,

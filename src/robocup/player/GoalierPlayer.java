@@ -67,7 +67,7 @@ public class GoalierPlayer extends AbstractPlayer {
 		HashMap<String, Boolean> goal = new HashMap<>();
 
 		//	Il goal dipende dal tipo di play mode
-		//	cambiarlo in base alla modalità di gioco
+		//	cambiarlo in base alla modalitï¿½ di gioco
 		
 		if(getMemory().getPlayMode().equals("play_on")){
 			goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
@@ -95,6 +95,17 @@ public class GoalierPlayer extends AbstractPlayer {
 		actions.add(new PassBallGoalieAction());
 
 		return actions;
+	}
+	
+	@Override
+	public int evaluate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void broadcastEvaluation(int evaluation) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -87,4 +87,16 @@ public class DefensivePlayer extends AbstractPlayer{
 		return actions;
 	}
 
+	@Override
+	public int evaluate() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public void broadcastEvaluation(int evaluation) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

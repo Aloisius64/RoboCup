@@ -24,6 +24,7 @@ import robocup.utility.Position;
  */
 public abstract class AbstractPlayer extends Thread implements IGoap {
 
+	public static final double MAX_VIEW = 90.0;
 	protected RoboClient roboClient;
 	protected Memory memory;
 	protected ObjInfo objInfo;
@@ -106,20 +107,27 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			try {
 				receiveInput();
 				// Thread.sleep(100);
+
+				if (getMemory().timeCheck(getTime())) {
+					setTime(getMemory().getObjMemory().getTime());
+					getAgent().update();
+					if (getAction().isBallVisible()) {
+						getAction().braodcastDistance(getMemory().getBall().getDistance());
+					}
+					broadcastEvaluation(evaluate());
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-			if (getMemory().timeCheck(getTime())) {
-				setTime(getMemory().getObjMemory().getTime());
-				getAgent().update();
-				if (getAction().isBallVisible())
-					getAction().braodcastDistance(getMemory().getBall().getDistance());
-				
-			}
-
 		}
 	}
+
+	public abstract int evaluate();
+
+	public abstract void broadcastEvaluation(int evaluation) throws UnknownHostException, InterruptedException;
 
 	/********************************************/
 	/* Get And Set */
@@ -212,6 +220,5 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	public void setFormationName(String formationName) {
 		this.formationName = formationName;
 	}
-
 
 }
