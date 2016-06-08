@@ -53,7 +53,7 @@ public class SearchBallAction extends GoapAction {
 
 		AbstractPlayer player = ((AbstractPlayer) agent);
 
-		System.out.println("Performing "+getClass().getSimpleName());
+//		System.out.println("Performing "+getClass().getSimpleName());
 
 		try {
 			if(player.getAction().isBallVisible()){

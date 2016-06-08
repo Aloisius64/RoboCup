@@ -7,7 +7,7 @@ import robocup.player.AbstractPlayer;
 import robocup.utility.Position;
 
 /*
-SHOOT_BALL (Passaggio lungo oltre la metà campo) **
+SHOOT_BALL (Passaggio lungo oltre la metï¿½ campo) **
 PRECONDITIONS:
 	KEEP_AREA_SAFE (FALSE)
 	BALL_CATCHED (TRUE)
@@ -17,11 +17,11 @@ EFFECTS:
 	BALL_CATCHED (FALSE)
 
 THINGS TO CHECK:
-	Si è visto un attaccante particolarmente 
-	libero oltre la metà campo
+	Si ï¿½ visto un attaccante particolarmente 
+	libero oltre la metï¿½ campo
 
 PERFORMING:
-	La palla è calciata oltre la metà campo 
+	La palla ï¿½ calciata oltre la metï¿½ campo 
 	verso un proprio compagno
  */
 public class ShootBallDefensorAction extends GoapAction {
@@ -33,8 +33,8 @@ public class ShootBallDefensorAction extends GoapAction {
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, false);
-		addEffect(GoapGlossary.KEEP_AREA_SAFE, false);
-		addEffect(GoapGlossary.BALL_CATCHED, true);
+		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
+		addEffect(GoapGlossary.BALL_CATCHED, false);
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class ShootBallDefensorAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		Si è visto un attaccante particolarmente 
-		//		libero oltre la metà campo
+		//		Si ï¿½ visto un attaccante particolarmente 
+		//		libero oltre la metï¿½ campo
 		
 		AbstractPlayer player = (AbstractPlayer) agent;
 		String teamName = player.getRoboClient().getTeam();
@@ -65,7 +65,7 @@ public class ShootBallDefensorAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
-		//		La palla è calciata oltre la metà campo 
+		//		La palla ï¿½ calciata oltre la metï¿½ campo 
 		//		verso un proprio compagno
 		System.out.println("Performing "+getClass().getSimpleName());
 		

@@ -19,13 +19,13 @@ FOLLOW_BALL_GOALIE ********************************
 		BALL_CATCHABLE (TRUE)
 
 	THINGS TO CHECK:
-		La palla è controllata dall avversario o comunque
-		non è in una zona in cui il portiere è in grado
+		La palla ï¿½ controllata dall avversario o comunque
+		non ï¿½ in una zona in cui il portiere ï¿½ in grado
 		di catturarla.
 
 	PERFORMING:
 		Il portiere segue i movimenti della palla, minimizzando
-		la distanza per cui è possibile catturare la palla
+		la distanza per cui ï¿½ possibile catturare la palla
  */
 public class FollowBallGoalieAction extends GoapAction {
 
@@ -53,15 +53,15 @@ public class FollowBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		La palla è controllata dall avversario o comunque
-		//		non è in una zona in cui il portiere è in grado
+		//		La palla ï¿½ controllata dall avversario o comunque
+		//		non ï¿½ in una zona in cui il portiere ï¿½ in grado
 		//		di catturarla.
 		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		System.out.println("Performing "+getClass().getSimpleName());
+//		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 

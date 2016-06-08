@@ -134,10 +134,10 @@ public class Parser {
 
             InfoMem.getHearMemory().onMessageReceived(msg);
 
-            for (String string : splitInfo) {
-                System.out.print(string + " ");
-            }
-            System.out.println();
+//            for (String string : splitInfo) {
+//                System.out.print(string + " ");
+//            }
+//            System.out.println("end message");
         }
 
     }

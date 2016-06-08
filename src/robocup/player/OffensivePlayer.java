@@ -30,12 +30,12 @@ public class OffensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player " + getMemory().getuNum() + " - Plan failed");
+//		System.err.println("Player " + getMemory().getuNum() + " - Plan failed");
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.err.println("Player " + getMemory().getuNum() + " - Plan found " + GoapAgent.prettyPrint(actions));
+//		System.err.println("Player " + getMemory().getuNum() + " - Plan found " + GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
@@ -59,7 +59,6 @@ public class OffensivePlayer extends AbstractPlayer {
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
 		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallInRangeOf(1.0));
 		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE, getAction().isBallNearTeammate());
-		worldState.put(GoapGlossary.BALL_NEAR_OPPONENT, !getAction().isBallNearTeammate());
 		GoapPlanner.printMap(worldState);
 		return worldState;
 	}

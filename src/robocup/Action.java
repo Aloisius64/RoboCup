@@ -105,6 +105,17 @@ public class Action {
 		}
 	}
 
+	public boolean isTeammatesNear() {
+		// TODO Auto-generated method stub
+		player.getMemory().getHearMemory().ourMessagePrint();
+		for (Double d : player.getMemory().getHearMemory().getOurMessages().values()) {
+			if (d <= player.getMemory().getBall().getDistance()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean inFieldBall(ObjBall ball) {
 
 		Polar p = MathHelp.getNextBallPoint(ball);
@@ -538,24 +549,39 @@ public class Action {
 			ObjBall objBall = player.getMemory().getBall();
 			Position ballPos = MathHelp.getPos(objBall.getDistance(), player.getDirection() + objBall.getDirection());
 			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
-
-			for (ObjPlayer objPlayer : player.getMemory().getTeammates(player.getRoboClient().getTeam())) {
-				int playerNumber = objPlayer.getuNum() + 1;
-
-				if (playerNumber > 0 && playerNumber <= 11) {
-					Position objPos = MathHelp.getPos(objPlayer.getDistance(),
-							player.getDirection() + objPlayer.getDirection());
-					objPos = MathHelp.vAdd(player.getPosition(), objPos);
-
-					if (MathHelp.mag(objPos) < 4.0) {
-						System.out.println("Found teammate " + playerNumber);
-						return true;
-					}
-				}
+			if (isTeammatesNear()) {
+				return true;
 			}
+			// for (ObjPlayer objPlayer :
+			// player.getMemory().getTeammates(player.getRoboClient().getTeam()))
+			// {
+			// int playerNumber = objPlayer.getuNum() + 1;
+			//
+			// if (playerNumber > 0 && playerNumber <= 11) {
+			// Position objPos = MathHelp.getPos(objPlayer.getDistance(),
+			// player.getDirection() + objPlayer.getDirection());
+			// objPos = MathHelp.vAdd(player.getPosition(), objPos);
+			//
+			// if (MathHelp.mag(objPos) < 4.0) {
+			// System.out.println("Found teammate " + playerNumber);
+			// return true;
+			// }
+			// }
+			// }
 		}
 
 		return false;
+	}
+
+	public void braodcastDistance(double distance) {
+		try {
+			say(Double.toString(distance).replace('.', 'p'));
+
+		} catch (UnknownHostException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	/**************************************************************/

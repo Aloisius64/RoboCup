@@ -5,6 +5,8 @@
  */
 package robocup.memory;
 
+import java.util.HashMap;
+
 import robocup.utility.Message;
 
 /**
@@ -13,56 +15,67 @@ import robocup.utility.Message;
  */
 public class HearMemory {
 
-//    private List<Message> ourMessages;
-//    private List<Message> otherMessages;
-//    private int lastTime = 0;
-//    private int numCycles = 3;
+	private HashMap<Integer, Double> ourMessages;
+	private HashMap<Integer, Message> otherMessages;
+	private Memory memory;
+	// private int lastTime = 0;
+	// private int numCycles = 3;
 
-    public HearMemory() {
-//        this.ourMessages = new ArrayList<>();
-//        this.otherMessages = new ArrayList<>();
-    }
+	public HearMemory() {
+		// TODO Auto-generated constructor stub
+	}
 
-//    public void addOurMessage(Message msg) {
-//        if (msg.getTime() >= lastTime-numCycles) {
-//            clean();
-//        }
-//        lastTime = msg.getTime();
-//        ourMessages.add(msg);
-//    }
-//
-//    public void addOtherMessage(Message msg) {
-//        if (msg.getTime() >= lastTime-numCycles) {
-//            clean();
-//        }
-//        lastTime = msg.getTime();
-//        otherMessages.add(msg);
-//    }
-//
-//    public void clean() {
-//        ourMessages.clear();
-//        otherMessages.clear();
-//    }
-//
-//    public List<Message> getOurMessages() {
-//        return ourMessages;
-//    }
-//
-//    public void setOurMessages(List<Message> ourMessages) {
-//        this.ourMessages = ourMessages;
-//    }
-//
-//    public List<Message> getOtherMessages() {
-//        return otherMessages;
-//    }
-//
-//    public void setOtherMessages(List<Message> otherMessages) {
-//        this.otherMessages = otherMessages;
-//    }
+	public HearMemory(Memory memory) {
+		this.ourMessages = new HashMap<Integer, Double>();
+		this.otherMessages = new HashMap<Integer, Message>();
+		this.memory = memory;
+	}
 
-    public void onMessageReceived(Message msg) {
-        System.out.println("ANdiamo a mangiare");
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	// public void clean() {
+	// ourMessages.clear();
+	// otherMessages.clear();
+	// }
+
+	public void onMessageReceived(Message msg) {
+
+		// if(msg.getTeam().equals(player.getTeam())){
+		// ourMessages.put(msg.getPlayerSender(), msg);
+		// }
+		// msg tipo 23.5 ---> 23p5
+
+		String splittedDouble = msg.getMessage().replace('p', '.').substring(1, msg.getMessage().length() - 1);
+		// System.out.println(splittedDouble);
+		double messageDistance = Double.parseDouble(splittedDouble);
+		if (msg.getTeam().equals(memory.getAbstractPlayer().getRoboClient().getTeam())) {
+			if (msg.getPlayerSender() >= 0 && msg.getPlayerSender() <= 11)
+				ourMessages.put(msg.getPlayerSender(), messageDistance);
+		}
+
+		// throw new UnsupportedOperationException("Not supported yet."); //To
+		// change body of generated methods, choose Tools | Templates.
+	}
+
+	public HashMap<Integer, Double> getOurMessages() {
+		return ourMessages;
+	}
+
+	public void setOurMessages(HashMap<Integer, Double> ourMessages) {
+		this.ourMessages = ourMessages;
+	}
+
+	public HashMap<Integer, Message> getOtherMessages() {
+		return otherMessages;
+	}
+
+	public void setOtherMessages(HashMap<Integer, Message> otherMessages) {
+		this.otherMessages = otherMessages;
+	}
+
+	public void ourMessagePrint() {
+		System.out.println("print                        here");
+		for (Integer i : ourMessages.keySet()) {
+			System.out.println(memory.getuNum() + ":  " + i + " " + ourMessages.get(i));
+		}
+	}
 
 }

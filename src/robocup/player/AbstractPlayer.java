@@ -14,13 +14,13 @@ import robocup.utility.Parser;
 import robocup.utility.Position;
 
 /**
- * The Player class defines all objects and methods used for the 
- * Player within the RoboCup match.  The Player establishes a connection
- * to the server, initializes itself on the team, and 
- * performs all actions related to a RoboCup soccer player such as
- * (but not limited to) kicking, dashing, dribbling, passing and scoring. 
- * The Player class has a Memory for storing the current RoboCup worldstate.
- * It reacts to stimuli based on strategies provided by the Brain (TBD). 
+ * The Player class defines all objects and methods used for the Player within
+ * the RoboCup match. The Player establishes a connection to the server,
+ * initializes itself on the team, and performs all actions related to a RoboCup
+ * soccer player such as (but not limited to) kicking, dashing, dribbling,
+ * passing and scoring. The Player class has a Memory for storing the current
+ * RoboCup worldstate. It reacts to stimuli based on strategies provided by the
+ * Brain (TBD).
  */
 public abstract class AbstractPlayer extends Thread implements IGoap {
 
@@ -34,20 +34,20 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	private GoapAgent agent;
 	private String formationName;
 
-	public AbstractPlayer(){
+	public AbstractPlayer() {
 		super();
 		init();
 	}
 
-	public AbstractPlayer(String team){
+	public AbstractPlayer(String team) {
 		super();
 		init();
 		this.roboClient.setTeam(team);
 	}
 
-	private void init(){
+	private void init() {
 		this.roboClient = new RoboClient();
-		this.memory = new Memory();
+		this.memory = new Memory(this);
 		this.objInfo = new ObjInfo();
 		this.parser = new Parser();
 		this.action = new Action(this);
@@ -65,7 +65,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		try {
 			getAction().move(x, y);
 			Thread.sleep(100);
-			if(getMemory().getSide().compareTo("r") == 0) {
+			if (getMemory().getSide().compareTo("r") == 0) {
 				getAction().turn(180);
 			}
 		} catch (InterruptedException e) {
@@ -81,7 +81,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		try {
 			getAction().move(x, y);
 			Thread.sleep(100);
-			if(getMemory().getSide().equals("r")) {
+			if (getMemory().getSide().equals("r")) {
 				getAction().turn(180);
 			}
 		} catch (InterruptedException e) {
@@ -91,34 +91,38 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 
 	/**
 	 * Receives worldstate data from the RoboCup server.
+	 * 
 	 * @pre A RoboCup server is available.
 	 * @post The current worldstate has been stored in the Memory.
 	 */
-	public void receiveInput() throws InterruptedException  {		
+	public void receiveInput() throws InterruptedException {
 		parser.Parse(roboClient.receive(), memory);
 	}
 
 	@Override
 	public void run() {
-		while(true) {
+		while (true) {
 
 			try {
 				receiveInput();
-				//				Thread.sleep(100);
+				// Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
-			if(getMemory().timeCheck(getTime())) {
+			if (getMemory().timeCheck(getTime())) {
 				setTime(getMemory().getObjMemory().getTime());
 				getAgent().update();
+				if (getAction().isBallVisible())
+					getAction().braodcastDistance(getMemory().getBall().getDistance());
+				
 			}
 
 		}
 	}
 
 	/********************************************/
-	/* 				Get And Set 				*/
+	/* Get And Set */
 	/********************************************/
 
 	public double getDirection() {
@@ -208,5 +212,6 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 	public void setFormationName(String formationName) {
 		this.formationName = formationName;
 	}
-	
+
+
 }

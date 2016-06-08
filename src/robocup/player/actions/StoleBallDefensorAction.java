@@ -22,12 +22,12 @@ EFFECTS:
 	BALL_CATCHED (TRUE)
 
 THINGS TO CHECK:
-	La palla è controllata da un avversario o
-	non, basta che sia nella propria metà campo,
-	ed è ad una certa distanza dal difensore
+	La palla ï¿½ controllata da un avversario o
+	non, basta che sia nella propria metï¿½ campo,
+	ed ï¿½ ad una certa distanza dal difensore
 
 PERFORMING:
-	Il difensore si avvicina alla palla è cerca
+	Il difensore si avvicina alla palla ï¿½ cerca
 	di recuperarla
  */
 public class StoleBallDefensorAction extends GoapAction {
@@ -39,7 +39,8 @@ public class StoleBallDefensorAction extends GoapAction {
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addPrecondition(GoapGlossary.BALL_NEAR, true);
-		//		addPrecondition(GoapGlossary.PLAYER_MARKED, false);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, false);
+		// addPrecondition(GoapGlossary.PLAYER_MARKED, false);
 		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, false);
 		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
@@ -56,17 +57,17 @@ public class StoleBallDefensorAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		La palla è controllata da un avversario o
-		//		non, basta che sia nella propria metà campo,
-		//		ed è ad una certa distanza dal difensore
+		// La palla ï¿½ controllata da un avversario o
+		// non, basta che sia nella propria metï¿½ campo,
+		// ed ï¿½ ad una certa distanza dal difensore
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-		
+
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
-			if(ball.getDistance() > 10){
-//				return false;
-				return !player.getAction().isBallNearTeammateAttacker();						
+			if (ball.getDistance() > 10) {
+				// return false;
+				return !player.getAction().isBallNearTeammateAttacker();
 			}
 		}
 
@@ -75,42 +76,42 @@ public class StoleBallDefensorAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
-		//		Il difensore si avvicina alla palla è cerca
-		//		di recuperarla
+		// Il difensore si avvicina alla palla ï¿½ cerca
+		// di recuperarla
 
-		//		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		System.out.println(player.getMemory().getuNum()+" Performing "+getClass().getSimpleName());
+		if (player.getAction().isBallNearTeammate())
+			return false;
 		try {
+
 			if (player.getMemory().isObjVisible("ball")) {
 				ObjBall ball = player.getMemory().getBall();
 
-				if ((ball.getDirection() > 5.0 
-						|| ball.getDirection() < -5.0)) {
+				if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 
-				if (ball.getDistance() > 0.7 
-						&& player.getAction().isBallInOurField().booleanValue()) {
-//					player.getAction().interceptBall(ball);
-					
+				if (ball.getDistance() > 0.7 && player.getAction().isBallInOurField().booleanValue()) {
+					// player.getAction().interceptBall(ball);
+
 					Polar p = MathHelp.getNextBallPoint(ball);
 					Position p2 = MathHelp.getPos(p);
 					if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
 						return false;
-					else if (player.getAction().stayInBounds()) {						
+					else if (player.getAction().stayInBounds()) {
 						player.getAction().goToPoint(p);
 					}
 					return true;
-					
+
 				} else if (ball.getDistance() <= 0.7) {
 					ballStoled = true;
 				}
 
-				if(!player.getAction().isBallInOurField().booleanValue()){
+				if (!player.getAction().isBallInOurField().booleanValue()) {
 					return false;
-				}				
+				}
 
 				return true;
 

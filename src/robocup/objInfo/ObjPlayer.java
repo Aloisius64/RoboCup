@@ -3,7 +3,7 @@ package robocup.objInfo;
 /**
  * @class ObjPlayer
  * 
- * container for player ObjInfo
+ *        container for player ObjInfo
  *
  */
 public class ObjPlayer extends ObjInfo {
@@ -11,18 +11,18 @@ public class ObjPlayer extends ObjInfo {
 	public ObjPlayer() {
 		super("player");
 	}
-	
+
 	/**
 	 * The Team Name getter
 	 * 
-	 * @return the name of the team the player is on, if they're
-	 * close enough to see the team
+	 * @return the name of the team the player is on, if they're close enough to
+	 *         see the team
 	 * 
 	 */
 	public String getTeam() {
 		return team;
 	}
-	
+
 	/**
 	 * The Team Name setter
 	 */
@@ -33,8 +33,8 @@ public class ObjPlayer extends ObjInfo {
 	/**
 	 * The Uniform Number getter
 	 * 
-	 * @return the Uniform Number on the player's shirt, if they're
-	 * close enough to see it
+	 * @return the Uniform Number on the player's shirt, if they're close enough
+	 *         to see it
 	 * 
 	 */
 	public int getuNum() {
@@ -67,9 +67,9 @@ public class ObjPlayer extends ObjInfo {
 	/**
 	 * A getter for the player's head direction
 	 * 
-	 * @return a double of the angle, in degrees, of the direction of
-	 * the player's head relative to your own. The angle is 0 if they 
-	 * are both facing each other.
+	 * @return a double of the angle, in degrees, of the direction of the
+	 *         player's head relative to your own. The angle is 0 if they are
+	 *         both facing each other.
 	 */
 	public double getHeadDir() {
 		return headDir;
@@ -85,9 +85,9 @@ public class ObjPlayer extends ObjInfo {
 	/**
 	 * A getter for the player's body direction
 	 * 
-	 * @return a double of the angle, in degrees, of the direction of
-	 * the player's body relative to your own. The angle is 0 if their
-	 * bodies are both facing each other.
+	 * @return a double of the angle, in degrees, of the direction of the
+	 *         player's body relative to your own. The angle is 0 if their
+	 *         bodies are both facing each other.
 	 */
 	public double getBodyDir() {
 		return bodyDir;
@@ -100,10 +100,11 @@ public class ObjPlayer extends ObjInfo {
 		this.bodyDir = bodyDir;
 	}
 
+	
 	private String team;
 	private int uNum;
 	private boolean goalie;
 	private double headDir;
 	private double bodyDir;
-	
+
 }

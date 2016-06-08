@@ -25,8 +25,8 @@ THINGS TO CHECK:
 
 PERFORMING:
 	La palla viene passata ad un compagno se il
-	giocatore è ostacolato da un certo numero di
-	avversari e alcuni compagni sono in zone più
+	giocatore ï¿½ ostacolato da un certo numero di
+	avversari e alcuni compagni sono in zone piï¿½
 	libere rispetto a lui.
  */
 public class PassBallDefensorAction extends GoapAction {
@@ -68,14 +68,14 @@ public class PassBallDefensorAction extends GoapAction {
 	@Override
 	public boolean perform(Object agent) {
 		//		La palla viene passata ad un compagno se il
-		//		giocatore è ostacolato da un certo numero di
-		//		avversari e alcuni compagni sono in zone più
+		//		giocatore ï¿½ ostacolato da un certo numero di
+		//		avversari e alcuni compagni sono in zone piï¿½
 		//		libere rispetto a lui.
 
-		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 
+		System.out.println(player.getMemory().getuNum()+ " Performing "+getClass().getSimpleName());
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
 			ObjPlayer closestPlayer = null;
@@ -86,9 +86,9 @@ public class PassBallDefensorAction extends GoapAction {
 					player.getAction().kickToPoint(ball, MathHelp.getNextPlayerPoint(closestPlayer));
 					Thread.sleep(1000);
 					ballPassed = true;
-					return true;
 				} else {
 					player.getAction().kickToPoint(ball, new Position(0,0));
+					ballPassed=true;
 				}
 			} catch (UnknownHostException e) {
 				e.printStackTrace();

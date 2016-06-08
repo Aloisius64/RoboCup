@@ -21,6 +21,7 @@ import robocup.objInfo.ObjInfo;
 import robocup.objInfo.ObjLine;
 import robocup.objInfo.ObjMemory;
 import robocup.objInfo.ObjPlayer;
+import robocup.player.AbstractPlayer;
 import robocup.utility.Field;
 import robocup.utility.MathHelp;
 import robocup.utility.Polar;
@@ -76,12 +77,16 @@ public class Memory {
 	 * initiates the time at 0 for both, and creates an ObjMemory and
 	 * SenseMemory with the new ArrayLists and time as parameters.
 	 */
-	public Memory() {
+	
+	private AbstractPlayer abstractPlayer;
+	
+	public Memory(AbstractPlayer player) {
 		ArrayList<ObjInfo> newObjArray = new ArrayList<>();
 		int time = 0;
+		this.abstractPlayer=player;
 		setObjMemory(new ObjMemory(newObjArray, time));
 		setSenseMemory(new SenseMemory());
-		setHearMemory(new HearMemory());
+		setHearMemory(new HearMemory(this));
 	}
 
 	/**
@@ -755,6 +760,14 @@ public class Memory {
 			}
 		}
 		return players;
+	}
+
+	public AbstractPlayer getAbstractPlayer() {
+		return abstractPlayer;
+	}
+
+	public void setAbstractPlayer(AbstractPlayer abstractPlayer) {
+		this.abstractPlayer = abstractPlayer;
 	}
 
 }
