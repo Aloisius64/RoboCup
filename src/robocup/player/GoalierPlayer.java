@@ -99,7 +99,7 @@ public class GoalierPlayer extends AbstractPlayer {
 	
 	@Override
 	public int evaluate() {
-		// TODO Auto-generated method stub
+		this.setCurrentEvaluation(0);
 		return 0;
 	}
 	@Override

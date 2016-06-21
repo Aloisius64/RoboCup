@@ -89,6 +89,7 @@ public class OffensivePlayer extends AbstractPlayer {
 
 		actions.add(new IdleAction());
 		actions.add(new SearchBallAction());
+		actions.add(new FollowAction());
 		// actions.add(new MarkPlayerAction());
 		// actions.add(new PassBallAttackerAction());
 		actions.add(new TryToScoreAction());
@@ -100,7 +101,7 @@ public class OffensivePlayer extends AbstractPlayer {
 	@Override
 	public int evaluate() {
 		int evaluation = 0;
-		double weightDistance = 0.5;
+		double weightDistance = 0.3;
 		double weightGoalView = 1.0 - weightDistance;
 		double goalViewEvaluationValue = 0;
 		if (getMemory().getOppGoal() != null) {
@@ -111,10 +112,14 @@ public class OffensivePlayer extends AbstractPlayer {
 			double rightDir = rightPost == null ? 45.0 : rightPost.getDirection();
 			GoalView goalView = KickMathUtility.getGoalView(leftDir, rightDir, otherPlayers, 0.7);
 			goalViewEvaluationValue = goalView.getLargerInterval().getSize();
-			
+
 		}
-		double distanceEvaluationValue = 100.0-getMemory().getOppGoal().getDirection();
-		evaluation = (int) Math.round(goalViewEvaluationValue * 100 / MAX_VIEW);
+
+		double distanceEvaluationValue = 100.0
+				- (getMemory().getOppGoal() == null ? 100 : getMemory().getOppGoal().getDistance());
+		goalViewEvaluationValue = goalViewEvaluationValue * 100 / MAX_VIEW;
+		evaluation = (int) (distanceEvaluationValue * weightDistance + goalViewEvaluationValue * weightGoalView);
+		this.setCurrentEvaluation(evaluation);
 		return evaluation;
 	}
 
@@ -123,7 +128,7 @@ public class OffensivePlayer extends AbstractPlayer {
 		String message = "A" + getMemory().getuNum() + "A" + evaluation + "A" + getPosition().x + "A" + getPosition().y;
 		message = message.replace('.', 'p');
 		getAction().say(message);
-		System.out.println(message);
+		// System.out.println(message);
 	}
 
 }

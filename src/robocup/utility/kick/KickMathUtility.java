@@ -9,11 +9,11 @@ public class KickMathUtility {
 	public static GoalView getGoalView(double leftFlagDirection, double rightFlagDirection, List<ObjPlayer> otherPlayers,
 			double playerSize) {
 		GoalView goalView = new GoalView(leftFlagDirection, rightFlagDirection);
-		System.out.println("goalView " + goalView);
+//		System.out.println("goalView " + goalView);
 		
 		for (ObjPlayer seenPlayer : otherPlayers) {
 			ViewInterval opponentInterval = getPlayerInterval(seenPlayer, playerSize);
-			System.out.println("opponent interval " + opponentInterval);
+//			System.out.println("opponent interval " + opponentInterval);
 			goalView = goalView.subtractInterval(opponentInterval);
 		}
 

@@ -63,6 +63,7 @@ public class Action {
 			if ((go.t) > 5.0 || (go.t) < -5.0) {
 				player.getRoboClient().turn(go.t * (1 + (5 * player.getMemory().getAmountOfSpeed())));
 			}
+			
 			player.getRoboClient()
 					.dash(MathHelp.getDashPower(MathHelp.getPos(go), player.getMemory().getAmountOfSpeed(),
 							player.getMemory().getDirection(), player.getMemory().getEffort(),
@@ -107,7 +108,7 @@ public class Action {
 
 	public boolean isTeammatesNear() {
 		// TODO Auto-generated method stub
-//		player.getMemory().getHearMemory().ourMessagePrint();
+		// player.getMemory().getHearMemory().ourMessagePrint();
 		for (Double d : player.getMemory().getHearMemory().getOurMessages().values()) {
 			if (d < player.getMemory().getBall().getDistance()) {
 				return true;

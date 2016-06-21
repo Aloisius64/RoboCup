@@ -8,6 +8,7 @@ package robocup.memory;
 import java.util.HashMap;
 
 import robocup.utility.Message;
+import robocup.utility.Position;
 
 /**
  *
@@ -15,8 +16,22 @@ import robocup.utility.Message;
  */
 public class HearMemory {
 
+	public class Evaluation {
+		public int evaluation;
+		public int playerSender;
+		public Position playerPosition;
+
+		public Evaluation() {
+			this.evaluation = Integer.MIN_VALUE;
+			this.playerPosition = null;
+			this.playerSender = 0;
+		}
+
+	}
+
 	private HashMap<Integer, Double> ourMessages;
 	private HashMap<Integer, Message> otherMessages;
+	private Evaluation attacker;
 	private Memory memory;
 	// private int lastTime = 0;
 	// private int numCycles = 3;
@@ -29,6 +44,7 @@ public class HearMemory {
 		this.ourMessages = new HashMap<Integer, Double>();
 		this.otherMessages = new HashMap<Integer, Message>();
 		this.memory = memory;
+		this.attacker = new Evaluation();
 	}
 
 	// public void clean() {
@@ -43,7 +59,20 @@ public class HearMemory {
 		// }
 		// msg tipo 23.5 ---> 23p5
 		if (msg.getMessage().startsWith("A")) {
-
+			if (msg.getTeam().equals("our")) {
+				String splittedDouble = msg.getMessage().replace('p', '.').substring(1, msg.getMessage().length() - 1);
+				String[] messageValue = splittedDouble.split("A");
+				Evaluation attackerEvaluation = new Evaluation();
+				attackerEvaluation.evaluation = Integer.valueOf(messageValue[1]);
+				attackerEvaluation.playerPosition = new Position(Integer.valueOf(messageValue[1]),
+						Integer.valueOf(messageValue[2]));
+				attackerEvaluation.playerSender = Integer.valueOf(messageValue[0]);
+				if (attacker == null) {
+					attacker = attackerEvaluation;
+				} else {
+					attacker = getBestAttackerEvaluation(attacker, attackerEvaluation);
+				}
+			}
 		} else if (msg.getMessage().startsWith("D")) {
 
 		} else {
@@ -77,10 +106,18 @@ public class HearMemory {
 	}
 
 	public void ourMessagePrint() {
-//		System.out.println("print                        here");
+		// System.out.println("print here");
 		for (Integer i : ourMessages.keySet()) {
 			System.out.println(memory.getuNum() + ":  " + i + " " + ourMessages.get(i));
 		}
+	}
+
+	public Evaluation getAttackerEvaluation() {
+		return attacker;
+	}
+
+	public static Evaluation getBestAttackerEvaluation(Evaluation a, Evaluation b) {
+		return a.evaluation <= b.evaluation ? b : a;
 	}
 
 }

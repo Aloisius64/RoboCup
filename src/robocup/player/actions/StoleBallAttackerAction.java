@@ -72,6 +72,9 @@ public class StoleBallAttackerAction extends GoapAction {
 
 		try {
 			if (player.getAction().isBallVisible()) {
+				if(player.getAction().isBallNearTeammate()){
+					return false;
+				}
 				ObjBall ball = player.getMemory().getBall();
 				System.out.println("Player " + player.getAction().inFieldPlayer() + " Ball "
 						+ player.getAction().inFieldBall(ball));
