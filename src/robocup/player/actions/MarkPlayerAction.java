@@ -15,7 +15,7 @@ EFFECTS:
 	NEAR_NON_CONTROLLED_BALL_OPPONENT (TRUE)
 
 THINGS TO CHECK:
-	Il difensore è ad una distanza maggiore ripetto
+	Il difensore ï¿½ ad una distanza maggiore ripetto
 	all'azione DEFENSOR_STOLE_BALL
 
 PERFORMING:
@@ -27,6 +27,7 @@ public class MarkPlayerAction extends GoapAction {
 
 	public MarkPlayerAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addPrecondition(GoapGlossary.BALL_NEAR, false);
@@ -46,7 +47,7 @@ public class MarkPlayerAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		Il difensore è ad una distanza maggiore ripetto
+		//		Il difensore ï¿½ ad una distanza maggiore ripetto
 		//		all'azione DEFENSOR_STOLE_BALL
 		return true;
 	}

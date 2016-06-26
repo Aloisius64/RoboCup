@@ -1,7 +1,8 @@
-package robocup.player;
+package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.player.AbstractPlayer;
 import robocup.utility.MathHelp;
 import robocup.utility.Polar;
 import robocup.utility.Position;
@@ -13,7 +14,9 @@ public class FollowAction extends GoapAction {
 	public FollowAction() {
 		super(1.0f);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
+		addPrecondition(GoapGlossary.BEHIND_BALL_LINE, true);
 		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
@@ -31,7 +34,8 @@ public class FollowAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
+		
+		
 		return true;
 	}
 
@@ -47,9 +51,13 @@ public class FollowAction extends GoapAction {
 				return true;
 			} else {
 				if (player.getMemory().getOppGoal().getDistance() > 15.0) {
-					Polar p = MathHelp
-							.getPolar(new Position(50.0, player.getPosition().y));
-					System.out.println(player.getMemory().getuNum() + " " + p.t);
+
+					Polar p = MathHelp.getPolar(new Position(50.0, player.getPosition().y));
+					if (!player.getAction().isBehindBall()) {
+						return false;
+					}
+					// System.out.println(player.getMemory().getuNum() + " " +
+					// p.t);
 					player.getAction().dash(100, p.t);
 					return true;
 				} else {

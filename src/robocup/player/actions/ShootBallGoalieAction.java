@@ -7,7 +7,7 @@ import robocup.player.AbstractPlayer;
 import robocup.utility.Position;
 
 /*
-SHOOT_BALL_GOALIE (Rinvio verso la metà campo) ***
+SHOOT_BALL_GOALIE (Rinvio verso la metï¿½ campo) ***
 	PRECONDITIONS:
 		KEEP_AREA_SAFE (FALSE)
 		BALL_CATCHED (TRUE)
@@ -17,11 +17,11 @@ SHOOT_BALL_GOALIE (Rinvio verso la metà campo) ***
 
 	THINGS TO CHECK:
 		Presenza di un certo numero di avversari
-		vicino la porta. Se tale numero è troppo
+		vicino la porta. Se tale numero ï¿½ troppo
 		elevato (maggiore dei propri difensori)
 
 	PERFORMING:
-		Il portiere calcia la palla verso la metà 
+		Il portiere calcia la palla verso la metï¿½ 
 		campo (possibilmente verso un proprio 
 		compagno)
  */
@@ -32,6 +32,7 @@ public class ShootBallGoalieAction extends GoapAction {
 
 	public ShootBallGoalieAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
@@ -50,7 +51,7 @@ public class ShootBallGoalieAction extends GoapAction {
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
 		//		Presenza di un certo numero di avversari
-		//		vicino la porta. Se tale numero è troppo
+		//		vicino la porta. Se tale numero ï¿½ troppo
 		//		elevato (maggiore dei propri difensori)
 		
 		AbstractPlayer player = (AbstractPlayer) agent;
@@ -66,7 +67,7 @@ public class ShootBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean perform(Object agent) {
-		//		Il portiere calcia la palla verso la metà 
+		//		Il portiere calcia la palla verso la metï¿½ 
 		//		campo (possibilmente verso un proprio 
 		//		compagno)
 

@@ -36,6 +36,7 @@ public class FollowBallGoalieAction extends GoapAction {
 
 	public FollowBallGoalieAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHABLE, false);
 		addEffect(GoapGlossary.BALL_CATCHABLE, true);

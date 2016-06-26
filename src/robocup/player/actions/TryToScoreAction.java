@@ -2,7 +2,6 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
-import robocup.memory.HearMemory.Evaluation;
 import robocup.objInfo.ObjBall;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjGoal;
@@ -30,6 +29,8 @@ public class TryToScoreAction extends GoapAction {
 
 	public TryToScoreAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
+		addPrecondition(GoapGlossary.PLAY_ON, true);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
@@ -57,26 +58,31 @@ public class TryToScoreAction extends GoapAction {
 
 		// Il giocatore prova a tirare, qui usiamo la
 		// funzione smart kick.
-
 		AbstractPlayer player = ((AbstractPlayer) agent);
 		// System.out.println("Performing " + getClass().getSimpleName());
-
 		try {
 			if (player.getAction().isBallVisible()) {
 				ObjBall ball = player.getMemory().getBall();
 				if (ball.getDistance() <= 0.7) {// ball in kickable margin
-					Evaluation bestTeamEvaluation = player.getMemory().getHearMemory().getAttackerEvaluation();
-					if (bestTeamEvaluation.evaluation > player.getCurrentEvaluation()) {
-						player.getAction().kickToPoint(ball, bestTeamEvaluation.playerPosition);
-						return true;
-					}
+					// Evaluation bestTeamEvaluation =
+					// player.getMemory().getHearMemory().getAttackerEvaluation();
+					// System.out.println("Best evaluation: " +
+					// bestTeamEvaluation.evaluation);
+					// System.out.println(
+					// "CurrentEvaluation: " + player.getCurrentEvaluation());
+					// if (bestTeamEvaluation.evaluation >
+					// player.getCurrentEvaluation()) {
+					// player.getAction().kickToPoint(ball,
+					// bestTeamEvaluation.playerPosition);
+					// return false;
+					// }
 					ObjGoal goal = player.getMemory().getOppGoal();
 					if (goal != null) {// vediamo la porta?
 						if (goal.getDistance() <= 17) {// dentro l'area
 							// in caso di opponent vicini tira senza girarti a
 							// cercare i pali
 							if (player.getMemory().getLeftPost() == null) {
-//								System.out.println(goal.getDirection());
+								// System.out.println(goal.getDirection());
 								player.getAction().turn(30);
 								// Thread.sleep(50);
 							} else if (player.getMemory().getRightPost() == null) {

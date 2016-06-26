@@ -58,12 +58,12 @@ public class SearchBallAction extends GoapAction {
 		try {
 			if(player.getAction().isBallVisible()){
 
-				ObjBall ball = player.getMemory().getBall();
+//				ObjBall ball = player.getMemory().getBall();
 
-				if ((ball.getDirection() > 5.0 
-						|| ball.getDirection() < -5.0)) {
-					player.getRoboClient().turn(ball.getDirection());
-				}
+//				if ((ball.getDirection() > 5.0 
+//						|| ball.getDirection() < -5.0)) {
+//					player.getRoboClient().turn(ball.getDirection());
+//				}
 
 				ballSeen = true;
 			}

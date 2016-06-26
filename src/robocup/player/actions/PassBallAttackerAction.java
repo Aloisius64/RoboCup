@@ -15,9 +15,9 @@ EFFECTS:
 
 THINGS TO CHECK:
 	L'attaccante controlla un indice di successo
-	(probabilità di segnare) ricevuto da altri
+	(probabilitï¿½ di segnare) ricevuto da altri
 	(serve comunicazione) attaccanti e lo confronta
-	con il proprio, oppure se è ostacolato da un
+	con il proprio, oppure se ï¿½ ostacolato da un
 	certo numero di avversari.
 
 PERFORMING:
@@ -25,8 +25,8 @@ PERFORMING:
 	ha l'indice di successo maggiore (si potrebbe
 	verificare forse che chi conduce palla ha il
 	massimo indice di successo ma essendo ostacolato
-	da un certo numero di avversari è meglio passare
-	la palla ad un compagno che dopo di lui ha il più
+	da un certo numero di avversari ï¿½ meglio passare
+	la palla ad un compagno che dopo di lui ha il piï¿½
 	altro indice di successo)
  */
 public class PassBallAttackerAction extends GoapAction {
@@ -35,6 +35,7 @@ public class PassBallAttackerAction extends GoapAction {
 
 	public PassBallAttackerAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
@@ -54,9 +55,9 @@ public class PassBallAttackerAction extends GoapAction {
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
 		//		L'attaccante controlla un indice di successo
-		//		(probabilità di segnare) ricevuto da altri
+		//		(probabilitï¿½ di segnare) ricevuto da altri
 		//		(serve comunicazione) attaccanti e lo confronta
-		//		con il proprio, oppure se è ostacolato da un
+		//		con il proprio, oppure se ï¿½ ostacolato da un
 		//		certo numero di avversari.
 		return true;
 	}
@@ -67,8 +68,8 @@ public class PassBallAttackerAction extends GoapAction {
 		//		ha l'indice di successo maggiore (si potrebbe
 		//		verificare forse che chi conduce palla ha il
 		//		massimo indice di successo ma essendo ostacolato
-		//		da un certo numero di avversari è meglio passare
-		//		la palla ad un compagno che dopo di lui ha il più
+		//		da un certo numero di avversari ï¿½ meglio passare
+		//		la palla ad un compagno che dopo di lui ha il piï¿½
 		//		altro indice di successo)
 		return false;
 	}

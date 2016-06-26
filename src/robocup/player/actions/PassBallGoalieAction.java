@@ -20,13 +20,13 @@ PASS_BALL_GOALIE **********************************
 
 	THINGS TO CHECK:
 		Presenza di un certo numero di avversari
-		vicino la porta. Se tale numero non è 
+		vicino la porta. Se tale numero non ï¿½ 
 		troppo elevato (minore o circa i propri
 		difensori)
 
 	PERFORMING:
 		Il portiere passa la palla al difensore
-		più libero
+		piï¿½ libero
  */
 public class PassBallGoalieAction extends GoapAction {
 
@@ -35,6 +35,7 @@ public class PassBallGoalieAction extends GoapAction {
 
 	public PassBallGoalieAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
@@ -53,7 +54,7 @@ public class PassBallGoalieAction extends GoapAction {
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
 		//		Presenza di un certo numero di avversari
-		//		vicino la porta. Se tale numero non è 
+		//		vicino la porta. Se tale numero non ï¿½ 
 		//		troppo elevato (minore o circa i propri
 		//		difensori)
 		
@@ -70,7 +71,7 @@ public class PassBallGoalieAction extends GoapAction {
 	@Override
 	public boolean perform(Object agent) {
 		//		Il portiere passa la palla al difensore
-		//		più libero
+		//		piï¿½ libero
 
 		System.out.println("Performing "+getClass().getSimpleName());
 

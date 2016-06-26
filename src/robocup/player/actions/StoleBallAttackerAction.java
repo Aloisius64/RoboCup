@@ -35,7 +35,7 @@ public class StoleBallAttackerAction extends GoapAction {
 
 	public StoleBallAttackerAction() {
 		super(1.0f);
-	
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);

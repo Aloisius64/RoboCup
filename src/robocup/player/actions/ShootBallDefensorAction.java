@@ -30,9 +30,10 @@ public class ShootBallDefensorAction extends GoapAction {
 
 	public ShootBallDefensorAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
-		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, false);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, false);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
 	}

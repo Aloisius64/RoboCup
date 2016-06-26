@@ -35,10 +35,12 @@ public class PassBallDefensorAction extends GoapAction {
 
 	public PassBallDefensorAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
+		addEffect(GoapGlossary.BALL_NEAR_TEAMMATE, true);
 	}
 
 	@Override

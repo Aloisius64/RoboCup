@@ -54,7 +54,7 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 		this.parser = new Parser();
 		this.action = new Action(this);
 		this.time = 0;
-		this.currentEvaluation=0;
+		this.currentEvaluation = 0;
 		this.position = "left";
 		this.setAgent(new GoapAgent(this));
 	}
@@ -69,6 +69,22 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			getAction().move(x, y);
 			Thread.sleep(100);
 			if (getMemory().getSide().compareTo("r") == 0) {
+				getAction().turn(180);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void initGoalie(double x, double y) throws SocketException, UnknownHostException {
+		roboClient.setDsock(new DatagramSocket());
+		roboClient.initGoalie(getParser(), getMemory());
+		getMemory().setHome(new Position(x, y));
+
+		try {
+			getAction().move(x, y);
+			Thread.sleep(100);
+			if (getMemory().getSide().equals("r")) {
 				getAction().turn(180);
 			}
 		} catch (InterruptedException e) {
@@ -113,10 +129,8 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 				if (getMemory().timeCheck(getTime())) {
 					setTime(getMemory().getObjMemory().getTime());
 					getAgent().update();
-					if (getAction().isBallVisible()) {
-						getAction().braodcastDistance(getMemory().getBall().getDistance());
-					}
-					broadcastEvaluation(evaluate());
+
+					broadcast(evaluate());
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -124,12 +138,13 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
 		}
 	}
 
 	public abstract int evaluate();
 
-	public abstract void broadcastEvaluation(int evaluation) throws UnknownHostException, InterruptedException;
+	public abstract void broadcast(int evaluation) throws UnknownHostException, InterruptedException;
 
 	/********************************************/
 	/* Get And Set */

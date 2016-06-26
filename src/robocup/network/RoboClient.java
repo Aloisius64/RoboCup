@@ -18,7 +18,7 @@ public class RoboClient {
 	private DatagramSocket dsock;
 	private String hostname = new String(Settings.IP_SERVER);
 	private int port = Settings.PORT_SERVER;
-	private static final int SIZE = 1024;
+	private static final int SIZE = 2048;
 	private String team = "TeamName";
 	private static final String VERSION = "15";
 

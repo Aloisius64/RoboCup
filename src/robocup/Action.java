@@ -63,7 +63,7 @@ public class Action {
 			if ((go.t) > 5.0 || (go.t) < -5.0) {
 				player.getRoboClient().turn(go.t * (1 + (5 * player.getMemory().getAmountOfSpeed())));
 			}
-			
+
 			player.getRoboClient()
 					.dash(MathHelp.getDashPower(MathHelp.getPos(go), player.getMemory().getAmountOfSpeed(),
 							player.getMemory().getDirection(), player.getMemory().getEffort(),
@@ -109,7 +109,7 @@ public class Action {
 	public boolean isTeammatesNear() {
 		// TODO Auto-generated method stub
 		// player.getMemory().getHearMemory().ourMessagePrint();
-		for (Double d : player.getMemory().getHearMemory().getOurMessages().values()) {
+		for (Double d : player.getMemory().getHearMemory().getBallDistances().values()) {
 			if (d < player.getMemory().getBall().getDistance()) {
 				return true;
 			}
@@ -574,15 +574,18 @@ public class Action {
 		return false;
 	}
 
-	public void braodcastDistance(double distance) {
-		try {
-			say(Double.toString(distance).replace('.', 'p'));
+	public Boolean isBehindBall() {
+		if (player.getMemory().getBall() == null)
+			return false;
+		double x = MathHelp.getPos(
+				new Polar(player.getMemory().getBall().getDistance(), player.getMemory().getBall().getDirection())).x;
 
-		} catch (UnknownHostException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		return player.getPosition().x < x;
+	}
 
+	
+	public boolean isPlayMode(String playMode) {
+		return player.getMemory().getPlayMode().equals(playMode);
 	}
 
 	/**************************************************************/

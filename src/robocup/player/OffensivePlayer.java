@@ -1,9 +1,12 @@
 package robocup.player;
 
 import java.net.UnknownHostException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
@@ -14,7 +17,9 @@ import robocup.goap.GoapGlossary;
 import robocup.goap.GoapPlanner;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjPlayer;
+import robocup.player.actions.FollowAction;
 import robocup.player.actions.IdleAction;
+import robocup.player.actions.KickOffAction;
 import robocup.player.actions.SearchBallAction;
 import robocup.player.actions.StoleBallAttackerAction;
 import robocup.player.actions.TryToScoreAction;
@@ -37,12 +42,14 @@ public class OffensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player " + getMemory().getuNum() + " - Plan failed");
+		// System.err.println("Player " + getMemory().getuNum() + " - Plan
+		// failed");
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.err.println("Player " + getMemory().getuNum() + " - Plan found" + GoapAgent.prettyPrint(actions));
+		// System.err.println("Player " + getMemory().getuNum() + " - Plan
+		// found" + GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
@@ -63,10 +70,14 @@ public class OffensivePlayer extends AbstractPlayer {
 
 		// Set worldState from player memory
 		worldState.put(GoapGlossary.TRY_TO_SCORE, false);
+		worldState.put(GoapGlossary.KICK_OFF, getAction().isPlayMode("kick_off_l"));
+		worldState.put(GoapGlossary.PLAY_ON, getAction().isPlayMode("play_on"));
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
 		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallInRangeOf(1.0));
 		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE, getAction().isBallNearTeammate());
-		GoapPlanner.printMap(worldState);
+		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField());
+		worldState.put(GoapGlossary.BEHIND_BALL_LINE, getAction().isBehindBall());
+		// GoapPlanner.printMap(worldState);
 		return worldState;
 	}
 
@@ -90,6 +101,7 @@ public class OffensivePlayer extends AbstractPlayer {
 		actions.add(new IdleAction());
 		actions.add(new SearchBallAction());
 		actions.add(new FollowAction());
+		actions.add(new KickOffAction());
 		// actions.add(new MarkPlayerAction());
 		// actions.add(new PassBallAttackerAction());
 		actions.add(new TryToScoreAction());
@@ -111,7 +123,7 @@ public class OffensivePlayer extends AbstractPlayer {
 			double leftDir = leftPost == null ? -45.0 : leftPost.getDirection();
 			double rightDir = rightPost == null ? 45.0 : rightPost.getDirection();
 			GoalView goalView = KickMathUtility.getGoalView(leftDir, rightDir, otherPlayers, 0.7);
-			goalViewEvaluationValue = goalView.getLargerInterval().getSize();
+			goalViewEvaluationValue = goalView.getLargerInterval() == null ? 0 : goalView.getLargerInterval().getSize();
 
 		}
 
@@ -124,11 +136,33 @@ public class OffensivePlayer extends AbstractPlayer {
 	}
 
 	@Override
-	public void broadcastEvaluation(int evaluation) throws UnknownHostException, InterruptedException {
-		String message = "A" + getMemory().getuNum() + "A" + evaluation + "A" + getPosition().x + "A" + getPosition().y;
-		message = message.replace('.', 'p');
-		getAction().say(message);
-		// System.out.println(message);
+	public void broadcast(int evaluation) throws UnknownHostException, InterruptedException {
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ITALY);
+		otherSymbols.setDecimalSeparator('.');
+		DecimalFormat format = new DecimalFormat("##.#", otherSymbols);
+		String messagePositionX = getMemory().getuNum() + "X" + format.format(getPosition().x);
+		String messagePositionY = getMemory().getuNum() + "Y" + format.format(getPosition().y);
+		String messageEvaluation = getMemory().getuNum() + "A" + evaluation;
+		String messageDistanceBall = Integer.toString(getMemory().getuNum());
+		if (getMemory().getBall() != null)
+			messageDistanceBall = messageDistanceBall.concat("B" + getMemory().getBall().getDistance());
+		else
+			messageDistanceBall = messageDistanceBall.concat("B150");
+
+		// TODO
+		messagePositionX = messagePositionX.replace('.', 'p');
+		messagePositionX = messagePositionX.replace('-', 'm');
+
+		messagePositionY = messagePositionY.replace('.', 'p');
+		messagePositionY = messagePositionY.replace('-', 'm');
+
+		messageDistanceBall = messageDistanceBall.replace('.', 'p');
+		getAction().say(messagePositionY);
+		getAction().say(messagePositionX);
+		getAction().say(messageDistanceBall);
+		getAction().say(messageEvaluation);
+		// System.out.println("broadcast=" + evaluation + " from " +
+		// getMemory().getuNum());
 	}
 
 }

@@ -36,12 +36,12 @@ public class StoleBallDefensorAction extends GoapAction {
 
 	public StoleBallDefensorAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addPrecondition(GoapGlossary.BALL_NEAR, true);
 		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, false);
 		// addPrecondition(GoapGlossary.PLAYER_MARKED, false);
-		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, false);
 		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
 
@@ -81,7 +81,7 @@ public class StoleBallDefensorAction extends GoapAction {
 
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-		System.out.println(player.getMemory().getuNum()+" Performing "+getClass().getSimpleName());
+//		System.out.println(player.getMemory().getuNum()+" Performing "+getClass().getSimpleName());
 		if (player.getAction().isBallNearTeammate())
 			return false;
 		try {

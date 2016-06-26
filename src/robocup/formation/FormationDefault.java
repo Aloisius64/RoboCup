@@ -40,7 +40,7 @@ public class FormationDefault extends AbstractFormation {
 		playersMap.put(11, OffensivePlayer.class);
 
 		playersPosition = new HashMap<>();
-		playersPosition.put(1, new Vector(-40, 0));
+		playersPosition.put(1, new Vector(-45, 0));
 		playersPosition.put(2, new Vector(-30, 25));
 		playersPosition.put(3, new Vector(-30, 0));
 		playersPosition.put(4, new Vector(-30, -25));

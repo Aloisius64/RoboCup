@@ -53,7 +53,7 @@ public class GoapAgentPlayer implements IGoap {
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.out.println("Plan found "+GoapAgent.prettyPrint(actions));
+//		System.out.println("Plan found "+GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
