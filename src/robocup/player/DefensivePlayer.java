@@ -12,6 +12,7 @@ import java.util.Queue;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
+import robocup.goap.GoapPlanner;
 import robocup.player.actions.ComeBackHomeAction;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
@@ -34,7 +35,8 @@ public class DefensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player " + getMemory().getuNum() + " - Plan failed");
+		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan failed");
+		GoapPlanner.printMap(getWorldState());
 	}
 
 	@Override
@@ -60,13 +62,16 @@ public class DefensivePlayer extends AbstractPlayer {
 		HashMap<String, Boolean> worldState = new HashMap<>();
 
 		// Set worldState from player memory
-		worldState.put(GoapGlossary.KICK_OFF, getAction().isPlayMode("kick_off_l"));
+		// worldState.put(GoapGlossary.KICK_OFF,
+		// getAction().isPlayMode("kick_off_l"));
 		worldState.put(GoapGlossary.PLAY_ON, getAction().isPlayMode("play_on"));
 		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
 		worldState.put(GoapGlossary.BALL_CATCHED, false);
+		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
 		worldState.put(GoapGlossary.BALL_NEAR, getAction().isBallInRangeOf(25));
-		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE, getAction().isBallNearTeammate());
+		worldState.put(GoapGlossary.BALL_NEAR_DEFENDER, getAction().isBallNearDefender());
 		worldState.put(GoapGlossary.GOAL_SCORED, getAction().isPlayMode("goal_l") || getAction().isPlayMode("goal_r"));
+//		GoapPlanner.printMap(worldState);
 		return worldState;
 	}
 

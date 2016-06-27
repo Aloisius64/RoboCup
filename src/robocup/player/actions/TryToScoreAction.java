@@ -79,7 +79,7 @@ public class TryToScoreAction extends GoapAction {
 					// }
 					ObjGoal goal = player.getMemory().getOppGoal();
 					if (goal != null) {// vediamo la porta?
-						if (goal.getDistance() <= 17) {// dentro l'area
+						if (goal.getDistance() <= 20) {// dentro l'area
 							// in caso di opponent vicini tira senza girarti a
 							// cercare i pali
 							if (player.getMemory().getLeftPost() == null) {

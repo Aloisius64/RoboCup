@@ -94,8 +94,9 @@ public class Action {
 				playerSize);
 
 		ViewInterval largerInterval = goalView.getLargerInterval();
-//		System.out.println(
-//				"intervallo tra" + largerInterval.getStart().getAngle() + " - " + largerInterval.getStart().getAngle());
+		// System.out.println(
+		// "intervallo tra" + largerInterval.getStart().getAngle() + " - " +
+		// largerInterval.getStart().getAngle());
 
 		if (largerInterval.getStart().getBoundType() == BoundType.POST) {
 			kick(100, largerInterval.getStart().getAngle() + 5);
@@ -148,7 +149,7 @@ public class Action {
 						// in caso di opponent vicini tira senza girarti a
 						// cercare i pali
 						if (player.getMemory().getLeftPost() == null) {
-//							System.out.println(goal.getDirection());
+							// System.out.println(goal.getDirection());
 							turn(30);
 							// Thread.sleep(50);
 						} else if (player.getMemory().getRightPost() == null) {
@@ -251,10 +252,10 @@ public class Action {
 		ObjGoal goal = player.getMemory().getOppGoal();
 		if (goal != null) {
 			player.getRoboClient().kick(100, goal.getDirection() - player.getMemory().getDirection());
-//			System.out.println("I see the goal");
+			// System.out.println("I see the goal");
 		} else {
 			player.getRoboClient().kick(100, player.getMemory().getDirection());
-//			System.out.println("Null Goal");
+			// System.out.println("Null Goal");
 		}
 	}
 
@@ -284,7 +285,7 @@ public class Action {
 				kickToPoint(ball, new Polar(5.0, (goal.getDirection() - ball.getDirection())));
 
 			} else if ((goal != null) && (player.getMemory().getPosition().x >= 35.0)) {
-//				System.out.println("Ready to shoot");
+				// System.out.println("Ready to shoot");
 				kickToGoal(ball);
 
 			} else if (goal == null) {
@@ -473,11 +474,12 @@ public class Action {
 		double distance = 100;
 		String playerTeam = "\"" + player.getRoboClient().getTeam() + "\"";
 
-//		System.out.println("Teammates " + player.getMemory().getPlayers().size());
+		// System.out.println("Teammates " +
+		// player.getMemory().getPlayers().size());
 
 		for (int i = 0; i < player.getMemory().getPlayers().size(); ++i) {
 			ObjPlayer currentPlayer = player.getMemory().getPlayers().get(i);
-			if (currentPlayer.getuNum() != 0 && currentPlayer.getTeam() != null) {
+			if (currentPlayer.getuNum() > 1 && currentPlayer.getTeam() != null) {
 				if (currentPlayer.getTeam().equals(playerTeam)) {
 					if (currentPlayer.getDistance() < distance) {
 						closestPlayer = currentPlayer;
@@ -493,14 +495,11 @@ public class Action {
 	public Boolean isBallInOurField() {
 		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
 			ObjBall objBall = player.getMemory().getBall();
-			Position ballPos = MathHelp.getPos(objBall.getDistance(), player.getDirection() + objBall.getDirection());
-			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+			// Position ballPos = MathHelp.getPos(objBall.getDistance(),
+			// player.getDirection() + objBall.getDirection());
+			// ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+			Position ballPos = player.getMemory().getBallPos(objBall);
 
-			// if (player.getMemory().getSide().equals("l")) {
-			// return ballPos.x <= 0;
-			// }
-			//
-			// return ballPos.x > 0;
 			return ballPos.x <= 0;
 		}
 
@@ -545,6 +544,27 @@ public class Action {
 		return false;
 	}
 
+	public Boolean isBallNearDefender() {
+		if (isDefenderNear()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isDefenderNear() {
+		if (isBallVisible()) {
+			for (Integer i : player.getMemory().getHearMemory().getBallDistances().keySet()) {
+				if (i != 0 && i < 5) {// TODO fix with formation
+					if (player.getMemory().getHearMemory().getBallDistances().get(i) < player.getMemory().getBall()
+							.getDistance()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public Boolean isBallNearTeammate() {
 		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
 			ObjBall objBall = player.getMemory().getBall();
@@ -583,9 +603,8 @@ public class Action {
 		return player.getPosition().x < x;
 	}
 
-	
 	public boolean isPlayMode(String playMode) {
-		return player.getMemory().getPlayMode().equals(playMode);
+		return player.getMemory().getPlayMode().contains(playMode);
 	}
 
 	/**************************************************************/

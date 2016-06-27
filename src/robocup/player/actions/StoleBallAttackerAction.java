@@ -75,12 +75,15 @@ public class StoleBallAttackerAction extends GoapAction {
 				if (player.getAction().isBallNearTeammate()) {
 					return false;
 				}
+
 				ObjBall ball = player.getMemory().getBall();
 				if (!player.getAction().inFieldBall(ball)) {
 
 					return false;
 				}
-
+				if (player.getPosition().x < -20) {
+					return false;
+				}
 				if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}

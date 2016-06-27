@@ -431,38 +431,6 @@ public class Memory {
 					return 90 - line.getDirection();
 			}
 		}
-		// if (line == null) {
-		//
-		// } else if (line.getSide().compareTo("t") == 0) {
-		// if (line.getDirection() > 0) {
-		// return (-1 * line.getDirection());
-		// } else {
-		// return (-180 - line.getDirection());
-		// }
-		// } else if (line.getSide().compareTo("b") == 0) {
-		// if (line.getDirection() < 0) {
-		// return (-1 * line.getDirection());
-		// } else {
-		// return (180 - line.getDirection());
-		// }
-		// } else if (line.getSide().compareTo(getSide()) == 0) {
-		// if (Math.abs(line.getDirection()) == 90.0) {
-		// return (180.0);
-		// } else if (line.getDirection() > 0) {
-		// return (-90 - line.getDirection());
-		// } else if (line.getDirection() < 0) {
-		// return (90 - line.getDirection());
-		// }
-		// } else if (line.getSide().compareTo(oppSide) == 0) {
-		// if (Math.abs(line.getDirection()) == 90.0) {
-		// return (0.0);
-		// } else if (line.getDirection() > 0) {
-		// return (90 - line.getDirection());
-		// } else if (line.getDirection() < 0) {
-		// return (-90 - line.getDirection());
-		// }
-		// }
-
 		return (0.0);
 	}
 

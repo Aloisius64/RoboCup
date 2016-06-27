@@ -35,12 +35,10 @@ public class PassBallDefensorAction extends GoapAction {
 
 	public PassBallDefensorAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, false);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
-		addEffect(GoapGlossary.BALL_NEAR_TEAMMATE, true);
+		addEffect(GoapGlossary.BALL_NEAR_DEFENDER, true);
 	}
 
 	@Override
@@ -86,7 +84,6 @@ public class PassBallDefensorAction extends GoapAction {
 				if(closestPlayer!=null){
 					//					System.out.println(player.getMemory().getuNum()+" is trying to pass to player: "+closestPlayer.getuNum());
 					player.getAction().kickToPoint(ball, MathHelp.getNextPlayerPoint(closestPlayer));
-					Thread.sleep(1000);
 					ballPassed = true;
 				} else {
 					player.getAction().kickToPoint(ball, new Position(0,0));

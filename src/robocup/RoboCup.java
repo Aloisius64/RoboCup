@@ -4,7 +4,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import robocup.formation.AbstractFormation;
-import robocup.formation.FormationDefault;
 import robocup.formation.FormationManager;
 import robocup.formation.FormationTest;
 

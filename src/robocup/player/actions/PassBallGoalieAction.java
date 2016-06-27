@@ -35,7 +35,6 @@ public class PassBallGoalieAction extends GoapAction {
 
 	public PassBallGoalieAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);

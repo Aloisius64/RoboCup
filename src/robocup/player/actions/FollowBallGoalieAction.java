@@ -36,7 +36,6 @@ public class FollowBallGoalieAction extends GoapAction {
 
 	public FollowBallGoalieAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHABLE, false);
 		addEffect(GoapGlossary.BALL_CATCHABLE, true);
@@ -54,18 +53,21 @@ public class FollowBallGoalieAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		La palla � controllata dall avversario o comunque
-		//		non � in una zona in cui il portiere � in grado
-		//		di catturarla.
+		// La palla � controllata dall avversario o comunque
+		// non � in una zona in cui il portiere � in grado
+		// di catturarla.
 		return true;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-//		System.out.println("Performing "+getClass().getSimpleName());
+		// System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		// if (player.getMemory().getSide().equals("r")) {
+		// upper.y = 6;
+		// lower.y = -6;
+		// }
 		try {
 			if (!player.getMemory().isObjVisible("ball")) {
 				player.getAction().turn(30);
@@ -78,18 +80,19 @@ public class FollowBallGoalieAction extends GoapAction {
 				}
 
 				if (player.getAction().ballInGoalzone(ball)) {
-					if (ball.getDistance() > 1.0) {
+					if (ball.getDistance() > 3.0) {
 						player.getAction().goToPoint(MathHelp.getNextBallPoint(ball));
 					} else {
 						ballFollowed = true;
 					}
 				} else {
-					Position ballPos = MathHelp.getPos(ball.getDistance(), player.getDirection() + ball.getDirection());
-					ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
-
-					if (ballPos.y < -18) {
+					// Position ballPos = MathHelp.getPos(ball.getDistance(),
+					// player.getDirection() + ball.getDirection());
+					// ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+					Position ballPos = player.getMemory().getBallPos(ball);
+					if (ballPos.y <= -10) {
 						player.getAction().goToSidePoint(upper);
-					} else if (ballPos.y > -18 && ballPos.y < 18) {
+					} else if (ballPos.y > -10 && ballPos.y < 10) {
 						player.getAction().goToSidePoint(middle);
 					} else {
 						player.getAction().goToSidePoint(lower);

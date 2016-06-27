@@ -30,12 +30,11 @@ public class ShootBallDefensorAction extends GoapAction {
 
 	public ShootBallDefensorAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, false);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
-		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, false);
+		addPrecondition(GoapGlossary.BALL_NEAR_DEFENDER, false);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
+		addEffect(GoapGlossary.BALL_NEAR_DEFENDER, true);
 	}
 
 	@Override
@@ -50,35 +49,35 @@ public class ShootBallDefensorAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		Si � visto un attaccante particolarmente 
-		//		libero oltre la met� campo
-		
+		// Si � visto un attaccante particolarmente
+		// libero oltre la met� campo
+
 		AbstractPlayer player = (AbstractPlayer) agent;
 		String teamName = player.getRoboClient().getTeam();
 
 		int teammates = player.getMemory().getTeammates(teamName).size();
 		int opponents = player.getMemory().getOpponents(teamName).size();
 
-		//		System.out.println("Teammates "+teammates+", Opponents: "+opponents);
+		// System.out.println("Teammates "+teammates+", Opponents: "+opponents);
 
 		return player.getAction().isBallNearTeammateAttacker() || teammates < opponents;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		//		La palla � calciata oltre la met� campo 
-		//		verso un proprio compagno
-		System.out.println("Performing "+getClass().getSimpleName());
-		
+		// La palla � calciata oltre la met� campo
+		// verso un proprio compagno
+		System.out.println("Performing " + getClass().getSimpleName());
+
 		AbstractPlayer player = (AbstractPlayer) agent;
 		ballShooted = true;
 
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
-			player.getAction().kickToPoint(ball, new Position(0,0));
+			player.getAction().kickToPoint(ball, new Position(0, 0));
 			return true;
 		}
-		
+
 		return false;
 	}
 
