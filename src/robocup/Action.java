@@ -94,8 +94,8 @@ public class Action {
 				playerSize);
 
 		ViewInterval largerInterval = goalView.getLargerInterval();
-		System.out.println(
-				"intervallo tra" + largerInterval.getStart().getAngle() + " - " + largerInterval.getStart().getAngle());
+//		System.out.println(
+//				"intervallo tra" + largerInterval.getStart().getAngle() + " - " + largerInterval.getStart().getAngle());
 
 		if (largerInterval.getStart().getBoundType() == BoundType.POST) {
 			kick(100, largerInterval.getStart().getAngle() + 5);
@@ -148,7 +148,7 @@ public class Action {
 						// in caso di opponent vicini tira senza girarti a
 						// cercare i pali
 						if (player.getMemory().getLeftPost() == null) {
-							System.out.println(goal.getDirection());
+//							System.out.println(goal.getDirection());
 							turn(30);
 							// Thread.sleep(50);
 						} else if (player.getMemory().getRightPost() == null) {
@@ -251,10 +251,10 @@ public class Action {
 		ObjGoal goal = player.getMemory().getOppGoal();
 		if (goal != null) {
 			player.getRoboClient().kick(100, goal.getDirection() - player.getMemory().getDirection());
-			System.out.println("I see the goal");
+//			System.out.println("I see the goal");
 		} else {
 			player.getRoboClient().kick(100, player.getMemory().getDirection());
-			System.out.println("Null Goal");
+//			System.out.println("Null Goal");
 		}
 	}
 
@@ -284,7 +284,7 @@ public class Action {
 				kickToPoint(ball, new Polar(5.0, (goal.getDirection() - ball.getDirection())));
 
 			} else if ((goal != null) && (player.getMemory().getPosition().x >= 35.0)) {
-				System.out.println("Ready to shoot");
+//				System.out.println("Ready to shoot");
 				kickToGoal(ball);
 
 			} else if (goal == null) {
@@ -473,7 +473,7 @@ public class Action {
 		double distance = 100;
 		String playerTeam = "\"" + player.getRoboClient().getTeam() + "\"";
 
-		System.out.println("Teammates " + player.getMemory().getPlayers().size());
+//		System.out.println("Teammates " + player.getMemory().getPlayers().size());
 
 		for (int i = 0; i < player.getMemory().getPlayers().size(); ++i) {
 			ObjPlayer currentPlayer = player.getMemory().getPlayers().get(i);

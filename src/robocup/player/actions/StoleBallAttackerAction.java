@@ -35,7 +35,7 @@ public class StoleBallAttackerAction extends GoapAction {
 
 	public StoleBallAttackerAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, false);
+		addPrecondition(GoapGlossary.PLAY_ON, true);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
@@ -72,12 +72,10 @@ public class StoleBallAttackerAction extends GoapAction {
 
 		try {
 			if (player.getAction().isBallVisible()) {
-				if(player.getAction().isBallNearTeammate()){
+				if (player.getAction().isBallNearTeammate()) {
 					return false;
 				}
 				ObjBall ball = player.getMemory().getBall();
-				System.out.println("Player " + player.getAction().inFieldPlayer() + " Ball "
-						+ player.getAction().inFieldBall(ball));
 				if (!player.getAction().inFieldBall(ball)) {
 
 					return false;
@@ -88,13 +86,14 @@ public class StoleBallAttackerAction extends GoapAction {
 				}
 
 				if (ball.getDistance() > 0.7) {
-					Polar p = MathHelp.getNextBallPoint(ball);
-					Position p2 = MathHelp.getPos(p);
-					if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
-						return false;
-					else if (player.getAction().stayInBounds()) {
-						player.getAction().goToPoint(p);
-					}
+					// Polar p = MathHelp.getNextBallPoint(ball);
+					// Position p2 = MathHelp.getPos(p);
+					// if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
+					// return false;
+					// else if (player.getAction().stayInBounds()) {
+					// player.getAction().goToPoint(p);
+					// }
+					player.getAction().dash(100, (ball.getDirection() + ball.getDirChng()) / 2);
 					return true;
 
 				} else if (ball.getDistance() <= 0.7) {

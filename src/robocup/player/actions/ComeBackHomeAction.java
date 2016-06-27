@@ -18,14 +18,15 @@ PERFORMING:
 	Il giocatore ritorna alla sua posizione
 	di default 
  */
-public class IdleAction extends GoapAction {
+public class ComeBackHomeAction extends GoapAction {
 
 	private boolean playerToHomePosition = false;
 
-	public IdleAction() {
+	public ComeBackHomeAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
+		addPrecondition(GoapGlossary.GOAL_SCORED, true);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
+		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
 
 	@Override
@@ -47,16 +48,20 @@ public class IdleAction extends GoapAction {
 	public boolean perform(Object agent) {
 		AbstractPlayer player = ((AbstractPlayer) agent);
 
-		// System.out.println("Performing "+getClass().getSimpleName());
-
-		playerToHomePosition = true;
-
+		// System.out.println("Performing " + getClass().getSimpleName());
+		// if (player.getAction().isPlayMode("play_on")) {
+		// return false;
+		// }
 		try {
-			if (!player.getAction().isHome()) {
-				player.getAction().goToPoint(player.getMemory().getHome());
-			}
-
-			player.getRoboClient().turn(30);
+			player.getAction().move(player.getHome().x, player.getHome().y);
+			playerToHomePosition = true;
+			return true;
+			// if (!player.getAction().isHome()) {
+			// player.getAction().goToPoint(player.getMemory().getHome());
+			// } else {
+			// playerToHomePosition = true;
+			// }
+			// player.getRoboClient().turn(30);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

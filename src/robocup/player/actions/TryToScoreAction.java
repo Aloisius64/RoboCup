@@ -35,6 +35,7 @@ public class TryToScoreAction extends GoapAction {
 		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
+		addEffect(GoapGlossary.GOAL_SCORED, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
 	}
 
@@ -93,7 +94,7 @@ public class TryToScoreAction extends GoapAction {
 							ObjFlag flagRight = player.getMemory().getRightPost();
 							player.getAction().smartKick(flagLeft, flagRight);
 							tryToScore = true;
-
+							
 						} else {
 							player.getAction().kick(5, goal.getDirection());
 

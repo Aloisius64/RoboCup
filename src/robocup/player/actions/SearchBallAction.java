@@ -64,7 +64,6 @@ public class SearchBallAction extends GoapAction {
 //						|| ball.getDirection() < -5.0)) {
 //					player.getRoboClient().turn(ball.getDirection());
 //				}
-
 				ballSeen = true;
 			}
 			player.getRoboClient().turn(30);

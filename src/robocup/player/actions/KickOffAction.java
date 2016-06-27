@@ -16,6 +16,7 @@ public class KickOffAction extends GoapAction {
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 		addEffect(GoapGlossary.KICK_OFF, false);
 		addEffect(GoapGlossary.PLAY_ON, true);
+
 	}
 
 	@Override
@@ -41,22 +42,25 @@ public class KickOffAction extends GoapAction {
 		AbstractPlayer player = (AbstractPlayer) agent;
 
 		try {
+			if(player.getAction().isPlayMode("play_on")){
+				isKicked = true;
+				return true;
+			}
 			if (player.getMemory().getBall() == null) {
 				player.getAction().turn(30);
-				return true;
 			} else if (player.getMemory().getBall().getDistance() > 0.7) {
 				player.getAction().dash(50, player.getMemory().getBall().getDirection());
-				return true;
 			} else {
-				player.getAction().kick(30, -100.0);
+				player.getAction().kick(60, -120.0);
 				isKicked = true;
+				Thread.sleep(100);
 				return true;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 
 }

@@ -13,6 +13,7 @@ public class FollowAction extends GoapAction {
 
 	public FollowAction() {
 		super(1.0f);
+		addPrecondition(GoapGlossary.PLAY_ON, true);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BEHIND_BALL_LINE, true);
 		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
@@ -34,8 +35,7 @@ public class FollowAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		
-		
+
 		return true;
 	}
 

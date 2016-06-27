@@ -17,6 +17,7 @@ public class GoapGlossary {
 	public static final String BEHIND_BALL_LINE = "BEHIND_BALL_LINE";
 	public static final String KICK_OFF = "KICK_OFF_L";
 	public static final String PLAY_ON = "PLAY_ON";
+	public static final String GOAL_SCORED = "GOAL_SCORED";
 
 	// Test variables
 	public static final String VALUE = "VALUE";

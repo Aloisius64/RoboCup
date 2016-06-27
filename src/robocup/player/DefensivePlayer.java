@@ -12,14 +12,15 @@ import java.util.Queue;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
+import robocup.player.actions.ComeBackHomeAction;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
 import robocup.player.actions.ShootBallDefensorAction;
 import robocup.player.actions.StoleBallDefensorAction;
 
-public class DefensivePlayer extends AbstractPlayer{
+public class DefensivePlayer extends AbstractPlayer {
 
-	public DefensivePlayer(){
+	public DefensivePlayer() {
 		super("Team");
 	}
 
@@ -28,27 +29,30 @@ public class DefensivePlayer extends AbstractPlayer{
 	}
 
 	/********************************************/
-	/* 			IGoap implementations 			*/
+	/* IGoap implementations */
 	/********************************************/
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player "+getMemory().getuNum()+" - Plan failed");
+		System.err.println("Player " + getMemory().getuNum() + " - Plan failed");
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-//		System.err.println("Player "+getMemory().getuNum()+" - Plan found "+GoapAgent.prettyPrint(actions));
+		// System.err.println("Player "+getMemory().getuNum()+" - Plan found
+		// "+GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
 	public void actionsFinished() {
-		//		System.err.println("Player "+getMemory().getuNum()+" - Actions finished");
+		// System.err.println("Player "+getMemory().getuNum()+" - Actions
+		// finished");
 	}
 
 	@Override
 	public void planAborted(GoapAction aborter) {
-		//		System.out.println("Player "+getMemory().getuNum()+" - Plan aborted");
+		// System.out.println("Player "+getMemory().getuNum()+" - Plan
+		// aborted");
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class DefensivePlayer extends AbstractPlayer{
 		worldState.put(GoapGlossary.BALL_CATCHED, false);
 		worldState.put(GoapGlossary.BALL_NEAR, getAction().isBallInRangeOf(25));
 		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE, getAction().isBallNearTeammate());
-
+		worldState.put(GoapGlossary.GOAL_SCORED, getAction().isPlayMode("goal_l") || getAction().isPlayMode("goal_r"));
 		return worldState;
 	}
 
@@ -72,8 +76,8 @@ public class DefensivePlayer extends AbstractPlayer{
 
 		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
 
-		//	Il goal dipende dal tipo di play mode
-		//	cambiarlo in base alla modalit� di gioco
+		// Il goal dipende dal tipo di play mode
+		// cambiarlo in base alla modalit� di gioco
 
 		return goal;
 	}
@@ -86,8 +90,9 @@ public class DefensivePlayer extends AbstractPlayer{
 		actions.add(new ShootBallDefensorAction());
 		actions.add(new PassBallDefensorAction());
 		actions.add(new StoleBallDefensorAction());
-		//		actions.add(new GoToMoreFreePlaceAction());
-		//		actions.add(new MarkPlayerAction());
+		actions.add(new ComeBackHomeAction());
+		// actions.add(new GoToMoreFreePlaceAction());
+		// actions.add(new MarkPlayerAction());
 
 		return actions;
 	}
@@ -98,7 +103,7 @@ public class DefensivePlayer extends AbstractPlayer{
 		this.setCurrentEvaluation(0);
 		return 0;
 	}
-	
+
 	@Override
 	public void broadcast(int evaluation) throws UnknownHostException, InterruptedException {
 		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ITALY);
@@ -125,7 +130,7 @@ public class DefensivePlayer extends AbstractPlayer{
 		getAction().say(messagePositionX);
 		getAction().say(messageDistanceBall);
 		getAction().say(messageEvaluation);
-		
+
 	}
 
 }

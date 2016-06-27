@@ -17,6 +17,7 @@ import robocup.goap.GoapGlossary;
 import robocup.goap.GoapPlanner;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjPlayer;
+import robocup.player.actions.ComeBackHomeAction;
 import robocup.player.actions.FollowAction;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.KickOffAction;
@@ -70,13 +71,15 @@ public class OffensivePlayer extends AbstractPlayer {
 
 		// Set worldState from player memory
 		worldState.put(GoapGlossary.TRY_TO_SCORE, false);
-		worldState.put(GoapGlossary.KICK_OFF, getAction().isPlayMode("kick_off_l"));
+		worldState.put(GoapGlossary.KICK_OFF, getAction().isPlayMode("kick_off_" + getMemory().getSide()));
 		worldState.put(GoapGlossary.PLAY_ON, getAction().isPlayMode("play_on"));
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
 		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallInRangeOf(1.0));
 		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE, getAction().isBallNearTeammate());
 		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField());
 		worldState.put(GoapGlossary.BEHIND_BALL_LINE, getAction().isBehindBall());
+		worldState.put(GoapGlossary.GOAL_SCORED, getAction().isPlayMode("goal_" + getMemory().getSide()));
+
 		// GoapPlanner.printMap(worldState);
 		return worldState;
 	}
@@ -102,6 +105,7 @@ public class OffensivePlayer extends AbstractPlayer {
 		actions.add(new SearchBallAction());
 		actions.add(new FollowAction());
 		actions.add(new KickOffAction());
+		actions.add(new ComeBackHomeAction());
 		// actions.add(new MarkPlayerAction());
 		// actions.add(new PassBallAttackerAction());
 		actions.add(new TryToScoreAction());

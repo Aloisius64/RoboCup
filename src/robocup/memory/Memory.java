@@ -77,13 +77,13 @@ public class Memory {
 	 * initiates the time at 0 for both, and creates an ObjMemory and
 	 * SenseMemory with the new ArrayLists and time as parameters.
 	 */
-	
+
 	private AbstractPlayer abstractPlayer;
-	
+
 	public Memory(AbstractPlayer player) {
 		ArrayList<ObjInfo> newObjArray = new ArrayList<>();
 		int time = 0;
-		this.abstractPlayer=player;
+		this.abstractPlayer = player;
 		setObjMemory(new ObjMemory(newObjArray, time));
 		setSenseMemory(new SenseMemory());
 		setHearMemory(new HearMemory(this));
@@ -376,6 +376,8 @@ public class Memory {
 		for (int i = 0; i < getObjMemorySize(); i++) {
 			if (getObj(i).getObjName().compareTo("line") == 0) {
 				line = (ObjLine) getObj(i);
+				// System.out.println(line.getObjName()+ " "+line.getSide()+"
+				// "+line.getDirection());
 				if (line.getDistance() < dist) {
 					closestLine = line;
 				}
@@ -395,38 +397,71 @@ public class Memory {
 	 */
 	public double getDirection() {
 		ObjLine line = getClosestLine();
-
-		if (line == null) {
-
-		} else if (line.getSide().compareTo("t") == 0) {
-			if (line.getDirection() > 0) {
-				return (-1 * line.getDirection());
-			} else {
-				return (-180 - line.getDirection());
+		if (line != null) {
+			String lineSide = line.getSide();
+			if (getSide().equals("r")) {
+				if (line.getSide().equals("t"))
+					lineSide = "b";
+				else if (line.getSide().equals("b"))
+					lineSide = "t";
+				else if (line.getSide().equals("l"))
+					lineSide = "r";
+				else
+					lineSide = "l";
 			}
-		} else if (line.getSide().compareTo("b") == 0) {
-			if (line.getDirection() < 0) {
-				return (-1 * line.getDirection());
-			} else {
-				return (180 - line.getDirection());
-			}
-		} else if (line.getSide().compareTo(getSide()) == 0) {
-			if (Math.abs(line.getDirection()) == 90.0) {
-				return (180.0);
-			} else if (line.getDirection() > 0) {
-				return (-90 - line.getDirection());
-			} else if (line.getDirection() < 0) {
-				return (90 - line.getDirection());
-			}
-		} else if (line.getSide().compareTo(oppSide) == 0) {
-			if (Math.abs(line.getDirection()) == 90.0) {
-				return (0.0);
-			} else if (line.getDirection() > 0) {
-				return (90 - line.getDirection());
-			} else if (line.getDirection() < 0) {
-				return (-90 - line.getDirection());
+			if (lineSide.equals("t")) {
+				if (line.getDirection() >= 0)
+					return -line.getDirection();
+				else
+					return -180 - line.getDirection();
+			} else if (lineSide.equals("b")) {
+				if (line.getDirection() >= 0)
+					return 180 - line.getDirection();
+				else
+					return -line.getDirection();
+			} else if (lineSide.equals("r")) {
+				if (line.getDirection() >= 0)
+					return 90 - line.getDirection();
+				else
+					return -90 - line.getDirection();
+			} else if (lineSide.equals("l")) {
+				if (line.getDirection() >= 0)
+					return -90 - line.getDirection();
+				else
+					return 90 - line.getDirection();
 			}
 		}
+		// if (line == null) {
+		//
+		// } else if (line.getSide().compareTo("t") == 0) {
+		// if (line.getDirection() > 0) {
+		// return (-1 * line.getDirection());
+		// } else {
+		// return (-180 - line.getDirection());
+		// }
+		// } else if (line.getSide().compareTo("b") == 0) {
+		// if (line.getDirection() < 0) {
+		// return (-1 * line.getDirection());
+		// } else {
+		// return (180 - line.getDirection());
+		// }
+		// } else if (line.getSide().compareTo(getSide()) == 0) {
+		// if (Math.abs(line.getDirection()) == 90.0) {
+		// return (180.0);
+		// } else if (line.getDirection() > 0) {
+		// return (-90 - line.getDirection());
+		// } else if (line.getDirection() < 0) {
+		// return (90 - line.getDirection());
+		// }
+		// } else if (line.getSide().compareTo(oppSide) == 0) {
+		// if (Math.abs(line.getDirection()) == 90.0) {
+		// return (0.0);
+		// } else if (line.getDirection() > 0) {
+		// return (90 - line.getDirection());
+		// } else if (line.getDirection() < 0) {
+		// return (-90 - line.getDirection());
+		// }
+		// }
 
 		return (0.0);
 	}
@@ -559,18 +594,19 @@ public class Memory {
 	public Position getPosition() {
 
 		ObjFlag flag = getClosestFlag();
-
+		// System.out.println(side + " flag seen: " + flag.getFlagName());
 		// System.out.println("getPosition flag: (" + flag.getDistance() + ", "
 		// + flag.getDirection() + ")");
-		{
 
-			Position flagCoord = getFlagPos(flag.getFlagName());
-			Position toFlag = MathHelp.getPos(flag.getDistance(), getDirection() + flag.getDirection());
-			Position self = MathHelp.vSub(flagCoord, toFlag);
+		Position flagCoord = getFlagPos(flag.getFlagName());
+		double direction = getDirection() + flag.getDirection();
+		Position toFlag = MathHelp.getPos(flag.getDistance(), direction);
+		// System.out
+		// .println(side + " to flag " + flag.getFlagName() + " dir " +
+		// getDirection());
+		Position self = MathHelp.vSub(flagCoord, toFlag);
 
-			return (self);
-
-		}
+		return (self);
 
 	}
 

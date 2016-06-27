@@ -66,13 +66,13 @@ public class Field {
 			posList.add(new Position("fbr40", 40, 39));
 			posList.add(new Position("fbr50", 50, 39));
 
-			posList.add(new Position("flt30", -57.5, 30));
-			posList.add(new Position("flt20", -57.5, 20));
-			posList.add(new Position("flt10", -57.5, 10));
+			posList.add(new Position("flt30", -57.5, -30));
+			posList.add(new Position("flt20", -57.5, -20));//fixed to negative
+			posList.add(new Position("flt10", -57.5, -10));
 			posList.add(new Position("fl0", -57.5, 0));
-			posList.add(new Position("flb10", -57.5, -10));
-			posList.add(new Position("flb20", -57.5, -20));
-			posList.add(new Position("flb30", -57.5, -30));
+			posList.add(new Position("flb10", -57.5, 10));
+			posList.add(new Position("flb20", -57.5, 20));
+			posList.add(new Position("flb30", -57.5, 30));
 
 
 			posList.add(new Position("flt", -52.5, -34));
@@ -91,8 +91,8 @@ public class Field {
 			posList.add(new Position("fprt", 36, -20.16));
 			posList.add(new Position("fprc", 36, 0));
 			posList.add(new Position("fprb", 36, 20.16));
-			posList.add(new Position("fgrb", 52.5, -7.01));
-			posList.add(new Position("fgrt", 52.5, 7.01));
+			posList.add(new Position("fgrt", 52.5, -7.01));
+			posList.add(new Position("fgrb", 52.5, 7.01));
 
 			posList.add(new Position("fc", 0, 0));
 
@@ -132,13 +132,13 @@ public class Field {
 			posList.add(new Position("fbr40", -40, -39));
 			posList.add(new Position("fbr50", -50, -39));
 
-			posList.add(new Position("flt30", 57.5, -30));
-			posList.add(new Position("flt20", 57.5, -20));
-			posList.add(new Position("flt10", 57.5, -10));
+			posList.add(new Position("flt30", 57.5, 30));
+			posList.add(new Position("flt20", 57.5, 20));//fixed to negative
+			posList.add(new Position("flt10", 57.5, 10));
 			posList.add(new Position("fl0", 57.5, 0));
-			posList.add(new Position("flb10", 57.5, 10));
-			posList.add(new Position("flb20", 57.5, 20));
-			posList.add(new Position("flb30", 57.5, 30));
+			posList.add(new Position("flb10", 57.5, -10));
+			posList.add(new Position("flb20", 57.5, -20));
+			posList.add(new Position("flb30", 57.5, -30));
 
 
 			posList.add(new Position("flt", 52.5, 34));

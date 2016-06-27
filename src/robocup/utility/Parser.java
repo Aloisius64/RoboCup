@@ -67,8 +67,8 @@ public class Parser {
 			mem.setPlayMode(splitPacket[3]);
 			mem.setField(mem.getSide());
 		}
-		System.out
-				.println("(player #" + mem.getuNum() + " side: " + mem.getSide() + " Play mode: " + mem.getPlayMode());
+//		System.out
+//				.println("(player #" + mem.getuNum() + " side: " + mem.getSide() + " Play mode: " + mem.getPlayMode());
 	}
 
 	/**
