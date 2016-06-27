@@ -22,7 +22,7 @@ public class FormationDefense442 extends AbstractFormation {
 		playersMap.put(2, DefensivePlayer.class);
 		playersMap.put(3, DefensivePlayer.class);
 		playersMap.put(4, DefensivePlayer.class);
-		playersMap.put(5, OffensivePlayer.class);
+		playersMap.put(5, DefensivePlayer.class);
 		playersMap.put(6, OffensivePlayer.class);
 		playersMap.put(7, OffensivePlayer.class);
 		playersMap.put(8, OffensivePlayer.class);
@@ -32,13 +32,13 @@ public class FormationDefense442 extends AbstractFormation {
 
 		playersPosition = new HashMap<>();
 		playersPosition.put(1, new Vector(-40, 0));
-		playersPosition.put(2, new Vector(-30, 25));
-		playersPosition.put(3, new Vector(-30, 0));
-		playersPosition.put(4, new Vector(-30, -25));
-		playersPosition.put(5, new Vector(-5, 0));		
+		playersPosition.put(2, new Vector(-25, 20));
+		playersPosition.put(3, new Vector(-30, 10));
+		playersPosition.put(4, new Vector(-30, -10));
+		playersPosition.put(5, new Vector(-25, -20));		
 		playersPosition.put(6, new Vector(-5, -10));
-		playersPosition.put(7, new Vector(-15, 25));		
-		playersPosition.put(8, new Vector(-15, -25));
+		playersPosition.put(7, new Vector(-15, 15));		
+		playersPosition.put(8, new Vector(-15, -15));
 		playersPosition.put(9, new Vector(-5, 10));
 		playersPosition.put(10, new Vector(-5, 25));
 		playersPosition.put(11, new Vector(-5, -25));
