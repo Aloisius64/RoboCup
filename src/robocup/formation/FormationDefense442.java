@@ -11,8 +11,8 @@ public class FormationDefense442 extends AbstractFormation {
 
 	public FormationDefense442() {
 		super();
-    	setName(this.getClass().getName());
-    	initMaps();
+		setName(this.getClass().getName());
+		initMaps();
 	}
 
 	@Override
@@ -31,13 +31,13 @@ public class FormationDefense442 extends AbstractFormation {
 		playersMap.put(11, OffensivePlayer.class);
 
 		playersPosition = new HashMap<>();
-		playersPosition.put(1, new Vector(-40, 0));
+		playersPosition.put(1, new Vector(-45, 0));
 		playersPosition.put(2, new Vector(-25, 20));
 		playersPosition.put(3, new Vector(-30, 10));
 		playersPosition.put(4, new Vector(-30, -10));
-		playersPosition.put(5, new Vector(-25, -20));		
+		playersPosition.put(5, new Vector(-25, -20));
 		playersPosition.put(6, new Vector(-5, -10));
-		playersPosition.put(7, new Vector(-15, 15));		
+		playersPosition.put(7, new Vector(-15, 15));
 		playersPosition.put(8, new Vector(-15, -15));
 		playersPosition.put(9, new Vector(-5, 10));
 		playersPosition.put(10, new Vector(-5, 25));
@@ -58,4 +58,3 @@ public class FormationDefense442 extends AbstractFormation {
 	}
 
 }
-

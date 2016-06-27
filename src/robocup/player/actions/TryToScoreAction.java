@@ -96,24 +96,26 @@ public class TryToScoreAction extends GoapAction {
 							tryToScore = true;
 							
 						} else {
-							player.getAction().kick(5, goal.getDirection());
+							player.getAction().kick(10, goal.getDirection());
 
 						}
 					} else {// goal null
 						if (ball.getDistance() < 0.7) {// gira la palla
 							// muovere la palla verso la porta
-							player.getAction().kick(5, -player.getDirection());
+							player.getAction().kick(10, -player.getDirection());
+							return true;
 
 						} else {// mi avvicino alla palla
 							player.getAction().turn(ball.getDirection());
-							Thread.sleep(50);
-							player.getAction().dash(100);
+							Thread.sleep(100);
+							player.getAction().dash(50);
+							return true;
 						}
 					}
 				} else {// ball distante da me
 					player.getAction().turn(ball.getDirection());
-					Thread.sleep(50);
-					player.getAction().dash(100);
+					Thread.sleep(100);
+					player.getAction().dash(60);
 
 				}
 			} else {

@@ -31,7 +31,6 @@ public class ShootBallDefensorAction extends GoapAction {
 	public ShootBallDefensorAction() {
 		super(1.0f);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
-		addPrecondition(GoapGlossary.BALL_NEAR_DEFENDER, false);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
 		addEffect(GoapGlossary.BALL_NEAR_DEFENDER, true);
@@ -67,7 +66,7 @@ public class ShootBallDefensorAction extends GoapAction {
 	public boolean perform(Object agent) {
 		// La palla � calciata oltre la met� campo
 		// verso un proprio compagno
-		System.out.println("Performing " + getClass().getSimpleName());
+//		System.out.println("Performing " + getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 		ballShooted = true;

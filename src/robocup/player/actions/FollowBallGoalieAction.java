@@ -80,7 +80,7 @@ public class FollowBallGoalieAction extends GoapAction {
 				}
 
 				if (player.getAction().ballInGoalzone(ball)) {
-					if (ball.getDistance() > 3.0) {
+					if (ball.getDistance() > 1.0) {
 						player.getAction().goToPoint(MathHelp.getNextBallPoint(ball));
 					} else {
 						ballFollowed = true;

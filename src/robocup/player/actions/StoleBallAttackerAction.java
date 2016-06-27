@@ -5,11 +5,7 @@ import java.net.UnknownHostException;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
-import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
-import robocup.utility.MathHelp;
-import robocup.utility.Polar;
-import robocup.utility.Position;
 
 /*
 ATTACKER_STOLE_BALL *******************************
@@ -72,18 +68,17 @@ public class StoleBallAttackerAction extends GoapAction {
 
 		try {
 			if (player.getAction().isBallVisible()) {
-				if (player.getAction().isBallNearTeammate()) {
-					return false;
-				}
+//				if (player.getAction().isBallNearTeammate()) {
+//					System.out.println(player.getMemory().getuNum() + " is near than me a teammate");
+//					return false;
+//				}
 
 				ObjBall ball = player.getMemory().getBall();
-				if (!player.getAction().inFieldBall(ball)) {
 
-					return false;
-				}
-				if (player.getPosition().x < -20) {
-					return false;
-				}
+//				if (player.getPosition().x < -20) {
+//					System.out.println("player too lower");
+//					return false;
+//				}
 				if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}

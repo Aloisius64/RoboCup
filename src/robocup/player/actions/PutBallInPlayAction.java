@@ -26,7 +26,6 @@ public class PutBallInPlayAction extends GoapAction {
 
 	public PutBallInPlayAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, false);
 		addPrecondition(GoapGlossary.PUT_BALL_IN_PLAY, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addEffect(GoapGlossary.PUT_BALL_IN_PLAY, true);

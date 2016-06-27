@@ -38,7 +38,8 @@ public class StoleBallDefensorAction extends GoapAction {
 		super(1.0f);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
-		addPrecondition(GoapGlossary.BALL_NEAR, true);
+		// addPrecondition(GoapGlossary.BALL_NEAR, true);
+		addPrecondition(GoapGlossary.BALL_IN_DEFENSIVE_AREA, true);
 		addPrecondition(GoapGlossary.BALL_NEAR_DEFENDER, false);
 		addEffect(GoapGlossary.BALL_CATCHED, true);
 	}
@@ -78,35 +79,27 @@ public class StoleBallDefensorAction extends GoapAction {
 		// di recuperarla
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-		System.out.println(player.getMemory().getuNum() + " Performing " + getClass().getSimpleName());
+		// System.out.println(player.getMemory().getuNum() + " Performing " +
+		// getClass().getSimpleName());
 
 		try {
 			if (player.getMemory().isObjVisible("ball")) {
+
 				ObjBall ball = player.getMemory().getBall();
-				if (player.getMemory().getBallPos(ball).x > -15)
-					return false;
+//				if (!player.getAction().isBallInOurField()) {
+//					return false;
+//				}
+//				if (!player.getAction().isBallInDefensiveArea())
+//					return false;
 				if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 
-				if (ball.getDistance() > 0.7 && player.getAction().isBallInOurField().booleanValue()) {
-					// player.getAction().interceptBall(ball);
+				if (ball.getDistance() > 0.7) {
 
-					// Polar p = MathHelp.getNextBallPoint(ball);
-					// Position p2 = MathHelp.getPos(p);
-					// if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
-					// return false;
-					// else if (player.getAction().stayInBounds()) {
-					// player.getAction().goToPoint(p);
-					// }
-					// return true;
 					player.getAction().dash(100, ball.getDirection());
 				} else if (ball.getDistance() <= 0.7) {
 					ballStoled = true;
-				}
-
-				if (!player.getAction().isBallInOurField().booleanValue()) {
-					return false;
 				}
 
 				return true;

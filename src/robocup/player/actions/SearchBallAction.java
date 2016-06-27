@@ -53,20 +53,15 @@ public class SearchBallAction extends GoapAction {
 
 		AbstractPlayer player = ((AbstractPlayer) agent);
 
-//		System.out.println("Performing "+getClass().getSimpleName());
-
 		try {
-			if(player.getAction().isBallVisible()){
+			if (player.getAction().isBallVisible()) {
 
-//				ObjBall ball = player.getMemory().getBall();
-
-//				if ((ball.getDirection() > 5.0 
-//						|| ball.getDirection() < -5.0)) {
-//					player.getRoboClient().turn(ball.getDirection());
-//				}
 				ballSeen = true;
+				return true;
+			} else {
+				player.getRoboClient().turn(60);
+
 			}
-			player.getRoboClient().turn(30);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}

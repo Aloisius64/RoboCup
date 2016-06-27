@@ -60,7 +60,7 @@ public class GoalierPlayer extends AbstractPlayer {
 		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE_ATTACKER, getAction().isBallNearTeammateAttacker());
 		worldState.put(GoapGlossary.BALL_CATCHABLE, getAction().isBallInRangeOf(1.0));
 		worldState.put(GoapGlossary.PUT_BALL_IN_PLAY, false);
-		
+//		worldState.put(GoapGlossary.TRY_TO_SCORE, true);
 		return worldState;
 	}
 

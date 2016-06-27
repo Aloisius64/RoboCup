@@ -1,5 +1,7 @@
 package robocup.player.actions;
 
+import robocup.formation.AbstractFormation;
+import robocup.formation.FormationManager;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.player.AbstractPlayer;
@@ -42,16 +44,20 @@ public class KickOffAction extends GoapAction {
 		AbstractPlayer player = (AbstractPlayer) agent;
 
 		try {
-			if(player.getAction().isPlayMode("play_on")){
+			if (player.getAction().isPlayMode("play_on")) {
+				isKicked = true;
+				return true;
+			}
+			if (player.getAction().isBallNearTeammate()) {
 				isKicked = true;
 				return true;
 			}
 			if (player.getMemory().getBall() == null) {
 				player.getAction().turn(30);
 			} else if (player.getMemory().getBall().getDistance() > 0.7) {
-				player.getAction().dash(50, player.getMemory().getBall().getDirection());
+				player.getAction().dash(100, player.getMemory().getBall().getDirection());
 			} else {
-				player.getAction().kick(60, -120.0);
+				player.getAction().kick(50, 180);
 				isKicked = true;
 				Thread.sleep(100);
 				return true;

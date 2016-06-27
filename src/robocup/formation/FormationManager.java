@@ -14,7 +14,7 @@ public class FormationManager {
 		// Load all possible formations
 		formations.put(FormationAttack433.class.getName(), new FormationAttack433());
 		formations.put(FormationAttack442.class.getName(), new FormationAttack442());
-		formations.put(FormationDefense433.class.getName(), new FormationDefense433());
+		formations.put(FormationDefense532.class.getName(), new FormationDefense532());
 		formations.put(FormationDefense442.class.getName(), new FormationDefense442());
 	}
 	

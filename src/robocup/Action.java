@@ -11,6 +11,7 @@ import robocup.objInfo.ObjGoal;
 import robocup.objInfo.ObjInfo;
 import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
+import robocup.player.DefensivePlayer;
 import robocup.player.OffensivePlayer;
 import robocup.utility.MathHelp;
 import robocup.utility.Polar;
@@ -64,10 +65,7 @@ public class Action {
 				player.getRoboClient().turn(go.t * (1 + (5 * player.getMemory().getAmountOfSpeed())));
 			}
 
-			player.getRoboClient()
-					.dash(MathHelp.getDashPower(MathHelp.getPos(go), player.getMemory().getAmountOfSpeed(),
-							player.getMemory().getDirection(), player.getMemory().getEffort(),
-							player.getMemory().getStamina()));
+			player.getRoboClient().dash(100);
 		}
 	}
 
@@ -500,7 +498,7 @@ public class Action {
 			// ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
 			Position ballPos = player.getMemory().getBallPos(objBall);
 
-			return ballPos.x <= 0;
+			return ballPos.x <= 0.0;
 		}
 
 		return false;
@@ -553,16 +551,18 @@ public class Action {
 
 	private boolean isDefenderNear() {
 		if (isBallVisible()) {
+			AbstractFormation formation = FormationManager.getFormation(player.getFormationName());
 			for (Integer i : player.getMemory().getHearMemory().getBallDistances().keySet()) {
-				if (i != 0 && i < 5) {// TODO fix with formation
+				if (formation.getPlayerClass(i).equals(DefensivePlayer.class.getSimpleName())) {
 					if (player.getMemory().getHearMemory().getBallDistances().get(i) < player.getMemory().getBall()
 							.getDistance()) {
 						return true;
 					}
 				}
 			}
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public Boolean isBallNearTeammate() {
@@ -605,6 +605,35 @@ public class Action {
 
 	public boolean isPlayMode(String playMode) {
 		return player.getMemory().getPlayMode().contains(playMode);
+	}
+
+	public Boolean isBallInDefensiveArea() {
+		if (player.getMemory().getBall() != null) {
+			if (player.getMemory().getBallPos(player.getMemory().getBall()).x < -15.0)
+				return true;
+		}
+		return false;
+	}
+
+	public ObjPlayer getlastOpponent() {
+		ObjPlayer playerOpp=null;
+		Position oppPos=null;
+		for(ObjPlayer opp:player.getMemory().getPlayers()){
+			if(!opp.getTeam().equals(player.getRoboClient().getTeam())){
+				if(playerOpp==null){
+					playerOpp=opp;
+					oppPos=MathHelp.getPos(opp.getDistance(), opp.getDirection());
+				}
+				else {
+					Position currentPos=MathHelp.getPos(opp.getDistance(),opp.getDirection());
+					if(currentPos.x>oppPos.x){
+						playerOpp=opp;
+						oppPos=currentPos;
+					}
+				}
+			}
+		}
+		return playerOpp;
 	}
 
 	/**************************************************************/

@@ -12,8 +12,6 @@ import java.util.Queue;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
-import robocup.goap.GoapPlanner;
-import robocup.player.actions.ComeBackHomeAction;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
 import robocup.player.actions.ShootBallDefensorAction;
@@ -36,13 +34,12 @@ public class DefensivePlayer extends AbstractPlayer {
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
 		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan failed");
-		GoapPlanner.printMap(getWorldState());
+		// GoapPlanner.printMap(getWorldState());
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		// System.err.println("Player "+getMemory().getuNum()+" - Plan found
-		// "+GoapAgent.prettyPrint(actions));
+		System.err.println("Player " + getMemory().getuNum() + " - Plan found" + GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
@@ -53,8 +50,7 @@ public class DefensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planAborted(GoapAction aborter) {
-		// System.out.println("Player "+getMemory().getuNum()+" - Plan
-		// aborted");
+		System.out.println("Player " + getMemory().getuNum() + " - Plan aborted");
 	}
 
 	@Override
@@ -68,10 +64,12 @@ public class DefensivePlayer extends AbstractPlayer {
 		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
 		worldState.put(GoapGlossary.BALL_CATCHED, false);
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
-		worldState.put(GoapGlossary.BALL_NEAR, getAction().isBallInRangeOf(25));
+		worldState.put(GoapGlossary.BALL_NEAR, getAction().isBallInRangeOf(15));
 		worldState.put(GoapGlossary.BALL_NEAR_DEFENDER, getAction().isBallNearDefender());
-		worldState.put(GoapGlossary.GOAL_SCORED, getAction().isPlayMode("goal_l") || getAction().isPlayMode("goal_r"));
-//		GoapPlanner.printMap(worldState);
+		worldState.put(GoapGlossary.BALL_IN_DEFENSIVE_AREA, getAction().isBallInDefensiveArea());
+		worldState.put(GoapGlossary.GOAL_SCORED, getAction().isPlayMode("goal_"));
+		// worldState.put(GoapGlossary.TRY_TO_SCORE, true);
+		// GoapPlanner.printMap(worldState);
 		return worldState;
 	}
 
@@ -95,7 +93,7 @@ public class DefensivePlayer extends AbstractPlayer {
 		actions.add(new ShootBallDefensorAction());
 		actions.add(new PassBallDefensorAction());
 		actions.add(new StoleBallDefensorAction());
-		actions.add(new ComeBackHomeAction());
+		// actions.add(new ComeBackHomeAction());
 		// actions.add(new GoToMoreFreePlaceAction());
 		// actions.add(new MarkPlayerAction());
 

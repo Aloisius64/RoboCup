@@ -51,12 +51,12 @@ public class CatchBallGoalieAction extends GoapAction {
 	@Override
 	public boolean perform(Object agent) {
 
-		System.out.println("Performing "+getClass().getSimpleName());
+		System.out.println("Performing " + getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 
 		try {
-			if(player.getMemory().isObjVisible("ball") && player.getAction().isBallInRangeOf(1.0)){
+			if (player.getAction().isBallVisible() && player.getAction().isBallInRangeOf(1.0)) {
 				player.getAction().catchball(player.getMemory().getBall().getDirection());
 				ballCatched = true;
 				return true;

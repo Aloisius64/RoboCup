@@ -2,10 +2,8 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
-import robocup.utility.MathHelp;
-import robocup.utility.Polar;
-import robocup.utility.Position;
 
 public class FollowAction extends GoapAction {
 
@@ -17,7 +15,6 @@ public class FollowAction extends GoapAction {
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BEHIND_BALL_LINE, true);
 		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
@@ -50,20 +47,8 @@ public class FollowAction extends GoapAction {
 				player.getAction().turn(30.0);
 				return true;
 			} else {
-				if (player.getMemory().getOppGoal().getDistance() > 15.0) {
-
-					Polar p = MathHelp.getPolar(new Position(50.0, player.getPosition().y));
-					if (!player.getAction().isBehindBall()) {
-						return false;
-					}
-					// System.out.println(player.getMemory().getuNum() + " " +
-					// p.t);
-					player.getAction().dash(100, p.t);
-					return true;
-				} else {
-					follow = true;
-					return true;
-				}
+				ObjPlayer lastDefenderOppoent = player.getAction().getlastOpponent();
+				System.out.println(player.getMemory().getuNum() + "  " + lastDefenderOppoent.getuNum());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
