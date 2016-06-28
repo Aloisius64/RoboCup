@@ -53,7 +53,7 @@ public class RoboClient {
 			getDsock().send(spack);
 			//System.out.println("Sent: " + message);
 		} catch(IOException ioex) {
-			System.out.println(ioex);
+//			System.out.println(ioex);
 			System.exit(-1);
 		} 	
 
@@ -76,7 +76,7 @@ public class RoboClient {
 			message = new String(rpack.getData());
 			port = rpack.getPort();
 		} catch(Exception ex) {
-			System.out.println(ex);
+//			System.out.println(ex);
 		}
 
 		return new String(buf);
@@ -94,7 +94,7 @@ public class RoboClient {
 		try {
 			p.initParse(receive(), m);
 		} catch(Exception ex) {
-			System.out.println(ex);
+//			System.out.println(ex);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class RoboClient {
 		try {
 			p.initParse(receive(), m);	
 		} catch(Exception ex) {
-			System.out.println(ex);
+//			System.out.println(ex);
 		}	
 	}
 

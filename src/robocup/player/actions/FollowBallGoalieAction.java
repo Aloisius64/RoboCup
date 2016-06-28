@@ -68,12 +68,16 @@ public class FollowBallGoalieAction extends GoapAction {
 		// upper.y = 6;
 		// lower.y = -6;
 		// }
-		if(!player.getAction().isPlayMode("play_on"))
+		if (!player.getAction().isPlayMode("play_on"))
 			return false;
+		if (player.getPosition().x > 17) {
+			return false;
+		}
 		try {
 			if (!player.getMemory().isObjVisible("ball")) {
 				player.getAction().turn(30);
 				return false;
+
 			} else {
 				ObjBall ball = player.getMemory().getBall();
 

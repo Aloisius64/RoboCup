@@ -70,7 +70,7 @@ public class ShootBallGoalieAction extends GoapAction {
 		//		campo (possibilmente verso un proprio 
 		//		compagno)
 
-		System.out.println("Performing "+getClass().getSimpleName());
+//		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 		if(!player.getAction().isPlayMode("play_on"))

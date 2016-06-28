@@ -94,8 +94,8 @@ public class Action {
 	public void smartKick(ObjFlag flagLeft, ObjFlag flagRight) throws UnknownHostException, InterruptedException {
 		// se right null set to 45° se left null set to -45°
 
-		double leftFlagDirection = flagLeft.getDirection();
-		double rightFlagDirection = flagRight.getDirection();
+		double leftFlagDirection = flagLeft == null ? -45 : flagLeft.getDirection();
+		double rightFlagDirection = flagRight == null ? 45 : flagRight.getDirection();
 
 		List<ObjPlayer> otherPlayers = player.getMemory().getOpponents(player.getRoboClient().getTeam());
 		double playerSize = 0.7;
@@ -274,8 +274,8 @@ public class Action {
 				player.getRoboClient().kick(MathHelp.getKickPower(p, player.getMemory().getAmountOfSpeed(),
 						player.getMemory().getDirection(), ball.getDistance(), ball.getDirection()), p.t);
 			} catch (UnknownHostException e) {
-				System.out.println("Error in Action.kickToPoint");
-				e.printStackTrace();
+				// System.out.println("Error in Action.kickToPoint");
+				// e.printStackTrace();
 			}
 		}
 	}
@@ -285,8 +285,8 @@ public class Action {
 			try {
 				player.getRoboClient().kick(power, p.t);
 			} catch (UnknownHostException e) {
-				System.out.println("Error in Action.kickToPoint");
-				e.printStackTrace();
+				// System.out.println("Error in Action.kickToPoint");
+				// e.printStackTrace();
 			}
 		}
 	}

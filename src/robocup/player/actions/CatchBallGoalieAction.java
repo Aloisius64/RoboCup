@@ -51,7 +51,7 @@ public class CatchBallGoalieAction extends GoapAction {
 	@Override
 	public boolean perform(Object agent) {
 
-		System.out.println("Performing " + getClass().getSimpleName());
+//		System.out.println("Performing " + getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 		if(!player.getAction().isPlayMode("play_on"))

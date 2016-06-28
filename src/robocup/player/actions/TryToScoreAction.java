@@ -6,6 +6,7 @@ import robocup.objInfo.ObjBall;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjGoal;
 import robocup.player.AbstractPlayer;
+import robocup.utility.Position;
 
 /*
 TRY_TO_SCORE **************************************
@@ -59,7 +60,7 @@ public class TryToScoreAction extends GoapAction {
 		// funzione smart kick.
 		AbstractPlayer player = ((AbstractPlayer) agent);
 		// System.out.println("Performing " + getClass().getSimpleName());
-		if(!player.getAction().isPlayMode("play_on"))
+		if (!player.getAction().isPlayMode("play_on"))
 			return false;
 		try {
 			if (player.getAction().isBallVisible()) {
@@ -72,13 +73,13 @@ public class TryToScoreAction extends GoapAction {
 					Double direction = player.getAction().getDirectionPassToTeammates();
 					if (direction != null) {
 						player.getAction().kick(20, direction);
-						System.out.println("pass ball");
+						// System.out.println("pass ball");
 						tryToScore = true;
 						return true;
 					}
 
 					if (goal != null) {
-						if (goal.getDistance() <= 20 || player.getMemory().getBallPos(ball).x > 40) {
+						if (goal.getDistance() <= 18 || player.getMemory().getBallPos(ball).x > 40) {
 							if (player.getMemory().getLeftPost() == null) {
 								player.getAction().turn(30);
 							} else if (player.getMemory().getRightPost() == null) {
@@ -96,8 +97,8 @@ public class TryToScoreAction extends GoapAction {
 						}
 					} else {
 						if (ball.getDistance() < 0.7) {
+							player.getAction().kickToPoint(ball, new Position(52.5, 0), 10);
 
-							player.getAction().kick(10, -player.getDirection());
 							return true;
 
 						} else {

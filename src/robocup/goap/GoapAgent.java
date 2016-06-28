@@ -145,8 +145,8 @@ public class GoapAgent {
 			availableActions.add(action);
 		}
 
-		if (dataProvider.getActions().size() > 0)
-			System.out.println("Found actions: " + prettyPrint(dataProvider.getActions()));
+//		if (dataProvider.getActions().size() > 0)
+//			System.out.println("Found actions: " + prettyPrint(dataProvider.getActions()));
 	}
 
 	public static String prettyPrint(HashMap<String, ? extends Object> state) {

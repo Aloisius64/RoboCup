@@ -72,7 +72,7 @@ public class PassBallGoalieAction extends GoapAction {
 		//		Il portiere passa la palla al difensore
 		//		pi� libero
 
-		System.out.println("Performing "+getClass().getSimpleName());
+//		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 		if(!player.getAction().isPlayMode("play_on"))
