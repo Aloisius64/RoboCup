@@ -19,14 +19,14 @@ PERFORMING:
 	Il giocatore ritorna alla sua posizione
 	di default 
  */
-public class IdleAction extends GoapAction {
+public class AttackerIdleAction extends GoapAction {
 
 	private boolean playerToHomePosition = false;
 
-	public IdleAction() {
+	public AttackerIdleAction() {
 		super(10.0f);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
-		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
+		addPrecondition(GoapGlossary.TRY_TO_SCORE, true);
+		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
 
 	@Override
@@ -51,19 +51,19 @@ public class IdleAction extends GoapAction {
 		// System.out.println("Performing "+getClass().getSimpleName());
 
 		try {
+			playerToHomePosition = true;
 
-			if (!player.getAction().isAtHome()) {
+			if (!player.getAction().isHome()) {
 				player.getAction().goToPoint(player.getMemory().getHome());
+				return true;
 			}
 			// System.out.println(player.getMemory().getuNum() + " " +
 			// player.getTime());
 
 			if (player.getMemory().getBall() == null)
 				player.getRoboClient().turn(30);
-			else {
-				playerToHomePosition = true;
-				return true;
-			}
+			else
+				return false;
 
 		} catch (Exception e) {
 			e.printStackTrace();

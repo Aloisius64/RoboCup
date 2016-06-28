@@ -6,6 +6,7 @@ import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
 import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
 
 /*
 ATTACKER_STOLE_BALL *******************************
@@ -64,34 +65,23 @@ public class StoleBallAttackerAction extends GoapAction {
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 
-		System.out.println("Performing " + getClass().getSimpleName());
+		// System.out.println("Performing " + getClass().getSimpleName());
 
 		try {
+			if (!player.getAction().isPlayMode("play_on")) {
+				return false;
+			}
 			if (player.getAction().isBallVisible()) {
-//				if (player.getAction().isBallNearTeammate()) {
-//					System.out.println(player.getMemory().getuNum() + " is near than me a teammate");
-//					return false;
-//				}
 
 				ObjBall ball = player.getMemory().getBall();
 
-//				if (player.getPosition().x < -20) {
-//					System.out.println("player too lower");
-//					return false;
-//				}
 				if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 
 				if (ball.getDistance() > 0.7) {
-					// Polar p = MathHelp.getNextBallPoint(ball);
-					// Position p2 = MathHelp.getPos(p);
-					// if ((Math.abs(p2.x) >= 52.5) || (Math.abs(p2.y) >= 36))
-					// return false;
-					// else if (player.getAction().stayInBounds()) {
-					// player.getAction().goToPoint(p);
-					// }
-					player.getAction().dash(100, (ball.getDirection() + ball.getDirChng()) / 2);
+
+					player.getAction().dash(100, MathHelp.getNextBallPoint(ball).t);
 					return true;
 
 				} else if (ball.getDistance() <= 0.7) {

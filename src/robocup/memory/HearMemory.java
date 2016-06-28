@@ -47,7 +47,6 @@ public class HearMemory {
 		// msg tipo 23.5 ---> 23p5
 		if (msg.getTeam().equals("our")) {
 			String message = msg.getMessage().substring(1, msg.getMessage().length() - 1);
-//			System.out.println("ricevuto " + message);
 			if (message.contains("A")) {
 				String[] splitMessage = message.split("A");
 				evaluations.put(Integer.parseInt(splitMessage[0]), Integer.parseInt(splitMessage[1]));
@@ -67,16 +66,16 @@ public class HearMemory {
 				} else {
 					positions.get(player).y = Double.parseDouble(splitMessage[1]);
 				}
-			}else if (message.contains("B")) {
+			} else if (message.contains("B")) {
 				String[] splitMessage = message.replace("p", ".").split("B");
 				ballDistances.put(Integer.parseInt(splitMessage[0]), Double.parseDouble(splitMessage[1]));
 			}
 		}
-		
+
 		// throw new UnsupportedOperationException("Not supported yet."); //To
 		// change body of generated methods, choose Tools | Templates.
 	}
-	
+
 	public void ourMessagePrint() {
 
 	}

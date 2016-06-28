@@ -75,6 +75,11 @@ public class Action {
 		}
 	}
 
+	public boolean isAtHome() {
+		Position p = player.getPosition();
+		return Math.abs(p.x - player.getMemory().getHome().x) < 2 && Math.abs(p.y - player.getMemory().getHome().y) < 2;
+	}
+
 	public boolean isHome() {
 		return player.getMemory().isHome();
 	}
@@ -566,32 +571,12 @@ public class Action {
 	}
 
 	public Boolean isBallNearTeammate() {
-		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
-			ObjBall objBall = player.getMemory().getBall();
-			Position ballPos = MathHelp.getPos(objBall.getDistance(), player.getDirection() + objBall.getDirection());
-			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
-			if (isTeammatesNear()) {
-				return true;
-			}
-			// for (ObjPlayer objPlayer :
-			// player.getMemory().getTeammates(player.getRoboClient().getTeam()))
-			// {
-			// int playerNumber = objPlayer.getuNum() + 1;
-			//
-			// if (playerNumber > 0 && playerNumber <= 11) {
-			// Position objPos = MathHelp.getPos(objPlayer.getDistance(),
-			// player.getDirection() + objPlayer.getDirection());
-			// objPos = MathHelp.vAdd(player.getPosition(), objPos);
-			//
-			// if (MathHelp.mag(objPos) < 4.0) {
-			// System.out.println("Found teammate " + playerNumber);
-			// return true;
-			// }
-			// }
-			// }
+		if (player.getMemory().getBall() != null) {
+			return isTeammatesNear();
+
 		}
 
-		return false;
+		return true;
 	}
 
 	public Boolean isBehindBall() {
@@ -616,19 +601,20 @@ public class Action {
 	}
 
 	public ObjPlayer getlastOpponent() {
-		ObjPlayer playerOpp=null;
-		Position oppPos=null;
-		for(ObjPlayer opp:player.getMemory().getPlayers()){
-			if(!opp.getTeam().equals(player.getRoboClient().getTeam())){
-				if(playerOpp==null){
-					playerOpp=opp;
-					oppPos=MathHelp.getPos(opp.getDistance(), opp.getDirection());
-				}
-				else {
-					Position currentPos=MathHelp.getPos(opp.getDistance(),opp.getDirection());
-					if(currentPos.x>oppPos.x){
-						playerOpp=opp;
-						oppPos=currentPos;
+		ObjPlayer playerOpp = null;
+		Position oppPos = null;
+		for (ObjPlayer opp : player.getMemory().getPlayers()) {
+			if (opp.getTeam() != null) {
+				if (!opp.getTeam().equals(player.getRoboClient().getTeam())) {
+					if (playerOpp == null) {
+						playerOpp = opp;
+						oppPos = MathHelp.getPos(opp.getDistance(), opp.getDirection());
+					} else {
+						Position currentPos = MathHelp.getPos(opp.getDistance(), opp.getDirection());
+						if (currentPos.x > oppPos.x) {
+							playerOpp = opp;
+							oppPos = currentPos;
+						}
 					}
 				}
 			}

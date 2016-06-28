@@ -434,6 +434,15 @@ public class Memory {
 		return (0.0);
 	}
 
+	public Polar getPolarFromFc(Position pt) {
+		Position p = (MathHelp.vSub(pt, getFlagPos("fc")));
+		double r = Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2));
+		double t = (Math.toDegrees(Math.atan2(p.y, p.x)) - getDirection());
+		Polar n = new Polar(r, t);
+		// n.print("AbsPolar: ");
+		return (n);
+	}
+
 	public Polar getAbsPolar(Position pt) {
 		Position p = (MathHelp.vSub(pt, getPosition()));
 		double r = Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2));
@@ -565,7 +574,7 @@ public class Memory {
 		// System.out.println(side + " flag seen: " + flag.getFlagName());
 		// System.out.println("getPosition flag: (" + flag.getDistance() + ", "
 		// + flag.getDirection() + ")");
-
+//		System.out.println(flag == null);
 		Position flagCoord = getFlagPos(flag.getFlagName());
 		double direction = getDirection() + flag.getDirection();
 		Position toFlag = MathHelp.getPos(flag.getDistance(), direction);

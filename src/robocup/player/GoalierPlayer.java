@@ -52,8 +52,6 @@ public class GoalierPlayer extends AbstractPlayer {
 		HashMap<String, Boolean> worldState = new HashMap<>();
 
 		// Set worldState from player memory
-		worldState.put(GoapGlossary.KICK_OFF, getAction().isPlayMode("kick_off_l"));
-		worldState.put(GoapGlossary.PLAY_ON, getAction().isPlayMode("play_on"));
 		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
 		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallInRangeOf(1.0)); // FALSE otherwise
 		worldState.put(GoapGlossary.BALL_NEAR, getAction().isBallInRangeOf(25));

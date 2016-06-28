@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import robocup.player.AbstractPlayer;
+
 public class GoapAgent {
 
 	private FSM stateMachine;
@@ -13,11 +15,13 @@ public class GoapAgent {
 	private FSMState performActionState; // performs an action
 	private HashSet<GoapAction> availableActions;
 	private Queue<GoapAction> currentActions;
-	private IGoap dataProvider; // this is the implementing class that provides our world data and listens to feedback on planning
+	private IGoap dataProvider; // this is the implementing class that provides
+								// our world data and listens to feedback on
+								// planning
 	private GoapPlanner planner;
 	private Object targetObject;
 
-	public GoapAgent(Object targetObject){
+	public GoapAgent(Object targetObject) {
 		stateMachine = new FSM();
 		availableActions = new HashSet<GoapAction>();
 		currentActions = new LinkedList<>(); // ArrayList
@@ -46,7 +50,7 @@ public class GoapAgent {
 		return null;
 	}
 
-	public void removeAction(GoapAction goapAction){
+	public void removeAction(GoapAction goapAction) {
 		availableActions.remove(goapAction);
 	}
 
@@ -56,7 +60,7 @@ public class GoapAgent {
 
 	private void createIdleState() {
 
-		idleState = new FSMState() {			
+		idleState = new FSMState() {
 			@Override
 			public void update(FSM fsm, Object object) {
 
@@ -76,14 +80,14 @@ public class GoapAgent {
 
 				} else {
 					// ugh, we couldn't get a plan
-					//System.out.println("Failed Plan: "+prettyPrint(goal));
+					// System.out.println("Failed Plan: "+prettyPrint(goal));
 					dataProvider.planFailed(goal);
 					fsm.popState(); // move back to IdleAction state
 					fsm.pushState(idleState);
 				}
 
 			}
-		};    	
+		};
 
 	}
 
@@ -95,7 +99,7 @@ public class GoapAgent {
 
 				if (!hasActionPlan()) {
 					// no actions to perform
-					//System.out.println("Done actions");
+					// System.out.println("Done actions");
 					fsm.popState();
 					fsm.pushState(idleState);
 					dataProvider.actionsFinished();
@@ -104,15 +108,19 @@ public class GoapAgent {
 
 				GoapAction action = currentActions.peek();
 				if (action.isDone()) {
-					// the action is done. Remove it so we can perform the next one
+					// the action is done. Remove it so we can perform the next
+					// one
 					currentActions.poll();
 				}
 
 				if (hasActionPlan()) {
 					// perform the next action
 					action = currentActions.peek();
-
+					AbstractPlayer player = (AbstractPlayer) targetObject;
+					System.out.println(player.getMemory().getuNum() + "  " + player.getMemory().getSide() + " "
+							+ action.getClass().getSimpleName());
 					boolean success = action.perform(targetObject);
+
 					if (!success) {
 						// action failed, we need to plan again
 						fsm.popState();
@@ -132,21 +140,21 @@ public class GoapAgent {
 
 	}
 
-	private void loadActions() {		
+	private void loadActions() {
 		for (GoapAction action : dataProvider.getActions()) {
 			availableActions.add(action);
 		}
-		
-		if(dataProvider.getActions().size()>0)
-			System.out.println("Found actions: " + prettyPrint(dataProvider.getActions()));		
+
+		if (dataProvider.getActions().size() > 0)
+			System.out.println("Found actions: " + prettyPrint(dataProvider.getActions()));
 	}
 
 	public static String prettyPrint(HashMap<String, ? extends Object> state) {
 		String s = "";
 
 		for (String key : state.keySet()) {
-			s+= key+":"+state.get(key).toString();
-			s+=", ";
+			s += key + ":" + state.get(key).toString();
+			s += ", ";
 		}
 
 		return s;

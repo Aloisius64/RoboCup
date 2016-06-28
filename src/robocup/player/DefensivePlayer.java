@@ -59,8 +59,6 @@ public class DefensivePlayer extends AbstractPlayer {
 
 		// Set worldState from player memory
 		// worldState.put(GoapGlossary.KICK_OFF,
-		// getAction().isPlayMode("kick_off_l"));
-		worldState.put(GoapGlossary.PLAY_ON, getAction().isPlayMode("play_on"));
 		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
 		worldState.put(GoapGlossary.BALL_CATCHED, false);
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
