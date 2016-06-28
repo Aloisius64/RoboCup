@@ -24,8 +24,10 @@ public class AttackerIdleAction extends GoapAction {
 	private boolean playerToHomePosition = false;
 
 	public AttackerIdleAction() {
-		super(10.0f);
-		addPrecondition(GoapGlossary.TRY_TO_SCORE, true);
+		super(3.0f);
+		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
 

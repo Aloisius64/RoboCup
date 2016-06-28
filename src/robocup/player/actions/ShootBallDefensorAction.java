@@ -33,7 +33,6 @@ public class ShootBallDefensorAction extends GoapAction {
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
-		addEffect(GoapGlossary.BALL_NEAR_DEFENDER, true);
 	}
 
 	@Override

@@ -38,6 +38,7 @@ public class StoleBallDefensorAction extends GoapAction {
 		super(1.0f);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
+		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		// addPrecondition(GoapGlossary.BALL_NEAR, true);
 		addPrecondition(GoapGlossary.BALL_IN_DEFENSIVE_AREA, true);
 		addPrecondition(GoapGlossary.BALL_NEAR_DEFENDER, false);
@@ -56,13 +57,10 @@ public class StoleBallDefensorAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// La palla � controllata da un avversario o
-		// non, basta che sia nella propria met� campo,
-		// ed � ad una certa distanza dal difensore
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 
-		if (player.getMemory().isObjVisible("ball")) {
+		if (player.getMemory().getBall() != null) {
 			ObjBall ball = player.getMemory().getBall();
 			if (ball.getDistance() > 10) {
 				// return false;
@@ -86,17 +84,19 @@ public class StoleBallDefensorAction extends GoapAction {
 			if (player.getMemory().isObjVisible("ball")) {
 
 				ObjBall ball = player.getMemory().getBall();
-//				if (!player.getAction().isBallInOurField()) {
-//					return false;
-//				}
-//				if (!player.getAction().isBallInDefensiveArea())
-//					return false;
+				if (player.getAction().isBallNearDefender()) {
+					return false;
+				}
+				if (!player.getAction().isBallInDefensiveArea())
+					return false;
 				if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 
 				if (ball.getDistance() > 0.7) {
-
+					if (player.getAction().isBallNearTeammateAttacker() && ball.getDistance() > 10) {
+						return false;
+					}
 					player.getAction().dash(100, ball.getDirection());
 				} else if (ball.getDistance() <= 0.7) {
 					ballStoled = true;
@@ -105,7 +105,7 @@ public class StoleBallDefensorAction extends GoapAction {
 				return true;
 
 			} else {
-				player.getRoboClient().turn(30);
+				return false;
 			}
 
 		} catch (UnknownHostException e) {

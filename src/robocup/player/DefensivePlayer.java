@@ -12,10 +12,14 @@ import java.util.Queue;
 import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
+import robocup.goap.GoapPlanner;
+import robocup.player.actions.FollowDefensiveAction;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
+import robocup.player.actions.SearchBallDefensorAction;
 import robocup.player.actions.ShootBallDefensorAction;
 import robocup.player.actions.StoleBallDefensorAction;
+import sun.net.www.content.text.plain;
 
 public class DefensivePlayer extends AbstractPlayer {
 
@@ -34,7 +38,8 @@ public class DefensivePlayer extends AbstractPlayer {
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
 		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan failed");
-		// GoapPlanner.printMap(getWorldState());
+//		if (getMemory().getuNum() == 4)
+//			GoapPlanner.printMap(getWorldState());
 	}
 
 	@Override
@@ -58,9 +63,8 @@ public class DefensivePlayer extends AbstractPlayer {
 		HashMap<String, Boolean> worldState = new HashMap<>();
 
 		// Set worldState from player memory
-		// worldState.put(GoapGlossary.KICK_OFF,
-		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField().booleanValue());
-		worldState.put(GoapGlossary.BALL_CATCHED, false);
+		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField());
+		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallNearMe());
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
 		worldState.put(GoapGlossary.BALL_NEAR, getAction().isBallInRangeOf(15));
 		worldState.put(GoapGlossary.BALL_NEAR_DEFENDER, getAction().isBallNearDefender());
@@ -91,6 +95,8 @@ public class DefensivePlayer extends AbstractPlayer {
 		actions.add(new ShootBallDefensorAction());
 		actions.add(new PassBallDefensorAction());
 		actions.add(new StoleBallDefensorAction());
+		actions.add(new SearchBallDefensorAction());
+		actions.add(new FollowDefensiveAction());
 		// actions.add(new ComeBackHomeAction());
 		// actions.add(new GoToMoreFreePlaceAction());
 		// actions.add(new MarkPlayerAction());

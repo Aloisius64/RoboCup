@@ -32,7 +32,6 @@ public class StoleBallAttackerAction extends GoapAction {
 
 	public StoleBallAttackerAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.PLAY_ON, true);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
@@ -68,20 +67,18 @@ public class StoleBallAttackerAction extends GoapAction {
 		// System.out.println("Performing " + getClass().getSimpleName());
 
 		try {
-			if (!player.getAction().isPlayMode("play_on")) {
-				return false;
-			}
-			if (player.getAction().isBallVisible()) {
+			if (player.getMemory().getBall() != null) {
 
 				ObjBall ball = player.getMemory().getBall();
-
+				if (player.getAction().isBallNearTeammate())
+					return false;
 				if ((ball.getDirection() > 5.0 || ball.getDirection() < -5.0)) {
 					player.getRoboClient().turn(ball.getDirection());
 				}
 
 				if (ball.getDistance() > 0.7) {
 
-					player.getAction().dash(100, MathHelp.getNextBallPoint(ball).t);
+					player.getAction().dash(100, ball.getDirection());
 					return true;
 
 				} else if (ball.getDistance() <= 0.7) {
@@ -91,7 +88,7 @@ public class StoleBallAttackerAction extends GoapAction {
 				return true;
 
 			} else {
-				player.getRoboClient().turn(30);
+				return false;
 			}
 
 		} catch (UnknownHostException e) {

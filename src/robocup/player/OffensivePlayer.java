@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+import com.sun.xml.internal.messaging.saaj.soap.AttachmentPartImpl;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
@@ -17,9 +17,8 @@ import robocup.goap.GoapGlossary;
 import robocup.goap.GoapPlanner;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjPlayer;
-import robocup.player.actions.ComeBackHomeAction;
+import robocup.player.actions.AttackerIdleAction;
 import robocup.player.actions.FollowAction;
-import robocup.player.actions.IdleAction;
 import robocup.player.actions.KickOffAction;
 import robocup.player.actions.SearchBallAction;
 import robocup.player.actions.StoleBallAttackerAction;
@@ -43,14 +42,15 @@ public class OffensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		// System.err.println("Player " + getMemory().getuNum() + " - Plan
-		// failed");
+		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan failed");
+		// if (getMemory().getuNum() == 7) {
+		// GoapPlanner.printMap(getWorldState());
+		// }
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		// System.err.println("Player " + getMemory().getuNum() + " - Plan
-		// found" + GoapAgent.prettyPrint(actions));
+		System.err.println("Player " + getMemory().getuNum() + " - Plan found" + GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
@@ -71,14 +71,15 @@ public class OffensivePlayer extends AbstractPlayer {
 
 		// Set worldState from player memory
 		worldState.put(GoapGlossary.TRY_TO_SCORE, false);
-		worldState.put(GoapGlossary.KICK_OFF, getAction().isPlayMode("kick_off_"));
-		worldState.put(GoapGlossary.PLAY_ON, getAction().isPlayMode("play_on"));
+		worldState.put(GoapGlossary.KICK_OFF, false);
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
 		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallInRangeOf(1.0));
 		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE, getAction().isBallNearTeammate());
-		worldState.put(GoapGlossary.KEEP_AREA_SAFE, true);
-//	worldState.put(GoapGlossary.BEHIND_BALL_LINE, getAction().isBehindBall());
-//		worldState.put(GoapGlossary.GOAL_SCORED, getAction().isPlayMode("goal_" + getMemory().getSide()));
+		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField());
+		// worldState.put(GoapGlossary.BEHIND_BALL_LINE,
+		// getAction().isBehindBall());
+		// worldState.put(GoapGlossary.GOAL_SCORED,
+		// getAction().isPlayMode("goal_" + getMemory().getSide()));
 
 		// GoapPlanner.printMap(worldState);
 		return worldState;
@@ -88,11 +89,11 @@ public class OffensivePlayer extends AbstractPlayer {
 	public HashMap<String, Boolean> createGoalState() {
 		HashMap<String, Boolean> goal = new HashMap<>();
 
-		// if (getMemory().getPlayMode().equals("play_on")) {
-		goal.put(GoapGlossary.TRY_TO_SCORE, true);
-		// } else if (getMemory().getPlayMode().equals("before_kick_off")) {
-		// goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
-		// }
+		if (getAction().isPlayMode("play_on")) {
+			goal.put(GoapGlossary.TRY_TO_SCORE, true);
+		} else if (getAction().isPlayMode("kick_off")) {
+			goal.put(GoapGlossary.KICK_OFF, true);
+		}
 
 		return goal;
 	}
@@ -101,11 +102,11 @@ public class OffensivePlayer extends AbstractPlayer {
 	public List<GoapAction> getActions() {
 		List<GoapAction> actions = new ArrayList<>();
 
-//		actions.add(new IdleAction());
+		actions.add(new AttackerIdleAction());
 		actions.add(new SearchBallAction());
-//		actions.add(new FollowAction());
+		actions.add(new FollowAction());
 		actions.add(new KickOffAction());
-//		actions.add(new ComeBackHomeAction());
+		// actions.add(new ComeBackHomeAction());
 		actions.add(new TryToScoreAction());
 		actions.add(new StoleBallAttackerAction());
 

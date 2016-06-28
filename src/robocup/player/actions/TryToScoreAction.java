@@ -29,10 +29,10 @@ public class TryToScoreAction extends GoapAction {
 
 	public TryToScoreAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.PLAY_ON, true);
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
+		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, false);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
 	}
@@ -61,6 +61,8 @@ public class TryToScoreAction extends GoapAction {
 		// System.out.println("Performing " + getClass().getSimpleName());
 		try {
 			if (player.getAction().isBallVisible()) {
+				if (player.getAction().isBallNearTeammate())
+					return false;
 				ObjBall ball = player.getMemory().getBall();
 				if (ball.getDistance() <= 0.7) {
 					ObjGoal goal = player.getMemory().getOppGoal();
@@ -71,7 +73,7 @@ public class TryToScoreAction extends GoapAction {
 							} else if (player.getMemory().getRightPost() == null) {
 								player.getAction().turn(-30);
 							}
-							 Thread.sleep(100);
+							Thread.sleep(100);
 							ObjFlag flagLeft = player.getMemory().getLeftPost();
 							ObjFlag flagRight = player.getMemory().getRightPost();
 							player.getAction().smartKick(flagLeft, flagRight);
@@ -84,7 +86,7 @@ public class TryToScoreAction extends GoapAction {
 					} else {
 						if (ball.getDistance() < 0.7) {
 
-							player.getAction().kick(10, 180);
+							player.getAction().kick(10, -player.getDirection());
 							return true;
 
 						} else {
@@ -96,12 +98,11 @@ public class TryToScoreAction extends GoapAction {
 					}
 				} else {// ball distante da me
 					player.getAction().turn(ball.getDirection());
-					 Thread.sleep(100);
+					Thread.sleep(100);
 					player.getAction().dash(60);
 
 				}
 			} else {
-				player.getRoboClient().turn(30.0);
 				return false;
 			}
 		} catch (Exception e) {

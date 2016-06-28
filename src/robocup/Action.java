@@ -136,10 +136,9 @@ public class Action {
 	}
 
 	public boolean isBallVisible() {
-		if (player.getMemory().isObjVisible("ball")) {
-			return player.getMemory().getBall() != null;
-		}
-		return false;
+
+		return player.getMemory().getBall() != null;
+
 	}
 
 	public void forwardToGoal() throws Exception {
@@ -496,21 +495,18 @@ public class Action {
 	}
 
 	public Boolean isBallInOurField() {
-		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
+		if (player.getMemory().getBall() != null) {
 			ObjBall objBall = player.getMemory().getBall();
-			// Position ballPos = MathHelp.getPos(objBall.getDistance(),
-			// player.getDirection() + objBall.getDirection());
-			// ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
 			Position ballPos = player.getMemory().getBallPos(objBall);
 
 			return ballPos.x <= 0.0;
 		}
 
-		return false;
+		return true;
 	}
 
 	public Boolean isBallInRangeOf(double range) {
-		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
+		if (player.getMemory().getBall() != null) {
 			ObjBall objBall = player.getMemory().getBall();
 
 			return objBall.getDistance() <= range;
@@ -520,38 +516,22 @@ public class Action {
 	}
 
 	public boolean isBallNearTeammateAttacker() {
-		if (player.getMemory().isObjVisible("ball") && player.getMemory().getBall() != null) {
-			ObjBall objBall = player.getMemory().getBall();
-			Position ballPos = MathHelp.getPos(objBall.getDistance(), player.getDirection() + objBall.getDirection());
-			ballPos = MathHelp.vAdd(player.getPosition(), ballPos);
+		if (player.getMemory().getBall() != null) {
 
 			AbstractFormation formation = FormationManager.getFormation(player.getFormationName());
-
-			for (ObjPlayer objPlayer : player.getMemory().getTeammates(player.getRoboClient().getTeam())) {
-				int playerNumber = objPlayer.getuNum() + 1;
-
-				if (playerNumber > 0 && playerNumber <= 11
-						&& formation.getPlayerClass(playerNumber).equals(OffensivePlayer.class.getSimpleName())) {
-					Position objPos = MathHelp.getPos(objPlayer.getDistance(),
-							player.getDirection() + objPlayer.getDirection());
-					objPos = MathHelp.vAdd(player.getPosition(), objPos);
-
-					if (MathHelp.mag(objPos) < 4.0) {
-						System.out.println("FOUND PLAYER " + playerNumber);
+			for (int i : player.getMemory().getHearMemory().getBallDistances().keySet()) {
+				if (formation.getPlayerClass(i).equals(OffensivePlayer.class.getSimpleName())) {
+					if (player.getMemory().getHearMemory().getBallDistances().get(i) <= 4)
 						return true;
-					}
 				}
 			}
-		}
 
+		}
 		return false;
 	}
 
 	public Boolean isBallNearDefender() {
-		if (isDefenderNear()) {
-			return true;
-		}
-		return false;
+		return isDefenderNear();
 	}
 
 	private boolean isDefenderNear() {
@@ -565,9 +545,8 @@ public class Action {
 					}
 				}
 			}
-			return false;
 		}
-		return true;
+		return false;
 	}
 
 	public Boolean isBallNearTeammate() {
@@ -576,7 +555,7 @@ public class Action {
 
 		}
 
-		return true;
+		return false;
 	}
 
 	public Boolean isBehindBall() {
@@ -620,6 +599,13 @@ public class Action {
 			}
 		}
 		return playerOpp;
+	}
+
+	public Boolean isBallNearMe() {
+		if (player.getMemory().getBall() != null) {
+			return player.getMemory().getBall().getDistance() <= 0.7;
+		}
+		return false;
 	}
 
 	/**************************************************************/

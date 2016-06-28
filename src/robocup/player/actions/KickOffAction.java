@@ -11,12 +11,8 @@ public class KickOffAction extends GoapAction {
 
 	public KickOffAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, true);
-//		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, false);
-		addEffect(GoapGlossary.BALL_NEAR_TEAMMATE, true);
-		addEffect(GoapGlossary.TRY_TO_SCORE, true);
-		addEffect(GoapGlossary.KICK_OFF, false);
-		addEffect(GoapGlossary.PLAY_ON, true);
+		addPrecondition(GoapGlossary.KICK_OFF, false);
+		addEffect(GoapGlossary.KICK_OFF, true);
 
 	}
 
@@ -34,7 +30,10 @@ public class KickOffAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		// TODO Auto-generated method stub
+		AbstractPlayer player = (AbstractPlayer) agent;
+		if(!player.getAction().isPlayMode("kick_off")){
+			return false;
+		}
 		return true;
 	}
 
@@ -42,13 +41,14 @@ public class KickOffAction extends GoapAction {
 	public boolean perform(Object agent) {
 		AbstractPlayer player = (AbstractPlayer) agent;
 
-//		System.out.println(player.getMemory().getuNum() + " " + player.getMemory().getSide() + " " + "Performing "
-//				+ getClass().getSimpleName());
+		// System.out.println(player.getMemory().getuNum() + " " +
+		// player.getMemory().getSide() + " " + "Performing "
+		// + getClass().getSimpleName());
 		try {
 
 			if (player.getAction().isPlayMode("play_on")) {
-				isKicked = true;
-				return true;
+
+				return false;
 			}
 			if (player.getMemory().getuNum() == 10) {
 				if (player.getMemory().getBall() == null) {
@@ -57,15 +57,16 @@ public class KickOffAction extends GoapAction {
 					player.getAction().dash(100, player.getMemory().getBall().getDirection());
 				} else {
 					Position pos = new Position(-5, 10);
-					player.getAction().kick(50, player.getMemory().getPolarFromFc(pos).t);
+					player.getAction().kick(32, player.getMemory().getPolarFromFc(pos).t);
 					isKicked = true;
 					Thread.sleep(100);
 					return true;
 				}
 			} else {
-				return true;
+				if (player.getMemory().getBall() == null) {
+					player.getAction().turn(60);
+				}
 			}
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

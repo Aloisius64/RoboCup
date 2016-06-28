@@ -25,7 +25,7 @@ public class IdleAction extends GoapAction {
 
 	public IdleAction() {
 		super(10.0f);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
+		addPrecondition(GoapGlossary.BALL_IN_DEFENSIVE_AREA, false);
 		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 	}
 
@@ -51,19 +51,17 @@ public class IdleAction extends GoapAction {
 		// System.out.println("Performing "+getClass().getSimpleName());
 
 		try {
+			playerToHomePosition = true;
 
 			if (!player.getAction().isAtHome()) {
 				player.getAction().goToPoint(player.getMemory().getHome());
+				return true;
 			}
-			// System.out.println(player.getMemory().getuNum() + " " +
-			// player.getTime());
 
 			if (player.getMemory().getBall() == null)
 				player.getRoboClient().turn(30);
-			else {
-				playerToHomePosition = true;
-				return true;
-			}
+			else
+				player.getAction().turn(player.getMemory().getBall().getDirection());
 
 		} catch (Exception e) {
 			e.printStackTrace();

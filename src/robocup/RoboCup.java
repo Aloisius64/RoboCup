@@ -18,7 +18,7 @@ public class RoboCup {
 		Team dropTableUsers = new Team("DropTableUsers", formation);
 		dropTableUsers.initTeam();
 
-		//
+//		//
 		formation = FormationManager.getFormation(FormationDefense532.class.getName());
 		Team fox = new Team("Fox", formation);
 		fox.initTeam();

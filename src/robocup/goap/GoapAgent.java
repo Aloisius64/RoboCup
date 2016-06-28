@@ -117,8 +117,8 @@ public class GoapAgent {
 					// perform the next action
 					action = currentActions.peek();
 					AbstractPlayer player = (AbstractPlayer) targetObject;
-					System.out.println(player.getMemory().getuNum() + "  " + player.getMemory().getSide() + " "
-							+ action.getClass().getSimpleName());
+//					System.out.println(player.getMemory().getuNum() + "  " + player.getMemory().getSide() + " "
+//							+ action.getClass().getSimpleName());
 					boolean success = action.perform(targetObject);
 
 					if (!success) {

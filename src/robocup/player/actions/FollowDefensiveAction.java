@@ -6,18 +6,18 @@ import robocup.objInfo.ObjPlayer;
 import robocup.player.AbstractPlayer;
 import robocup.utility.Position;
 
-public class FollowAction extends GoapAction {
+public class FollowDefensiveAction extends GoapAction {
 
 	private boolean follow = false;
 
-	public FollowAction() {
+	public FollowDefensiveAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
+		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
+		addPrecondition(GoapGlossary.BALL_SEEN, true);
+		addPrecondition(GoapGlossary.BALL_IN_DEFENSIVE_AREA, true);
 		// addPrecondition(GoapGlossary.BEHIND_BALL_LINE, true);
-		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
-		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
-		addPrecondition(GoapGlossary.BALL_CATCHED, false);
-		addEffect(GoapGlossary.TRY_TO_SCORE, true);
+		addPrecondition(GoapGlossary.BALL_NEAR_DEFENDER, true);
+		addEffect(GoapGlossary.KEEP_AREA_SAFE, true);
 	}
 
 	@Override
@@ -43,20 +43,21 @@ public class FollowAction extends GoapAction {
 
 		try {
 			follow = true;
-			if (player.getMemory().getOppGoal() == null || player.getMemory().getBall() == null) {
-				player.getAction().turn(30.0);
+			if (player.getMemory().getBall() != null) {
+
+				Position ballPos = player.getMemory().getBallPos(player.getMemory().getBall());
+				player.getAction().goToSidePoint(new Position(ballPos.x, player.getMemory().getHome().y));
 				return true;
 			} else {
-				player.getAction()
-						.goToSidePoint(new Position(player.getMemory().getBallPos(player.getMemory().getBall()).x + 10,
-								player.getMemory().getHome().y));
+				return false;
 			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return false;
+		return true;
 	}
 
 }
