@@ -69,7 +69,8 @@ public class ShootBallDefensorAction extends GoapAction {
 
 		AbstractPlayer player = (AbstractPlayer) agent;
 		ballShooted = true;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		if (player.getMemory().isObjVisible("ball")) {
 			ObjBall ball = player.getMemory().getBall();
 			player.getAction().kickToPoint(ball, new Position(0, 0));

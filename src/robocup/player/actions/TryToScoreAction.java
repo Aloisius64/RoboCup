@@ -59,15 +59,26 @@ public class TryToScoreAction extends GoapAction {
 		// funzione smart kick.
 		AbstractPlayer player = ((AbstractPlayer) agent);
 		// System.out.println("Performing " + getClass().getSimpleName());
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		try {
 			if (player.getAction().isBallVisible()) {
 				if (player.getAction().isBallNearTeammate())
 					return false;
 				ObjBall ball = player.getMemory().getBall();
 				if (ball.getDistance() <= 0.7) {
+
 					ObjGoal goal = player.getMemory().getOppGoal();
+					Double direction = player.getAction().getDirectionPassToTeammates();
+					if (direction != null) {
+						player.getAction().kick(20, direction);
+						System.out.println("pass ball");
+						tryToScore = true;
+						return true;
+					}
+
 					if (goal != null) {
-						if (goal.getDistance() <= 20) {
+						if (goal.getDistance() <= 20 || player.getMemory().getBallPos(ball).x > 40) {
 							if (player.getMemory().getLeftPost() == null) {
 								player.getAction().turn(30);
 							} else if (player.getMemory().getRightPost() == null) {

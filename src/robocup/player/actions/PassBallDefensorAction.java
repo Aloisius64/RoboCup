@@ -73,7 +73,8 @@ public class PassBallDefensorAction extends GoapAction {
 		// libere rispetto a lui.
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		// System.out.println(player.getMemory().getuNum()+ " Performing
 		// "+getClass().getSimpleName());
 		if (player.getMemory().isObjVisible("ball")) {

@@ -59,7 +59,8 @@ public class StoleBallDefensorAction extends GoapAction {
 	public boolean checkProceduralPrecondition(Object agent) {
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		if (player.getMemory().getBall() != null) {
 			ObjBall ball = player.getMemory().getBall();
 			if (ball.getDistance() > 10) {

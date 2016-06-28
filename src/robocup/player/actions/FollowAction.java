@@ -15,7 +15,7 @@ public class FollowAction extends GoapAction {
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		// addPrecondition(GoapGlossary.BEHIND_BALL_LINE, true);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
-//		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
+		// addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
@@ -47,13 +47,15 @@ public class FollowAction extends GoapAction {
 	@Override
 	public boolean perform(Object agent) {
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		try {
 			follow = true;
 			ObjBall ball = player.getMemory().getBall();
 			if (ball != null) {
 				Position ballPos = player.getMemory().getBallPos(ball);
-				if (player.getPosition().x >= ballPos.x + 20 || ballPos.x < 0.0) {
+				Position playerPos = player.getPosition();
+				if (playerPos.x >= ballPos.x + 20 || ballPos.x < 0.0) {
 					return false;
 				}
 			}

@@ -40,7 +40,8 @@ public class FollowDefensiveAction extends GoapAction {
 	@Override
 	public boolean perform(Object agent) {
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		try {
 			follow = true;
 			if (player.getMemory().getBall() != null) {

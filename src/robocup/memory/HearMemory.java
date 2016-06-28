@@ -18,10 +18,19 @@ public class HearMemory {
 
 	private HashMap<Integer, Double> ballDistances;
 	private HashMap<Integer, Integer> evaluations;
-	private HashMap<Integer, Position> positions;
 	private Memory memory;
+
 	// private int lastTime = 0;
 	// private int numCycles = 3;
+	public class Evaluation {
+		public int number;
+		public int value;
+
+		public Evaluation(int n, int v) {
+			this.number = n;
+			this.value = v;
+		}
+	}
 
 	public HearMemory() {
 		// TODO Auto-generated constructor stub
@@ -30,10 +39,21 @@ public class HearMemory {
 	public HearMemory(Memory memory) {
 		this.ballDistances = new HashMap<Integer, Double>();
 		this.evaluations = new HashMap<Integer, Integer>();
-		this.positions = new HashMap<Integer, Position>();
 		this.memory = memory;
 	}
 
+	public Evaluation getBestEvaluation() {
+		Evaluation ev = null;
+		for (int i : evaluations.keySet()) {
+			if (ev == null) {
+				ev = new Evaluation(i, evaluations.get(i));
+			} else if (ev.value < evaluations.get(i)) {
+				ev = new Evaluation(i, evaluations.get(i));
+
+			}
+		}
+		return ev;
+	}
 	// public void clean() {
 	// ourMessages.clear();
 	// otherMessages.clear();
@@ -50,22 +70,22 @@ public class HearMemory {
 			if (message.contains("A")) {
 				String[] splitMessage = message.split("A");
 				evaluations.put(Integer.parseInt(splitMessage[0]), Integer.parseInt(splitMessage[1]));
-			} else if (message.contains("X")) {
-				String[] splitMessage = message.replace("p", ".").replace("m", "-").split("X");
-				int player = Integer.parseInt(splitMessage[0]);
-				if (!positions.containsKey(player)) {
-					positions.put(player, new Position(Double.parseDouble(splitMessage[1]), Double.MIN_VALUE));
-				} else {
-					positions.get(player).x = Double.parseDouble(splitMessage[1]);
-				}
-			} else if (message.contains("Y")) {
-				String[] splitMessage = message.replace("p", ".").replace("m", "-").split("Y");
-				int player = Integer.parseInt(splitMessage[0]);
-				if (!positions.containsKey(player)) {
-					positions.put(player, new Position(Double.MIN_VALUE, Double.parseDouble(splitMessage[1])));
-				} else {
-					positions.get(player).y = Double.parseDouble(splitMessage[1]);
-				}
+//			} else if (message.contains("X")) {
+//				String[] splitMessage = message.replace("p", ".").replace("m", "-").split("X");
+//				int player = Integer.parseInt(splitMessage[0]);
+//				if (!positions.containsKey(player)) {
+//					positions.put(player, new Position(Double.parseDouble(splitMessage[1]), Double.MIN_VALUE));
+//				} else {
+//					positions.get(player).x = Double.parseDouble(splitMessage[1]);
+//				}
+//			} else if (message.contains("Y")) {
+//				String[] splitMessage = message.replace("p", ".").replace("m", "-").split("Y");
+//				int player = Integer.parseInt(splitMessage[0]);
+//				if (!positions.containsKey(player)) {
+//					positions.put(player, new Position(Double.MIN_VALUE, Double.parseDouble(splitMessage[1])));
+//				} else {
+//					positions.get(player).y = Double.parseDouble(splitMessage[1]);
+//				}
 			} else if (message.contains("B")) {
 				String[] splitMessage = message.replace("p", ".").split("B");
 				ballDistances.put(Integer.parseInt(splitMessage[0]), Double.parseDouble(splitMessage[1]));
@@ -87,5 +107,15 @@ public class HearMemory {
 	public void setBallDistances(HashMap<Integer, Double> ballDistances) {
 		this.ballDistances = ballDistances;
 	}
+
+	public HashMap<Integer, Integer> getEvaluations() {
+		return evaluations;
+	}
+
+	public void setEvaluations(HashMap<Integer, Integer> evaluations) {
+		this.evaluations = evaluations;
+	}
+
+
 
 }

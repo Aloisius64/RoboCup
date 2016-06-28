@@ -18,8 +18,10 @@ import robocup.goap.GoapPlanner;
 import robocup.objInfo.ObjFlag;
 import robocup.objInfo.ObjPlayer;
 import robocup.player.actions.AttackerIdleAction;
+import robocup.player.actions.ComeBackHomeAction;
 import robocup.player.actions.FollowAction;
 import robocup.player.actions.KickOffAction;
+import robocup.player.actions.PassBallAttackerAction;
 import robocup.player.actions.SearchBallAction;
 import robocup.player.actions.StoleBallAttackerAction;
 import robocup.player.actions.TryToScoreAction;
@@ -42,7 +44,7 @@ public class OffensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan failed");
+//		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan failed");
 		// if (getMemory().getuNum() == 7) {
 		// GoapPlanner.printMap(getWorldState());
 		// }
@@ -50,8 +52,8 @@ public class OffensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan found"
-				+ GoapAgent.prettyPrint(actions));
+//		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan found"
+//				+ GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
@@ -73,6 +75,7 @@ public class OffensivePlayer extends AbstractPlayer {
 		// Set worldState from player memory
 		worldState.put(GoapGlossary.TRY_TO_SCORE, false);
 		worldState.put(GoapGlossary.KICK_OFF, false);
+		worldState.put(GoapGlossary.REPOSITIONED, getAction().isPlayMode("goal_"));
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
 		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallInRangeOf(1.0));
 		worldState.put(GoapGlossary.BALL_NEAR_TEAMMATE, getAction().isBallNearTeammate());
@@ -81,10 +84,10 @@ public class OffensivePlayer extends AbstractPlayer {
 		// getAction().isBehindBall());
 		// worldState.put(GoapGlossary.GOAL_SCORED,
 		// getAction().isPlayMode("goal_" + getMemory().getSide()));
-		if (getMemory().getuNum() == 11) {
-			System.out.println("Player of side " + getMemory().getSide());
-			GoapPlanner.printMap(worldState);
-		}
+//		if (getMemory().getuNum() == 11) {
+//			System.out.println("Player of side " + getMemory().getSide());
+//			GoapPlanner.printMap(worldState);
+//		}
 		return worldState;
 	}
 
@@ -96,6 +99,8 @@ public class OffensivePlayer extends AbstractPlayer {
 			goal.put(GoapGlossary.TRY_TO_SCORE, true);
 		} else if (getAction().isPlayMode("kick_off")) {
 			goal.put(GoapGlossary.KICK_OFF, true);
+		}else if(getAction().isPlayMode("goal_")){
+			goal.put(GoapGlossary.REPOSITIONED, true);
 		}
 
 		return goal;
@@ -109,9 +114,10 @@ public class OffensivePlayer extends AbstractPlayer {
 		actions.add(new SearchBallAction());
 		actions.add(new FollowAction());
 		actions.add(new KickOffAction());
-		// actions.add(new ComeBackHomeAction());
+		actions.add(new PassBallAttackerAction());
 		actions.add(new TryToScoreAction());
 		actions.add(new StoleBallAttackerAction());
+		actions.add(new ComeBackHomeAction());
 
 		return actions;
 	}
@@ -119,7 +125,7 @@ public class OffensivePlayer extends AbstractPlayer {
 	@Override
 	public int evaluate() {
 		int evaluation = 0;
-		double weightDistance = 0.3;
+		double weightDistance = 0.5;
 		double weightGoalView = 1.0 - weightDistance;
 		double goalViewEvaluationValue = 0;
 		if (getMemory().getOppGoal() != null) {
@@ -146,8 +152,6 @@ public class OffensivePlayer extends AbstractPlayer {
 		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ITALY);
 		otherSymbols.setDecimalSeparator('.');
 		DecimalFormat format = new DecimalFormat("##.#", otherSymbols);
-		String messagePositionX = getMemory().getuNum() + "X" + format.format(getPosition().x);
-		String messagePositionY = getMemory().getuNum() + "Y" + format.format(getPosition().y);
 		String messageEvaluation = getMemory().getuNum() + "A" + evaluation;
 		String messageDistanceBall = Integer.toString(getMemory().getuNum());
 		if (getMemory().getBall() != null)
@@ -155,16 +159,8 @@ public class OffensivePlayer extends AbstractPlayer {
 		else
 			messageDistanceBall = messageDistanceBall.concat("B150");
 
-		// TODO
-		messagePositionX = messagePositionX.replace('.', 'p');
-		messagePositionX = messagePositionX.replace('-', 'm');
-
-		messagePositionY = messagePositionY.replace('.', 'p');
-		messagePositionY = messagePositionY.replace('-', 'm');
 
 		messageDistanceBall = messageDistanceBall.replace('.', 'p');
-		getAction().say(messagePositionY);
-		getAction().say(messagePositionX);
 		getAction().say(messageDistanceBall);
 		getAction().say(messageEvaluation);
 		// System.out.println("broadcast=" + evaluation + " from " +

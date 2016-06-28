@@ -4,10 +4,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import robocup.formation.AbstractFormation;
-import robocup.formation.FormationDefense442;
 import robocup.formation.FormationDefense532;
 import robocup.formation.FormationManager;
-import robocup.formation.FormationTest;
 
 public class RoboCup {
 
@@ -19,9 +17,9 @@ public class RoboCup {
 		dropTableUsers.initTeam();
 
 //		//
-		formation = FormationManager.getFormation(FormationDefense532.class.getName());
-		Team fox = new Team("Fox", formation);
-		fox.initTeam();
+//		formation = FormationManager.getFormation(FormationDefense532.class.getName());
+//		Team fox = new Team("Fox", formation);
+//		fox.initTeam();
 
 	}
 

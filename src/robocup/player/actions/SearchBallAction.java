@@ -52,7 +52,8 @@ public class SearchBallAction extends GoapAction {
 		// L'attaccante sa dove si trova la palla
 
 		AbstractPlayer player = ((AbstractPlayer) agent);
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		try {
 			if (player.getAction().isBallVisible()) {
 

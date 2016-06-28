@@ -44,6 +44,7 @@ public class KickOffAction extends GoapAction {
 		// System.out.println(player.getMemory().getuNum() + " " +
 		// player.getMemory().getSide() + " " + "Performing "
 		// + getClass().getSimpleName());
+
 		try {
 
 			if (player.getAction().isPlayMode("play_on")) {
@@ -59,7 +60,7 @@ public class KickOffAction extends GoapAction {
 					Position pos = new Position(-5, 10);
 					player.getAction().kick(32, player.getMemory().getPolarFromFc(pos).t);
 					isKicked = true;
-					Thread.sleep(100);
+					Thread.sleep(1000);
 					return true;
 				}
 			} else {

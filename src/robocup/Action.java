@@ -280,10 +280,27 @@ public class Action {
 		}
 	}
 
+	public void kickToPoint(ObjBall ball, Polar p, double power) {
+		if (ball.getDistance() <= 0.7) {
+			try {
+				player.getRoboClient().kick(power, p.t);
+			} catch (UnknownHostException e) {
+				System.out.println("Error in Action.kickToPoint");
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void kickToPoint(ObjBall ball, Position p) {
 		Position pt = MathHelp.vSub(p, player.getMemory().getPosition());
 		Polar go = player.getMemory().getAbsPolar(pt);
 		kickToPoint(ball, go);
+	}
+
+	public void kickToPoint(ObjBall ball, Position p, double power) {
+		Position pt = MathHelp.vSub(p, player.getMemory().getPosition());
+		Polar go = player.getMemory().getAbsPolar(pt);
+		kickToPoint(ball, go, power);
 	}
 
 	public void dribbleToGoal(ObjBall ball) throws UnknownHostException, InterruptedException {
@@ -613,6 +630,17 @@ public class Action {
 			return player.getMemory().getBall().getDistance() <= 0.7;
 		}
 		return false;
+	}
+
+	public Double getDirectionPassToTeammates() {
+		Double directionPass=null;
+		for (ObjPlayer o : player.getMemory().getTeammates(player.getFormationName())) {
+			int playerNum = o.getuNum();
+			if (playerNum != -1 && player.getMemory().getHearMemory().getEvaluations().get(playerNum)>player.getCurrentEvaluation()) {
+				directionPass=new Double(o.getDirection());
+			}
+		}
+		return directionPass;
 	}
 
 	/**************************************************************/

@@ -6,25 +6,8 @@ import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
 import robocup.objInfo.ObjBall;
 import robocup.player.AbstractPlayer;
-import robocup.utility.MathHelp;
 
 /*
-ATTACKER_STOLE_BALL *******************************
-PRECONDITIONS:
-	TRY_TO_SCORE (FALSE)
-	BALL_CATCHED (FALSE)
-
-EFFECTS:
-	BALL_CATCHED (TRUE)
-
-THINGS TO CHECK:
-	La palla � controllata da un avversario o
-	non, basta che sia nella propria met� campo,
-	ed � ad una certa distanza dal difensore
-
-PERFORMING:
-	Il difensore si avvicina alla palla � cerca
-	di recuperarla
  */
 public class StoleBallAttackerAction extends GoapAction {
 
@@ -63,7 +46,8 @@ public class StoleBallAttackerAction extends GoapAction {
 		// di recuperarla
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		// System.out.println("Performing " + getClass().getSimpleName());
 
 		try {
@@ -82,6 +66,10 @@ public class StoleBallAttackerAction extends GoapAction {
 					return true;
 
 				} else if (ball.getDistance() <= 0.7) {
+					String teamName = player.getRoboClient().getTeam();
+					int opponents = player.getMemory().getNearestOpponents(teamName, 3);
+					if (opponents > 1)
+						return false;
 					ballStoled = true;
 				}
 

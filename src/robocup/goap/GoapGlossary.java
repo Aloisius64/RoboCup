@@ -20,6 +20,7 @@ public class GoapGlossary {
 	public static final String GOAL_SCORED = "GOAL_SCORED";
 	public static final String BALL_NEAR_DEFENDER = "BALL_NEAR_DEFENDER";
 	public static final String BALL_IN_DEFENSIVE_AREA = "BALL_IN_DEFENSIVE_AREA";
+	public static final String REPOSITIONED = "REPOSITIONED";
 
 	// Test variables
 	public static final String VALUE = "VALUE";

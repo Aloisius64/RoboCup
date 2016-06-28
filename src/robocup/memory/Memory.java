@@ -574,7 +574,7 @@ public class Memory {
 		// System.out.println(side + " flag seen: " + flag.getFlagName());
 		// System.out.println("getPosition flag: (" + flag.getDistance() + ", "
 		// + flag.getDirection() + ")");
-//		System.out.println(flag == null);
+		// System.out.println(flag == null);
 		Position flagCoord = getFlagPos(flag.getFlagName());
 		double direction = getDirection() + flag.getDirection();
 		Position toFlag = MathHelp.getPos(flag.getDistance(), direction);
@@ -781,6 +781,16 @@ public class Memory {
 
 	public void setAbstractPlayer(AbstractPlayer abstractPlayer) {
 		this.abstractPlayer = abstractPlayer;
+	}
+
+	public int getNearestOpponents(String teamName, int i) {
+		int count = 0;
+		for (ObjPlayer p : getOpponents(teamName)) {
+			if (p.getDistance() < i) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 }

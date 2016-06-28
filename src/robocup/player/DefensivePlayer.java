@@ -13,6 +13,7 @@ import robocup.goap.GoapAction;
 import robocup.goap.GoapAgent;
 import robocup.goap.GoapGlossary;
 import robocup.goap.GoapPlanner;
+import robocup.player.actions.ComeBackHomeAction;
 import robocup.player.actions.FollowDefensiveAction;
 import robocup.player.actions.IdleAction;
 import robocup.player.actions.PassBallDefensorAction;
@@ -37,14 +38,16 @@ public class DefensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFailed(HashMap<String, Boolean> failedGoal) {
-		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan failed");
-//		if (getMemory().getuNum() == 4)
-//			GoapPlanner.printMap(getWorldState());
+		// System.err.println("Player " + getMemory().getuNum() + " " +
+		// getMemory().getSide() + " - Plan failed");
+		// if (getMemory().getuNum() == 4)
+		// GoapPlanner.printMap(getWorldState());
 	}
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.err.println("Player " + getMemory().getuNum() + " - Plan found" + GoapAgent.prettyPrint(actions));
+		// System.err.println("Player " + getMemory().getuNum() + " - Plan
+		// found" + GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
@@ -55,7 +58,8 @@ public class DefensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planAborted(GoapAction aborter) {
-		System.out.println("Player " + getMemory().getuNum() + " - Plan aborted");
+		// System.out.println("Player " + getMemory().getuNum() + " - Plan
+		// aborted");
 	}
 
 	@Override
@@ -63,6 +67,7 @@ public class DefensivePlayer extends AbstractPlayer {
 		HashMap<String, Boolean> worldState = new HashMap<>();
 
 		// Set worldState from player memory
+		worldState.put(GoapGlossary.REPOSITIONED, getAction().isPlayMode("goal_"));
 		worldState.put(GoapGlossary.KEEP_AREA_SAFE, !getAction().isBallInOurField());
 		worldState.put(GoapGlossary.BALL_CATCHED, getAction().isBallNearMe());
 		worldState.put(GoapGlossary.BALL_SEEN, getAction().isBallVisible());
@@ -79,8 +84,11 @@ public class DefensivePlayer extends AbstractPlayer {
 	public HashMap<String, Boolean> createGoalState() {
 		HashMap<String, Boolean> goal = new HashMap<>();
 
-		goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
-
+		if (getAction().isPlayMode("goal_")) {
+			goal.put(GoapGlossary.REPOSITIONED, true);
+		} else {
+			goal.put(GoapGlossary.KEEP_AREA_SAFE, true);
+		}
 		// Il goal dipende dal tipo di play mode
 		// cambiarlo in base alla modalit� di gioco
 
@@ -97,7 +105,7 @@ public class DefensivePlayer extends AbstractPlayer {
 		actions.add(new StoleBallDefensorAction());
 		actions.add(new SearchBallDefensorAction());
 		actions.add(new FollowDefensiveAction());
-		// actions.add(new ComeBackHomeAction());
+		actions.add(new ComeBackHomeAction());
 		// actions.add(new GoToMoreFreePlaceAction());
 		// actions.add(new MarkPlayerAction());
 

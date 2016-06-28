@@ -52,7 +52,8 @@ public class AttackerIdleAction extends GoapAction {
 		AbstractPlayer player = ((AbstractPlayer) agent);
 
 		// System.out.println("Performing "+getClass().getSimpleName());
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		try {
 			playerToHomePosition = true;
 

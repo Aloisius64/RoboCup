@@ -1,33 +1,17 @@
 package robocup.player.actions;
 
+import java.net.UnknownHostException;
+
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
+import robocup.objInfo.ObjBall;
+import robocup.objInfo.ObjPlayer;
+import robocup.player.AbstractPlayer;
+import robocup.utility.MathHelp;
+import robocup.utility.Polar;
+import robocup.utility.Position;
 
 /*
-PASS_BALL_ATTACK **********************************
-PRECONDITIONS:
-	TRY_TO_SCORE (FALSE)
-	BALL_CATCHED (TRUE)
-
-EFFECTS:
-	TRY_TO_SCORE (TRUE)
-	BALL_CATCHED (FALSE)
-
-THINGS TO CHECK:
-	L'attaccante controlla un indice di successo
-	(probabilit� di segnare) ricevuto da altri
-	(serve comunicazione) attaccanti e lo confronta
-	con il proprio, oppure se � ostacolato da un
-	certo numero di avversari.
-
-PERFORMING:
-	L'attaccante passa la palla ad un compagno che
-	ha l'indice di successo maggiore (si potrebbe
-	verificare forse che chi conduce palla ha il
-	massimo indice di successo ma essendo ostacolato
-	da un certo numero di avversari � meglio passare
-	la palla ad un compagno che dopo di lui ha il pi�
-	altro indice di successo)
  */
 public class PassBallAttackerAction extends GoapAction {
 
@@ -35,8 +19,6 @@ public class PassBallAttackerAction extends GoapAction {
 
 	public PassBallAttackerAction() {
 		super(1.0f);
-		addPrecondition(GoapGlossary.KICK_OFF, false);
-		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, true);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 		addEffect(GoapGlossary.BALL_CATCHED, false);
@@ -49,28 +31,58 @@ public class PassBallAttackerAction extends GoapAction {
 
 	@Override
 	public boolean isDone() {
-		return ballPassed = false;
+		return ballPassed;
 	}
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-		//		L'attaccante controlla un indice di successo
-		//		(probabilit� di segnare) ricevuto da altri
-		//		(serve comunicazione) attaccanti e lo confronta
-		//		con il proprio, oppure se � ostacolato da un
-		//		certo numero di avversari.
-		return true;
+		// Numero di avversari vicini, compagni liberi
+
+		AbstractPlayer player = (AbstractPlayer) agent;
+		String teamName = player.getRoboClient().getTeam();
+		int opponents = player.getMemory().getNearestOpponents(teamName, 5);
+
+		// System.out.println("Teammates "+teammates+", Opponents: "+opponents);
+
+		return opponents >= 2;
 	}
 
 	@Override
 	public boolean perform(Object agent) {
-		//		L'attaccante passa la palla ad un compagno che
-		//		ha l'indice di successo maggiore (si potrebbe
-		//		verificare forse che chi conduce palla ha il
-		//		massimo indice di successo ma essendo ostacolato
-		//		da un certo numero di avversari � meglio passare
-		//		la palla ad un compagno che dopo di lui ha il pi�
-		//		altro indice di successo)
+		// La palla viene passata ad un compagno se il
+		// giocatore � ostacolato da un certo numero di
+		// avversari e alcuni compagni sono in zone pi�
+		// libere rispetto a lui.
+
+		AbstractPlayer player = (AbstractPlayer) agent;
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
+		// System.out.println(player.getMemory().getuNum()+ " Performing
+		// "+getClass().getSimpleName());
+		if (player.getMemory().getBall() != null) {
+			ObjBall ball = player.getMemory().getBall();
+			ObjPlayer closestPlayer = null;
+			try {
+				closestPlayer = player.getAction().closestTeammate();
+				if (closestPlayer != null) {
+					// System.out.println(player.getMemory().getuNum()+" is
+					// trying to pass to player: "+closestPlayer.getuNum());
+					Polar p = MathHelp.getNextPlayerPoint(closestPlayer);
+					player.getAction().kickToPoint(ball, p);
+					ballPassed = true;
+				} else {
+					player.getAction().kickToPoint(ball, new Position(0, 0));
+					ballPassed = true;
+				}
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			return true;
+		}
+
 		return false;
 	}
 

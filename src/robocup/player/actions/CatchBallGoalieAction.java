@@ -54,7 +54,8 @@ public class CatchBallGoalieAction extends GoapAction {
 		System.out.println("Performing " + getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		try {
 			if (player.getAction().isBallVisible() && player.getAction().isBallInRangeOf(1.0)) {
 				player.getAction().catchball(player.getMemory().getBall().getDirection());

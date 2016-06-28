@@ -75,7 +75,8 @@ public class PassBallGoalieAction extends GoapAction {
 		System.out.println("Performing "+getClass().getSimpleName());
 
 		AbstractPlayer player = (AbstractPlayer) agent;
-
+		if(!player.getAction().isPlayMode("play_on"))
+			return false;
 		try {
 			if(player.getMemory().isObjVisible("ball") && player.getAction().isBallInRangeOf(1.0)){
 				ObjBall ball = player.getMemory().getBall();
