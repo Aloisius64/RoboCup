@@ -111,7 +111,6 @@ public class TryToScoreAction extends GoapAction {
 					player.getAction().turn(ball.getDirection());
 					Thread.sleep(100);
 					player.getAction().dash(60);
-
 				}
 			} else {
 				return false;

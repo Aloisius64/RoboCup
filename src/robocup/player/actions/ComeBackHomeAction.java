@@ -36,7 +36,7 @@ public class ComeBackHomeAction extends GoapAction {
 		AbstractPlayer player = ((AbstractPlayer) agent);
 		if (!player.getAction().isPlayMode("goal_"))
 			return false;
-		System.out.println(player.getMemory().getuNum() + "  Sto andando a casa");
+//		System.out.println(player.getMemory().getuNum() + "  Sto andando a casa");
 		try {
 			// player.getAction().move(player.getHome().x, player.getHome().y);
 			if (!player.getAction().isHome()) {
