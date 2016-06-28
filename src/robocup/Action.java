@@ -71,7 +71,7 @@ public class Action {
 			if ((go.t) > 5.0 || (go.t) < -5.0) {
 				player.getRoboClient().turn(go.t * (1 + (5 * player.getMemory().getAmountOfSpeed())));
 			}
-
+			Thread.sleep(100);
 			player.getRoboClient().dash(100);
 		}
 	}
@@ -633,11 +633,12 @@ public class Action {
 	}
 
 	public Double getDirectionPassToTeammates() {
-		Double directionPass=null;
+		Double directionPass = null;
 		for (ObjPlayer o : player.getMemory().getTeammates(player.getFormationName())) {
 			int playerNum = o.getuNum();
-			if (playerNum != -1 && player.getMemory().getHearMemory().getEvaluations().get(playerNum)>player.getCurrentEvaluation()) {
-				directionPass=new Double(o.getDirection());
+			if (playerNum != -1 && player.getMemory().getHearMemory().getEvaluations().get(playerNum) > player
+					.getCurrentEvaluation()) {
+				directionPass = new Double(o.getDirection());
 			}
 		}
 		return directionPass;

@@ -47,7 +47,7 @@ public class FollowAction extends GoapAction {
 	@Override
 	public boolean perform(Object agent) {
 		AbstractPlayer player = (AbstractPlayer) agent;
-		if(!player.getAction().isPlayMode("play_on"))
+		if (!player.getAction().isPlayMode("play_on"))
 			return false;
 		try {
 			follow = true;
@@ -59,14 +59,15 @@ public class FollowAction extends GoapAction {
 					return false;
 				}
 			}
-			if (player.getMemory().getOppGoal() == null || ball == null) {
+			if (player.getMemory().getBall() == null) {
 				player.getAction().turn(30.0);
 				return true;
 			} else {
 
-				player.getAction().goToSidePoint(
-						new Position(player.getMemory().getBallPos(ball).x + 24, player.getMemory().getHome().y), 100);
+				player.getAction().goToPoint(
+						new Position(player.getMemory().getBallPos(ball).x + 24, player.getMemory().getHome().y));
 			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

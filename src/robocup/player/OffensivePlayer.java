@@ -125,7 +125,7 @@ public class OffensivePlayer extends AbstractPlayer {
 	@Override
 	public int evaluate() {
 		int evaluation = 0;
-		double weightDistance = 0.5;
+		double weightDistance = 0.3;
 		double weightGoalView = 1.0 - weightDistance;
 		double goalViewEvaluationValue = 0;
 		if (getMemory().getOppGoal() != null) {

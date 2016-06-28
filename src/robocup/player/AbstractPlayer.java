@@ -125,7 +125,6 @@ public abstract class AbstractPlayer extends Thread implements IGoap {
 			try {
 				receiveInput();
 				// Thread.sleep(100);
-
 				if (getMemory().timeCheck(getTime())) {
 					setTime(getMemory().getObjMemory().getTime());
 					getAgent().update();
