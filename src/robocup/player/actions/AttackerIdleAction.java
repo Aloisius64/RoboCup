@@ -28,6 +28,7 @@ public class AttackerIdleAction extends GoapAction {
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, false);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
+		addPrecondition(GoapGlossary.BALL_SEEN, true);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
 
@@ -64,8 +65,7 @@ public class AttackerIdleAction extends GoapAction {
 
 			if (player.getMemory().getBall() == null)
 				player.getRoboClient().turn(30);
-			else
-				return false;
+		
 
 		} catch (Exception e) {
 			e.printStackTrace();

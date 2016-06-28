@@ -58,6 +58,13 @@ public class Action {
 		}
 	}
 
+	public void goToSidePoint(Position p, double dash) throws Exception {
+		Polar go = player.getMemory().getAbsPolar(p);
+		if (go.r >= 0.5) {
+			player.getRoboClient().dash(dash, go.t);
+		}
+	}
+
 	public void goToPoint(Position p) throws Exception {
 		Polar go = player.getMemory().getAbsPolar(p);
 		if (go.r >= 0.5) {

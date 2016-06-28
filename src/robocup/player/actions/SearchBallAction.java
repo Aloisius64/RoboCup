@@ -59,7 +59,7 @@ public class SearchBallAction extends GoapAction {
 				ballSeen = true;
 				return true;
 			} else {
-				player.getRoboClient().turn(60);
+				player.getRoboClient().turn(45);
 
 			}
 		} catch (UnknownHostException e) {

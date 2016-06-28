@@ -2,7 +2,7 @@ package robocup.player.actions;
 
 import robocup.goap.GoapAction;
 import robocup.goap.GoapGlossary;
-import robocup.objInfo.ObjPlayer;
+import robocup.objInfo.ObjBall;
 import robocup.player.AbstractPlayer;
 import robocup.utility.Position;
 
@@ -15,7 +15,7 @@ public class FollowAction extends GoapAction {
 		addPrecondition(GoapGlossary.TRY_TO_SCORE, false);
 		// addPrecondition(GoapGlossary.BEHIND_BALL_LINE, true);
 		addPrecondition(GoapGlossary.KEEP_AREA_SAFE, true);
-		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
+//		addPrecondition(GoapGlossary.BALL_NEAR_TEAMMATE, true);
 		addPrecondition(GoapGlossary.BALL_CATCHED, false);
 		addEffect(GoapGlossary.TRY_TO_SCORE, true);
 	}
@@ -33,7 +33,14 @@ public class FollowAction extends GoapAction {
 
 	@Override
 	public boolean checkProceduralPrecondition(Object agent) {
-
+		AbstractPlayer player = (AbstractPlayer) agent;
+		ObjBall ball = player.getMemory().getBall();
+		if (ball != null) {
+			Position ballPos = player.getMemory().getBallPos(ball);
+			if (player.getPosition().x >= ballPos.x + 20) {
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -43,13 +50,20 @@ public class FollowAction extends GoapAction {
 
 		try {
 			follow = true;
-			if (player.getMemory().getOppGoal() == null || player.getMemory().getBall() == null) {
+			ObjBall ball = player.getMemory().getBall();
+			if (ball != null) {
+				Position ballPos = player.getMemory().getBallPos(ball);
+				if (player.getPosition().x >= ballPos.x + 20 || ballPos.x < 0.0) {
+					return false;
+				}
+			}
+			if (player.getMemory().getOppGoal() == null || ball == null) {
 				player.getAction().turn(30.0);
 				return true;
 			} else {
-				player.getAction()
-						.goToSidePoint(new Position(player.getMemory().getBallPos(player.getMemory().getBall()).x + 10,
-								player.getMemory().getHome().y));
+
+				player.getAction().goToSidePoint(
+						new Position(player.getMemory().getBallPos(ball).x + 24, player.getMemory().getHome().y), 100);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

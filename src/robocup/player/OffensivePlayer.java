@@ -50,7 +50,8 @@ public class OffensivePlayer extends AbstractPlayer {
 
 	@Override
 	public void planFound(HashMap<String, Boolean> goal, Queue<GoapAction> actions) {
-		System.err.println("Player " + getMemory().getuNum() + " - Plan found" + GoapAgent.prettyPrint(actions));
+		System.err.println("Player " + getMemory().getuNum() + " " + getMemory().getSide() + " - Plan found"
+				+ GoapAgent.prettyPrint(actions));
 	}
 
 	@Override
@@ -80,8 +81,10 @@ public class OffensivePlayer extends AbstractPlayer {
 		// getAction().isBehindBall());
 		// worldState.put(GoapGlossary.GOAL_SCORED,
 		// getAction().isPlayMode("goal_" + getMemory().getSide()));
-
-		// GoapPlanner.printMap(worldState);
+		if (getMemory().getuNum() == 11) {
+			System.out.println("Player of side " + getMemory().getSide());
+			GoapPlanner.printMap(worldState);
+		}
 		return worldState;
 	}
 
